@@ -14,8 +14,9 @@ COMFY = "http://127.0.0.1:8188"
 OUT = os.path.expanduser("~/dev/ComfyUI/output")
 DEST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "renders")
 
-STYLE = ("loose watercolor and ink, soft bleeding edges, parchment texture, "
-         "classical antiquity illustration, muted earthy palette, gold accents")
+STYLE = ("vibrant cartoon illustration, cyberpunk neon aesthetic, bold saturated colors, "
+         "clean cel-shaded linework, glowing neon rim lighting, high contrast, "
+         "synthwave magenta teal and electric-purple palette, playful stylized, energetic")
 
 WORKFLOW = {
   "1": {"class_type": "UnetLoaderGGUF", "inputs": {"unet_name": "flux1-schnell-Q4_K_S.gguf"}},
@@ -64,12 +65,10 @@ def render(name, prompt, w=768, h=1024, seed=42, timeout=180):
 
 
 PILOT = [
-  ("wagon_supply", "ox-drawn Roman military supply wagon, sturdy wooden four-wheeled cart heaped with grain sacks barrels and amphorae lashed under canvas, yoked oxen, side three-quarter view, single game object on plain background", 832, 1024, 7),
-  ("tile_open_v3", "top-down isometric square game board tile, open grassy battlefield field with faint plowed furrows, clean tileable edges, single terrain tile", 1024, 1024, 7),
-  ("card_back_v3", "ornate trading card back design, centered Roman legionary eagle aquila standard emblem, symmetrical carved border, deep crimson and aged gold, vertical card", 768, 1024, 7),
-  ("card_frame_unit_v3", "blank ornate unit card frame template, empty parchment art window in the center, carved stone border with small stat plaques at the bottom corners, vertical game card, no text", 768, 1024, 7),
-  ("ui_panel_v3", "horizontal game UI banner panel, carved stone and weathered parchment with gold trim, empty center, ornate classical antiquity interface element", 1280, 512, 7),
-  ("menu_bg_v3", "main menu splash background, sweeping classical antiquity Roman frontier battlefield at dawn, distant palisades and standards, atmospheric depth, cinematic wide", 1280, 720, 7),
+  ("cyber_legionary", "a heroic Roman legionary swordsman in segmented armor fused with sleek cyberpunk tech, glowing neon circuit accents, holding a short sword and energy shield, dynamic full-body game character, single figure", 768, 1024, 7),
+  ("cyber_wagon", "a Roman supply wagon reimagined as a hover-cart laden with glowing energy crates and barrels, neon underglow, single game object", 832, 1024, 7),
+  ("cyber_card_frame", "blank unit trading-card frame template, sleek neon-lit ornate border, empty center art window, holographic accents, vertical game card, no text", 768, 1024, 7),
+  ("cyber_menu_bg", "epic main-menu splash, neon-soaked Roman frontier megacity fortress at night, glowing standards and holographic banners, dramatic skyline, cinematic wide", 1280, 720, 7),
 ]
 
 
