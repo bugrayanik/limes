@@ -24,6 +24,28 @@
    "6d8528f9daafb45b",
    "c7b15dc97ef6f7a2"
   ],
+  "phase_hashes_r1": [
+   [
+    "muster",
+    "d11ad5738c87f21b"
+   ],
+   [
+    "reveal",
+    "88bf30154b95ae9f"
+   ],
+   [
+    "clash",
+    "aa4c229bcf4437ae"
+   ],
+   [
+    "frontier",
+    "8ecdbc102e2bbf9e"
+   ],
+   [
+    "pass",
+    "8ecdbc102e2bbf9e"
+   ]
+  ],
   "result": {
    "winner": 1,
    "win_type": "golden-goal",
@@ -53,6 +75,28 @@
    "64746eb2696c2c83",
    "0f1f543cb74d3e11",
    "ec3a27eb5dcd9136"
+  ],
+  "phase_hashes_r1": [
+   [
+    "muster",
+    "0d253e498019eb78"
+   ],
+   [
+    "reveal",
+    "0d253e498019eb78"
+   ],
+   [
+    "clash",
+    "0c409194d6acdad5"
+   ],
+   [
+    "frontier",
+    "0c409194d6acdad5"
+   ],
+   [
+    "pass",
+    "0c409194d6acdad5"
+   ]
   ],
   "result": {
    "winner": 0,
@@ -84,6 +128,28 @@
    "f6f10cc49c60e67a",
    "7e24cf38658adb44"
   ],
+  "phase_hashes_r1": [
+   [
+    "muster",
+    "7665f89d591f103f"
+   ],
+   [
+    "reveal",
+    "ed8d0d31475dc94c"
+   ],
+   [
+    "clash",
+    "a5068b1a25f92a80"
+   ],
+   [
+    "frontier",
+    "16fa7cc9b5cd66c5"
+   ],
+   [
+    "pass",
+    "eb70c1b144e5e9a8"
+   ]
+  ],
   "result": {
    "winner": 1,
    "win_type": "golden-goal",
@@ -113,6 +179,28 @@
    "1adb9fbc05af84eb",
    "b993d956735e2634",
    "da5a2cbaf6ad0dde"
+  ],
+  "phase_hashes_r1": [
+   [
+    "muster",
+    "a4af8909174694b9"
+   ],
+   [
+    "reveal",
+    "a4af8909174694b9"
+   ],
+   [
+    "clash",
+    "b9678ffb9b236f71"
+   ],
+   [
+    "frontier",
+    "b9678ffb9b236f71"
+   ],
+   [
+    "pass",
+    "b9678ffb9b236f71"
+   ]
   ],
   "result": {
    "winner": 0,

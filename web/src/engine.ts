@@ -96,12 +96,22 @@ export function makeConstants(overrides?: Partial<Constants>): Constants {
 // [x] Unit + archStats / baseCosts
 // [x] Game state + setup()  → post-setup hash MATCHES oracle (4/4, check_parity.ts)
 // [x] crc32 + bot setup (bots.ts)  → opening placement reproduced byte-for-byte
-// [~] Geometry helpers (inBounds done; manh/neighbors/territory_of pending for combat)
+// [x] Geometry + query helpers (manh/neighbors/territoryOf/onBoard/reserve/…)
+// [x] Per-phase parity harness — oracle emits phase_hashes_r1; check_parity.ts
+//     reports the FIRST divergent phase. play_round() in TS lights it up.
+// --- next: port play_round phase-by-phase, in oracle order. Each needs the
+//     matching bot methods (the suite uses HONEST/AGGRO/TURTLE/PROBER/SANDBAGGER). ---
+// [ ] Phase 1 MUSTER  → bot.feed_order / build / reinforce; harvest/upkeep/recruit
+// [ ] Phase 2 REVEAL  (face_down = false — trivial once Muster matches)
+// [ ] Phase 3 CLASH   (pulses, ZoC, resolution, rout, interventions; bot.orders)
 // [ ] Phase 4 FRONTIER (carry/contest/stake-step/trample/breach/entrench)
 // [ ] Phase 5 PASS & TRIBUTE + komi + caravans + golden-goal/hard-stop
-// [ ] Phase 1 MUSTER (recruit/deploy/reposition/unlock/build)
-// [ ] Phase 3 CLASH (pulses, ZoC, combat resolution, rout, interventions)
-// [ ] Bots (HONEST first) — reuse the same parity harness
+// When all 5 match for round 1, extend checkpoints to all rounds → full parity.
+//
+// Implementation note for play_round(): mirror the Python _phase_cb hook —
+// expose phaseHashesR1() that replays the 5 phases and returns [[label,hash],…];
+// check_parity.ts auto-detects it (Game.prototype.phaseHashesR1) and switches
+// from PENDING to per-phase PASS/FAIL.
 
 // ──────────────────────────────────────────────────────────────────────────
 // Phase 0 port: geometry, Unit, Game state + setup(), canonical snapshot.

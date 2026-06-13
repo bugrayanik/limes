@@ -1,12 +1,30 @@
 // Parity runner: assert the TS engine reproduces the Python oracle.
-// Phase 0 scope: post-setup state hash (round_hashes[0]).
-// Run:  bun web/parity/check_parity.ts        (regenerate golden.json first)
+//
+// Two levels of granularity, both sourced from web/parity/golden.json
+// (regenerate it first:  python3 parity/dump_golden.py --suite --out parity/golden.json):
+//
+//   1. post-setup  — stateHash() after setup() must equal round_hashes[0].   [DONE]
+//   2. per-phase    — once the TS engine ports play_round with checkpoints,
+//                     each round-1 phase (muster/reveal/clash/frontier/pass)
+//                     must equal phase_hashes_r1[i]. The FIRST mismatch is the
+//                     exact rule-block to port next. Until play_round exists in
+//                     TS, these are listed as PENDING targets.
+//
+// Run:  bun web/parity/check_parity.ts
 import { Game } from '../src/engine';
 import { makeBot } from '../src/bots';
 import golden from './golden.json';
 
+type Match = {
+  p1: string; p2: string; seed: number; config?: Record<string, number>;
+  round_hashes: string[];
+  phase_hashes_r1: [string, string][];
+};
+
 let pass = 0, fail = 0;
-for (const m of golden as any[]) {
+
+console.log('── post-setup parity ──');
+for (const m of golden as Match[]) {
   const bots = [makeBot(m.p1), makeBot(m.p2)];
   bots.forEach((b, p) => b.reset(m.seed, p));
   const g = new Game(bots, m.seed, m.config && Object.keys(m.config).length ? m.config : undefined);
@@ -17,5 +35,38 @@ for (const m of golden as any[]) {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${m.p1} vs ${m.p2} (seed ${m.seed})  setup: ${got}${ok ? '' : ' != ' + want}`);
   ok ? pass++ : fail++;
 }
-console.log(`\npost-setup parity: ${pass} pass, ${fail} fail`);
+
+// Per-phase parity for round 1. Capability-detect: the TS Game grows a
+// phaseHashesR1() (replaying muster→reveal→clash→frontier→pass, hashing after
+// each) as the phases land. Report the first divergent phase, else the targets.
+console.log('\n── per-phase parity (round 1) ──');
+const sample = (golden as Match[])[0];
+const hasPhasePort = typeof (Game.prototype as any).phaseHashesR1 === 'function';
+if (!hasPhasePort) {
+  const labels = sample.phase_hashes_r1.map(([l]) => l).join(' → ');
+  console.log(`PENDING  play_round not yet ported. Next targets, in order: ${labels}`);
+  console.log('         (port Phase 1 Muster first — see PORT CHECKLIST in src/engine.ts)');
+} else {
+  for (const m of golden as Match[]) {
+    const bots = [makeBot(m.p1), makeBot(m.p2)];
+    bots.forEach((b, p) => b.reset(m.seed, p));
+    const g = new Game(bots, m.seed, m.config && Object.keys(m.config).length ? m.config : undefined);
+    g.setup();
+    const got: [string, string][] = (g as any).phaseHashesR1();
+    let firstBad = -1;
+    for (let i = 0; i < m.phase_hashes_r1.length; i++) {
+      if (!got[i] || got[i][1] !== m.phase_hashes_r1[i][1]) { firstBad = i; break; }
+    }
+    if (firstBad === -1) {
+      console.log(`PASS  ${m.p1} vs ${m.p2} (seed ${m.seed})  all ${m.phase_hashes_r1.length} phases`);
+      pass++;
+    } else {
+      const [label] = m.phase_hashes_r1[firstBad];
+      console.log(`FAIL  ${m.p1} vs ${m.p2} (seed ${m.seed})  first divergence: phase '${label}'`);
+      fail++;
+    }
+  }
+}
+
+console.log(`\nparity: ${pass} pass, ${fail} fail`);
 process.exit(fail ? 1 : 0);

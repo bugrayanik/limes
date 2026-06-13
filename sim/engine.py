@@ -1467,6 +1467,16 @@ class Game:
                 new[(c, r)] = min(self.entrench.get((c, r), 0) + 1, C['ENTRENCH_HOLD'])
         self.entrench = new
 
+    def _checkpoint(self, label):
+        """Per-phase parity hook (no-op unless self._phase_cb is attached).
+        The golden oracle (parity/dump_golden.py) installs a callback to record
+        a canonical state hash after each phase, so the TypeScript port can be
+        parity-tested phase-by-phase, not just per-round. Pure observation —
+        never mutates state, so the default (no callback) path is identical."""
+        cb = getattr(self, '_phase_cb', None)
+        if cb:
+            cb(label, self)
+
     def play_round(self):
         C = self.C
         self.cap_dmg = [0, 0]
@@ -1477,17 +1487,21 @@ class Game:
         # Phase 1: Muster (komi-holder first; see header note)
         self.muster_player(self.komi)
         self.muster_player(1 - self.komi)
+        self._checkpoint('muster')
         # Phase 2: Reveal
         for u in self.units.values():
             u.face_down = False
+        self._checkpoint('reveal')
         # Phase 3: Clash
         self.clash()
+        self._checkpoint('clash')
         # Phase 4: Frontier
         self.frontier()
         # komi update (C-005: at the end of the Frontier step)
         l0, l1 = self.rows_lost_round
         if l0 != l1:
             self.komi = 0 if l0 > l1 else 1
+        self._checkpoint('frontier')
         # golden goal (C-070)
         if self.round >= C['GOLDEN_GOAL_ROUND']:
             t0 = self.rows_taken_round[0] > 0 or self.wagon_dmg_round[0] > 0
@@ -1531,6 +1545,7 @@ class Game:
             if C.get('FIRST_BLOOD_SUPPLY') and self.r1_winner is not None:
                 self.res[self.r1_winner]['supply'] += C['FIRST_BLOOD_SUPPLY']
         self.lead_trace.append(self.lead_holder())
+        self._checkpoint('pass')
         # hard stop (C-071)
         if self.round >= C['HARD_STOP_ROUND']:
             a0, a1 = self.wagons_alive(0), self.wagons_alive(1)

@@ -69,6 +69,12 @@ def run(seed, p1, p2, config, terrain_seed=None):
         [b0, b1][p].reset(seed, p)
     g.setup()
     hashes = [state_hash(g)]          # post-setup, pre-round-1
+    # Per-phase checkpoints for round 1 only — lets the TS port be parity-tested
+    # phase-by-phase (muster/reveal/clash/frontier/pass), localising the first
+    # divergence instead of only seeing a whole round mismatch.
+    phase_r1 = []
+    g._phase_cb = lambda label, gg: (
+        phase_r1.append([label, state_hash(gg)]) if gg.round == 1 else None)
     winner = wtype = None
     try:
         while True:
@@ -80,6 +86,7 @@ def run(seed, p1, p2, config, terrain_seed=None):
         'seed': seed, 'p1': p1, 'p2': p2,
         'config': config or {}, 'terrain_seed': terrain_seed,
         'round_hashes': hashes,
+        'phase_hashes_r1': phase_r1,
         'result': {'winner': winner, 'win_type': wtype, 'rounds': g.round},
     }
 
