@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIMES — v3 Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* skin lifted from art/styleguide/index.html (locked June 10 2026) */
+:root{
+  --ink:#181410; --stone:#1d1813; --stone-2:#262019; --parch:#f0e6cf; --parch-2:#e6d9bb;
+  --gold:#c9a227; --gold-soft:#dbc06a; --rule:#8a7340;
+  --roman:#a32638; --spartan:#c4622d; --hun:#d9a418; --gaul:#3e7a3a;
+  --egypt:#2aa198; --viking:#2b4f81; --persian:#5b3a8e; --teuton:#6e7378;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--stone);
+  background-image:radial-gradient(ellipse 80% 50% at 50% -10%, #2e2317 0%, transparent 60%);
+  color:var(--parch); font-family:'Alegreya',serif; min-height:100vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem;
+}
+h1{font-family:'Cinzel',serif; font-weight:900; color:var(--gold); letter-spacing:.08em}
+.sub{color:var(--parch-2); font-style:italic; max-width:38ch; text-align:center}
+#board{margin-top:1rem; color:var(--rule); font-family:'Cinzel',serif; letter-spacing:.2em}
+</style>
+</head>
+<body>
+  <h1>LIMES</h1>
+  <p class="sub">v3 playable prototype — scaffold. The board renderer (Phase 1)
+  mounts here once the TypeScript engine port (Phase 0) reaches setup-parity
+  with the Python oracle.</p>
+  <div id="board">[ BOARD MOUNTS HERE ]</div>
+  <!-- Phase 1: <script type="module" src="./src/main.ts"></script> -->
+</body>
+</html>

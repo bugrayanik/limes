@@ -1,0 +1,123 @@
+[
+ {
+  "seed": 70000,
+  "p1": "HONEST",
+  "p2": "AGGRO",
+  "config": {},
+  "terrain_seed": null,
+  "round_hashes": [
+   "172e0681af7f3241",
+   "ecf5de42cd34b97a",
+   "38a62339a7d818c4",
+   "327b7868594eab44",
+   "8d43a54e84ad0ab9",
+   "e5afe2f9820f0a1d",
+   "80cc9cb23bd5892a",
+   "60ae4de12eaa9b20",
+   "209aae7214005e95",
+   "83491de4233a982e",
+   "04de6e0bf9d3e9bc",
+   "30c7f52de57cd184",
+   "80cffdeb4f88038a",
+   "76426826646e1296",
+   "66229417133a5184",
+   "6d8528f9daafb45b",
+   "c7b15dc97ef6f7a2"
+  ],
+  "result": {
+   "winner": 1,
+   "win_type": "golden-goal",
+   "rounds": 17
+  }
+ },
+ {
+  "seed": 70001,
+  "p1": "TURTLE",
+  "p2": "PROBER",
+  "config": {},
+  "terrain_seed": null,
+  "round_hashes": [
+   "dffc4dcb50a1e531",
+   "4ba76416b1424d47",
+   "cede16674283993d",
+   "68127b73684a8302",
+   "4ff9c2efba48538d",
+   "d4ff1bf08b4d73d7",
+   "60ed78bbd674d2a1",
+   "ec5b31b550993a91",
+   "a4695be905c2aa9c",
+   "13d6a28cdad4942b",
+   "e631e52d8c1a651a",
+   "6a728bb989871752",
+   "b77b8cd574ab63e6",
+   "64746eb2696c2c83",
+   "0f1f543cb74d3e11",
+   "ec3a27eb5dcd9136"
+  ],
+  "result": {
+   "winner": 0,
+   "win_type": "golden-goal",
+   "rounds": 16
+  }
+ },
+ {
+  "seed": 70002,
+  "p1": "AGGRO",
+  "p2": "AGGRO",
+  "config": {},
+  "terrain_seed": null,
+  "round_hashes": [
+   "ed84ffb01a5be495",
+   "c1243ff031ee67f2",
+   "8138e62e03cf6a1a",
+   "9590d93e375c46ec",
+   "e6d5d76088e0639b",
+   "3f26a5d978e16e82",
+   "8554d1de05ce4d89",
+   "4e14b88be85c0c48",
+   "c54a76e5f9e3213f",
+   "7a7779bd8ecfa0d3",
+   "4cd548fb76651f9d",
+   "0eaaf98c0c2fd386",
+   "fdf39eea7507316b",
+   "48a13d6702ac5c7e",
+   "f6f10cc49c60e67a",
+   "7e24cf38658adb44"
+  ],
+  "result": {
+   "winner": 1,
+   "win_type": "golden-goal",
+   "rounds": 16
+  }
+ },
+ {
+  "seed": 70003,
+  "p1": "SANDBAGGER",
+  "p2": "HONEST",
+  "config": {},
+  "terrain_seed": null,
+  "round_hashes": [
+   "172e0681af7f3241",
+   "1dc7134b403cb95a",
+   "f99cff70d24a3fb0",
+   "4f4bb69d2af22b35",
+   "8676dc23b4e6991f",
+   "22d8ceb03cc632fc",
+   "9e10e9584ef97632",
+   "4977af513f2c228a",
+   "dd945541ba2eb275",
+   "28f5d7b2e1a24db5",
+   "87160c07483f576f",
+   "5f88eb51c52af9e1",
+   "2e8af04609ce42b0",
+   "1adb9fbc05af84eb",
+   "b993d956735e2634",
+   "da5a2cbaf6ad0dde"
+  ],
+  "result": {
+   "winner": 0,
+   "win_type": "golden-goal",
+   "rounds": 16
+  }
+ }
+]
