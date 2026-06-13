@@ -98,20 +98,23 @@ export function makeConstants(overrides?: Partial<Constants>): Constants {
 // [x] crc32 + bot setup (bots.ts)  → opening placement reproduced byte-for-byte
 // [x] Geometry + query helpers (manh/neighbors/territoryOf/onBoard/reserve/…)
 // [x] Per-phase parity harness — oracle emits phase_hashes_r1; check_parity.ts
-//     reports the FIRST divergent phase. play_round() in TS lights it up.
-// --- next: port play_round phase-by-phase, in oracle order. Each needs the
-//     matching bot methods (the suite uses HONEST/AGGRO/TURTLE/PROBER/SANDBAGGER). ---
-// [ ] Phase 1 MUSTER  → bot.feed_order / build / reinforce; harvest/upkeep/recruit
-// [ ] Phase 2 REVEAL  (face_down = false — trivial once Muster matches)
-// [ ] Phase 3 CLASH   (pulses, ZoC, resolution, rout, interventions; bot.orders)
+//     reports the FIRST divergent phase. phaseHashesR1() lights it up.
+// [x] Phase 1 MUSTER  → bot.feedOrder/build/reinforce (+cfg, dangerCols,
+//     threatenedCols, pickPushCenter, _fieldSpot/_deploySpot/_spareBlocker/
+//     _blockTile); harvest/upkeep/recruit/unlock/reposition. 6 policies × seeds,
+//     muster hash MATCHES oracle (16/16, check_parity.ts).
+// [x] Phase 2 REVEAL  (face_down = false)
+// --- next: continue play_round in oracle order; extend phaseHashesR1(). ---
+// [ ] Phase 3 CLASH   (pulses, ZoC, resolution, rout, interventions; bot.orders
+//     — the big one; needs bots.py bfs/plan/orders ported too)
 // [ ] Phase 4 FRONTIER (carry/contest/stake-step/trample/breach/entrench)
 // [ ] Phase 5 PASS & TRIBUTE + komi + caravans + golden-goal/hard-stop
 // When all 5 match for round 1, extend checkpoints to all rounds → full parity.
 //
-// Implementation note for play_round(): mirror the Python _phase_cb hook —
-// expose phaseHashesR1() that replays the 5 phases and returns [[label,hash],…];
-// check_parity.ts auto-detects it (Game.prototype.phaseHashesR1) and switches
-// from PENDING to per-phase PASS/FAIL.
+// CAVEAT: round 1 doesn't exercise harvest (no fields yet), tribute_spend,
+// copy-surcharge (copies>0), wounded/rush returns, or exhaustion penalty. Those
+// muster paths get covered once clash/frontier/pass land and multi-round hashes
+// are checked — the code is ported, just not yet parity-exercised.
 
 // ──────────────────────────────────────────────────────────────────────────
 // Phase 0 port: geometry, Unit, Game state + setup(), canonical snapshot.
@@ -175,6 +178,13 @@ export class Game {
   wagon_at = new Map<string, [number, number]>();
   komi = 1;
   round = 1;
+  // Muster state (parity with sim/engine.py __init__; not part of the hash,
+  // but they gate recruits/pricing so they must track exactly).
+  copies: Record<string, number> = { spear: 0, sword: 0, cav: 0, archer: 0, siege: 0 };
+  unlocked: Set<string>[] = [new Set(['sword', 'spear']), new Set(['sword', 'spear'])];
+  extra_deploy = [0, 0];
+  recruit_discount = [0, 0];
+  standard_bearer: (number | null)[] = [null, null];
 
   constructor(bots: Policy[], seed: number, overrides?: Partial<Constants>) {
     this.C = makeConstants(overrides);
@@ -237,6 +247,215 @@ export class Game {
         this.place(this.newUnit(p, arch), pos!);
       }
     }
+  }
+
+  moveUnit(u: Unit, pos: Pos) {
+    this.board.delete(key(u.pos!));
+    this.board.set(key(pos), u.uid);
+    u.pos = pos;
+  }
+
+  unbroken(u: Unit): boolean { return u.pos !== null && !u.exhausted; }
+
+  loneRunner(u: Unit): boolean {
+    const rad = this.C.LONE_RUNNER_RADIUS;
+    for (const v of this.units.values())
+      if (v.uid !== u.uid && v.owner === u.owner && v.pos !== null && manh(v.pos, u.pos!) <= rad)
+        return false;
+    return true;
+  }
+
+  carryEligible(u: Unit): boolean {
+    if (u.pos === null || this.loneRunner(u)) return false;
+    return !u.exhausted || !!this.C.EXHAUSTED_CARRY;
+  }
+
+  exhaustionPenalty(rnd?: number): number {
+    const C = this.C, r = rnd ?? this.round;
+    if (r < C.EXHAUSTION_START_ROUND) return 0;
+    let p = C.EXHAUSTION_INITIAL;
+    if (r >= C.EXHAUSTION_ACCEL_ROUND) p += C.EXHAUSTION_ACCEL * (r - C.EXHAUSTION_ACCEL_ROUND + 1);
+    return p;
+  }
+
+  // (col,row) -> stake-territory owner. Mirrors territoryOf for an explicit pos.
+  columnClaims(c: number): [boolean, boolean] {
+    const k = this.stakes[c];
+    let p1_carry = false, p2_carry = false;
+    let p1_far = false, p2_far = false, p1_near = false, p2_near = false;
+    for (let r = 0; r < 8; r++) {
+      const uid = this.board.get(key([c, r]));
+      if (uid === undefined) continue;
+      const u = this.units.get(uid)!;
+      const contests = this.unbroken(u), carries = this.carryEligible(u);
+      if (!contests && !carries) continue;
+      if (u.owner === 0) {
+        if (r >= k) { if (contests) p1_far = true; if (carries) p1_carry = true; }
+        else if (contests) p1_near = true;
+      } else {
+        if (r < k) { if (contests) p2_near = true; if (carries) p2_carry = true; }
+        else if (contests) p2_far = true;
+      }
+    }
+    return [p1_carry && !p2_far, p2_carry && !p1_near];
+  }
+
+  // C-019..C-022 harvest. Returns [supply, crop].
+  computeHarvest(p: number, rnd?: number): [number, number] {
+    const C = this.C, P = this.exhaustionPenalty(rnd);
+    let sup = 0, crop = 0;
+    const ownFields: [Pos, string][] = [];
+    for (const [k, f] of this.fields.entries()) {
+      const pos = k.split(',').map(Number) as Pos;
+      const controller = f.annexed !== null ? f.annexed : f.owner;
+      if (controller !== p || this.territoryOf(pos) !== p) continue;
+      const y = f.annexed === p ? C.ANNEX_YIELD : C.FIELD_YIELD;
+      if (f.type === 'crop') crop += Math.max(0, y - P); else sup += y;
+      if (f.annexed === null && f.owner === p) ownFields.push([pos, f.type]);
+    }
+    // farmsteads: connected same-type groups of >= FARMSTEAD_SIZE (C-021)
+    const seen = new Set<string>();
+    const fmap = new Map<string, string>(ownFields.map(([pos, t]) => [key(pos), t]));
+    for (const [pos, t] of ownFields) {
+      if (seen.has(key(pos))) continue;
+      let size = 0;
+      const stack = [pos]; seen.add(key(pos));
+      while (stack.length) {
+        const cur = stack.pop()!; size++;
+        for (const nb of neighbors(cur))
+          if (!seen.has(key(nb)) && fmap.get(key(nb)) === t) { seen.add(key(nb)); stack.push(nb); }
+      }
+      if (size >= C.FARMSTEAD_SIZE) {
+        if (t === 'crop') crop += Math.max(0, C.FARMSTEAD_BONUS - P); else sup += C.FARMSTEAD_BONUS;
+      }
+    }
+    return [sup, crop];
+  }
+
+  musterPlayer(p: number) {
+    const C = this.C, bot = this.bots[p], res = this.res[p];
+    // (a) Harvest
+    const [hs, hc] = this.computeHarvest(p);
+    res.supply += hs; res.crop += hc;
+    // (b) Upkeep — dedupe the bot's feed list; charge each unit once (C-023)
+    const mine = this.onBoard(p);
+    const order: number[] = [], fed = new Set<number>();
+    for (const uid of bot.feedOrder(this, p)) {
+      const u = this.units.get(uid);
+      if (fed.has(uid) || !u || u.owner !== p || u.pos === null) continue;
+      fed.add(uid); order.push(uid);
+    }
+    for (const u of mine) if (!fed.has(u.uid)) order.push(u.uid);
+    let avail = res.crop;
+    for (const uid of order) {
+      const u = this.units.get(uid)!;
+      const cost = C.UPKEEP_CROP + (this.beyondOwn(u) ? C.SUPPLY_STRAIN_CROP : 0);
+      if (avail >= cost) { avail -= cost; u.exhausted = false; } else u.exhausted = true;
+    }
+    res.crop = avail;
+    // (c) Build
+    for (const act of bot.build(this, p).slice(0, C.BUILD_ACTIONS)) {
+      if (!act) continue;
+      if (act[0] === 'field') {
+        const pos = act[1] as Pos, ftype = act[2] as string;
+        if (inBounds(pos) && this.territoryOf(pos) === p && !this.fields.has(key(pos))
+            && !this.wagon_at.has(key(pos)) && res.supply >= C.FIELD_COST
+            && (ftype === 'supply' || ftype === 'crop')) {
+          res.supply -= C.FIELD_COST;
+          this.fields.set(key(pos), { type: ftype, owner: p, annexed: null });
+        }
+      } else if (act[0] === 'palisade') {
+        const col = act[1] as number;
+        if (col >= 0 && col < 8 && !this.palisades.has(col) && res.supply >= C.PALISADE_COST) {
+          res.supply -= C.PALISADE_COST; this.palisades.set(col, p);
+        }
+      }
+    }
+    // (d) Reinforce
+    const r = bot.reinforce(this, p);
+    const n = Math.min(Math.trunc(r.tribute_spend ?? 0), res.tribute);
+    if (n > 0) { res.tribute -= n; res.supply += n * C.TRIBUTE_SUPPLY_VALUE; }
+    // automatic wounded returns (wounded round N -> free at Muster N+2)
+    for (const u of this.reserve(p)) {
+      if (u.wounded_round !== null && u.wounded_round <= this.round - C.WOUND_RETURN_DELAY) {
+        const tile = this.freeHeartlandTile(p);
+        if (tile === null) break;
+        u.hp = u.max_hp; u.wounded_round = null; this.place(u, tile);
+      }
+    }
+    // rush returns (1 Crop, wounded last round)
+    for (const uid of r.rush ?? []) {
+      const u = this.units.get(uid);
+      if (u && u.owner === p && u.pos === null && u.wounded_round === this.round - 1
+          && res.crop >= C.RUSH_RETURN_COST) {
+        const tile = this.freeHeartlandTile(p);
+        if (tile === null) break;
+        res.crop -= C.RUSH_RETURN_COST; u.hp = u.max_hp; u.wounded_round = null; this.place(u, tile);
+      }
+    }
+    // unlocks (paid, no build action; C-026)
+    for (const arch of r.unlocks ?? []) {
+      if (!ARCHES.includes(arch as any) || this.unlocked[p].has(arch)) continue;
+      const ncur = this.unlocked[p].size;
+      const cost = ({ 2: C.UNLOCK_3RD, 3: C.UNLOCK_4TH, 4: C.UNLOCK_5TH } as Record<number, number>)[ncur];
+      if (cost !== undefined && res.supply >= cost) { res.supply -= cost; this.unlocked[p].add(arch); }
+    }
+    // recruits (shared finite copies, surcharge per copy; C-025)
+    const deployCap = C.DEPLOY_MAX + this.extra_deploy[p];
+    this.extra_deploy[p] = 0;
+    let deployed = 0;
+    const recruitedNow = new Set<number>();
+    const rows = this.heartlandRows(p);
+    for (const [arch, pos] of r.recruits ?? []) {
+      if (deployed >= deployCap || !ARCHES.includes(arch as any)) continue;
+      if (!this.unlocked[p].has(arch) || this.copies[arch] >= C.MUSTER_COPIES) continue;
+      if (!inBounds(pos) || !rows.includes(pos[1]) || this.occupied(pos)) continue;
+      let price = this.costs[arch] + C.COPY_SURCHARGE * this.copies[arch];
+      if (this.recruit_discount[p]) price = Math.max(1, price - this.recruit_discount[p]);
+      if (res.supply < price) continue;
+      res.supply -= price;
+      if (this.recruit_discount[p]) this.recruit_discount[p] = 0;
+      this.copies[arch]++;
+      const u = this.newUnit(p, arch); u.face_down = true; this.place(u, pos);
+      recruitedNow.add(u.uid); deployed++;
+    }
+    // repositions (teleport within own territory; C-028, existing units only)
+    let repos = 0;
+    for (const [uid, pos] of r.repositions ?? []) {
+      if (repos >= C.REPOSITION_MAX) break;
+      const u = this.units.get(uid);
+      if (!u || u.owner !== p || u.pos === null || recruitedNow.has(uid)
+          || !inBounds(pos) || this.occupied(pos) || this.territoryOf(pos) !== p) continue;
+      this.moveUnit(u, pos); u.braced = false; repos++;
+    }
+    // Standard-Bearer designation (C-031)
+    let hero: Unit | undefined;
+    for (const u of this.units.values()) if (u.owner === p && u.arch === 'hero') { hero = u; break; }
+    if (!hero || hero.pos === null) {
+      const pick = bot.standardBearer(this, p);
+      let u = pick !== null ? this.units.get(pick) : undefined;
+      if (!u || u.owner !== p || u.pos === null) {
+        const cands = this.onBoard(p).sort((a, b) =>
+          (this.costs[b.arch] - this.costs[a.arch]) || a.pos![0] - b.pos![0] || a.pos![1] - b.pos![1]);
+        u = cands[0];
+      }
+      this.standard_bearer[p] = u ? u.uid : null;
+    } else this.standard_bearer[p] = null;
+  }
+
+  // Per-phase parity entry point (round 1). Replays the ported phases and
+  // returns [[label, hash], …]; check_parity.ts compares against the oracle's
+  // phase_hashes_r1 and reports the first divergence. Only ported phases appear.
+  phaseHashesR1(): [string, string][] {
+    const out: [string, string][] = [];
+    // Phase 1: Muster (komi-holder first)
+    this.musterPlayer(this.komi);
+    this.musterPlayer(1 - this.komi);
+    out.push(['muster', this.stateHash()]);
+    // Phase 2: Reveal
+    for (const u of this.units.values()) u.face_down = false;
+    out.push(['reveal', this.stateHash()]);
+    return out;
   }
 
   // canonical snapshot — keys/values must match parity/dump_golden.py::snapshot

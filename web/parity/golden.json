@@ -207,5 +207,214 @@
    "win_type": "golden-goal",
    "rounds": 16
   }
+ },
+ {
+  "seed": 70004,
+  "p1": "RUNNER",
+  "p2": "TURTLE",
+  "config": {},
+  "terrain_seed": null,
+  "round_hashes": [
+   "6898d07962526a5a",
+   "5b4ec326c1dcefd5",
+   "a47a746b4ece93c9",
+   "4ab8e03f591004b3",
+   "920b9f57a4a4a3ba",
+   "cebe9bfa57475cf8",
+   "1c3a2b84d5fc1bec",
+   "67d296eb552e3edd",
+   "579841b4b9c09bd4",
+   "cfb95d4b5d31b89c",
+   "abe25b943af130a0",
+   "eade3cdeda501d45",
+   "28f1299633ed15ab",
+   "ebbd420022eed63f",
+   "d91f949bc2e2ae30",
+   "40a84d21c6b562b9",
+   "12a9a05157f4ba8d",
+   "9c8fce9e7fb0a452",
+   "514d46265f79833d"
+  ],
+  "phase_hashes_r1": [
+   [
+    "muster",
+    "c531c548a9e8540d"
+   ],
+   [
+    "reveal",
+    "c531c548a9e8540d"
+   ],
+   [
+    "clash",
+    "9229ec4201d54e0d"
+   ],
+   [
+    "frontier",
+    "9229ec4201d54e0d"
+   ],
+   [
+    "pass",
+    "9229ec4201d54e0d"
+   ]
+  ],
+  "result": {
+   "winner": 1,
+   "win_type": "golden-goal",
+   "rounds": 19
+  }
+ },
+ {
+  "seed": 70005,
+  "p1": "PROBER",
+  "p2": "SANDBAGGER",
+  "config": {},
+  "terrain_seed": null,
+  "round_hashes": [
+   "38f648f2be4f2192",
+   "49a9228441a402b6",
+   "4da7711b5cb970f6",
+   "69ae9b76ee27e19a",
+   "57b7b1df89b4afc2",
+   "98e38ef989aad630",
+   "69ab9e6e6d870715",
+   "9e3652e782528e78",
+   "0cd7a61957b8fa0d",
+   "e74262327cf9871e",
+   "7e22ee3306770f80",
+   "9418c376d07f556f",
+   "116ac43c3a7e500f",
+   "b923bd90374c7fc1",
+   "d0bcfa6729ffd3ee",
+   "8e1a88182840980a"
+  ],
+  "phase_hashes_r1": [
+   [
+    "muster",
+    "26dbc2461b78461d"
+   ],
+   [
+    "reveal",
+    "26dbc2461b78461d"
+   ],
+   [
+    "clash",
+    "24efb4e1c9ea1f33"
+   ],
+   [
+    "frontier",
+    "24efb4e1c9ea1f33"
+   ],
+   [
+    "pass",
+    "24efb4e1c9ea1f33"
+   ]
+  ],
+  "result": {
+   "winner": 1,
+   "win_type": "golden-goal",
+   "rounds": 16
+  }
+ },
+ {
+  "seed": 70006,
+  "p1": "AGGRO",
+  "p2": "RUNNER",
+  "config": {},
+  "terrain_seed": null,
+  "round_hashes": [
+   "0438657096d23a2e",
+   "649767b9ac8efa09",
+   "f89cdbff93382427",
+   "62c0629c8495df9d",
+   "a2967ea41bb55375",
+   "228302cea6e6ef3e",
+   "fb66cc07194f05dd",
+   "e6033491910e712f",
+   "e617e446325331d6",
+   "fb411877d7bedf9b",
+   "29c55ddf861a511e",
+   "29e0af5b393f5942",
+   "b8cca53a3521a7fb"
+  ],
+  "phase_hashes_r1": [
+   [
+    "muster",
+    "01db7592033d84d6"
+   ],
+   [
+    "reveal",
+    "6be144ce0572448b"
+   ],
+   [
+    "clash",
+    "fda8f01b898bfaab"
+   ],
+   [
+    "frontier",
+    "16e3765a56283938"
+   ],
+   [
+    "pass",
+    "240d65e36a149ed0"
+   ]
+  ],
+  "result": {
+   "winner": 1,
+   "win_type": "rout",
+   "rounds": 13
+  }
+ },
+ {
+  "seed": 70007,
+  "p1": "HONEST",
+  "p2": "TURTLE",
+  "config": {},
+  "terrain_seed": null,
+  "round_hashes": [
+   "2ec88ad7332206ae",
+   "6605bcd627d92bea",
+   "0bc8fd26701d9711",
+   "e9a628ad404eab7d",
+   "7028da8e833dd354",
+   "fcbf2ba01fce4307",
+   "6f396cc604eeed06",
+   "74ee058118bb7f58",
+   "2df42b1f96844efb",
+   "127d8c8e197bcfa6",
+   "6870675a987c739b",
+   "8b501596eb05c905",
+   "3146a7671133099d",
+   "fa39ef1de12d1457",
+   "4527ffe3e357c6ba",
+   "afc7b3718eab17a6",
+   "b9be910168769bd2"
+  ],
+  "phase_hashes_r1": [
+   [
+    "muster",
+    "f0a61fde263fa16b"
+   ],
+   [
+    "reveal",
+    "f0a61fde263fa16b"
+   ],
+   [
+    "clash",
+    "0aa27625286a774e"
+   ],
+   [
+    "frontier",
+    "0aa27625286a774e"
+   ],
+   [
+    "pass",
+    "0aa27625286a774e"
+   ]
+  ],
+  "result": {
+   "winner": 0,
+   "win_type": "golden-goal",
+   "rounds": 17
+  }
  }
 ]

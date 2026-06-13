@@ -47,6 +47,9 @@ if (!hasPhasePort) {
   console.log(`PENDING  play_round not yet ported. Next targets, in order: ${labels}`);
   console.log('         (port Phase 1 Muster first — see PORT CHECKLIST in src/engine.ts)');
 } else {
+  // The TS engine returns only the phases ported so far (in oracle order). A
+  // produced phase that mismatches is a real FAIL; phases not yet produced are
+  // PENDING, and the next one is the porting target.
   for (const m of golden as Match[]) {
     const bots = [makeBot(m.p1), makeBot(m.p2)];
     bots.forEach((b, p) => b.reset(m.seed, p));
@@ -54,16 +57,17 @@ if (!hasPhasePort) {
     g.setup();
     const got: [string, string][] = (g as any).phaseHashesR1();
     let firstBad = -1;
-    for (let i = 0; i < m.phase_hashes_r1.length; i++) {
-      if (!got[i] || got[i][1] !== m.phase_hashes_r1[i][1]) { firstBad = i; break; }
+    for (let i = 0; i < got.length; i++) {
+      if (got[i][1] !== m.phase_hashes_r1[i][1]) { firstBad = i; break; }
     }
-    if (firstBad === -1) {
-      console.log(`PASS  ${m.p1} vs ${m.p2} (seed ${m.seed})  all ${m.phase_hashes_r1.length} phases`);
-      pass++;
-    } else {
-      const [label] = m.phase_hashes_r1[firstBad];
-      console.log(`FAIL  ${m.p1} vs ${m.p2} (seed ${m.seed})  first divergence: phase '${label}'`);
+    if (firstBad !== -1) {
+      console.log(`FAIL  ${m.p1} vs ${m.p2} (seed ${m.seed})  phase '${m.phase_hashes_r1[firstBad][0]}' diverges`);
       fail++;
+    } else {
+      const done = got.map(([l]) => l).join(',');
+      const next = m.phase_hashes_r1[got.length]?.[0];
+      console.log(`PASS  ${m.p1} vs ${m.p2} (seed ${m.seed})  [${done}]${next ? `  next: ${next}` : '  (round complete)'}`);
+      pass++;
     }
   }
 }
