@@ -60,8 +60,8 @@ export const CONSTANTS: Constants = {
   CARAVAN_ARTIFACTS: 4, CARAVAN_DISCARD: 1, ARTIFACT_POOL: 8,
   ARTIFACT_SUPPLY: 4, ARTIFACT_CROP: 4, ARTIFACT_XP: 2,
   ARTIFACT_TRIBUTE: 2, ARTIFACT_DISCOUNT: 2,
-  // Endgame (sim-validated 14/18; see v3-rules-spec C-070/C-071)
-  GOLDEN_GOAL_ROUND: 14, HARD_STOP_ROUND: 18,
+  // Endgame — mirror Python engine defaults exactly (validated 14/18 lives in V3_CONFIG)
+  GOLDEN_GOAL_ROUND: 16, HARD_STOP_ROUND: 20,
   LASTSTAND_BOONS: 3, ENTRENCH_PALISADES: 2,
   ENTRENCH_HOLD: 0,        // C-058b, default OFF (sim-refuted)
   FIRST_BLOOD_SUPPLY: 0,   // round-1 reward, default OFF (sim-refuted)
@@ -93,11 +93,178 @@ export function makeConstants(overrides?: Partial<Constants>): Constants {
 
 // ── PORT CHECKLIST (port + parity-test each block against the Python oracle) ──
 // [x] CONSTANTS
-// [ ] Geometry helpers (manh, in_bounds, neighbors, territory_of)
-// [ ] Unit (slots) + arch_stats / base_costs
-// [ ] Game state + setup()  → first golden hash (post-setup) must match
+// [x] Unit + archStats / baseCosts
+// [x] Game state + setup()  → post-setup hash MATCHES oracle (4/4, check_parity.ts)
+// [x] crc32 + bot setup (bots.ts)  → opening placement reproduced byte-for-byte
+// [~] Geometry helpers (inBounds done; manh/neighbors/territory_of pending for combat)
 // [ ] Phase 4 FRONTIER (carry/contest/stake-step/trample/breach/entrench)
 // [ ] Phase 5 PASS & TRIBUTE + komi + caravans + golden-goal/hard-stop
 // [ ] Phase 1 MUSTER (recruit/deploy/reposition/unlock/build)
 // [ ] Phase 3 CLASH (pulses, ZoC, combat resolution, rout, interventions)
 // [ ] Bots (HONEST first) — reuse the same parity harness
+
+// ──────────────────────────────────────────────────────────────────────────
+// Phase 0 port: geometry, Unit, Game state + setup(), canonical snapshot.
+// Faithful to sim/engine.py. Parity target: web/parity/dump_golden.py hashes.
+// ──────────────────────────────────────────────────────────────────────────
+import { createHash } from 'node:crypto';
+import { Policy } from './bots';
+
+export const ARCHES = ['spear', 'sword', 'cav', 'archer', 'siege'] as const;
+export const COUNTERS: Record<string, string> = { spear: 'cav', cav: 'archer', archer: 'spear' };
+
+export function baseCosts(C: Constants): Record<string, number> {
+  return { spear: C.COST_SPEARMAN, sword: C.COST_SWORDSMAN, archer: C.COST_ARCHER,
+           cav: C.COST_CAVALRY, siege: C.COST_SIEGE, hero: 9 };
+}
+
+type Stat = [number, number, number, number, number]; // atk,hp,mv,rmin,rmax
+export function archStats(C: Constants): Record<string, Stat> {
+  return {
+    spear: [C.SPEAR_ATK, C.SPEAR_HP, C.SPEAR_MV, 1, 1],
+    sword: [C.SWORD_ATK, C.SWORD_HP, C.SWORD_MV, 1, 1],
+    cav: [C.CAV_ATK, C.CAV_HP, C.CAV_MV, 1, 1],
+    archer: [C.ARCHER_ATK, C.ARCHER_HP, C.ARCHER_MV, 2, C.ARCHER_RNG_MAX],
+    siege: [C.SIEGE_ATK, C.SIEGE_HP, C.SIEGE_MV, C.SIEGE_RNG_MIN, C.SIEGE_RNG_MAX],
+    hero: [C.HERO_ATK, C.HERO_HP, C.HERO_MV, 1, 1],
+  };
+}
+
+export type Pos = [number, number];
+const key = (p: Pos) => `${p[0]},${p[1]}`;
+
+export class Unit {
+  uid: number; owner: number; arch: string;
+  base_atk: number; base_guard = 0; hp: number; max_hp: number;
+  mv: number; rmin: number; rmax: number;
+  pos: Pos | null = null;
+  exhausted = false; braced = false; xp = 0;
+  tier1 = false; tier2 = false; wounded_round: number | null = null; face_down = false;
+  constructor(uid: number, owner: number, arch: string, stats: Stat) {
+    this.uid = uid; this.owner = owner; this.arch = arch;
+    this.base_atk = stats[0]; this.hp = stats[1]; this.max_hp = stats[1];
+    this.mv = stats[2]; this.rmin = stats[3]; this.rmax = stats[4];
+  }
+}
+
+export class Game {
+  C: Constants;
+  seed: number;
+  bots: Policy[];
+  stats: Record<string, Stat>;
+  costs: Record<string, number>;
+  units = new Map<number, Unit>();
+  next_uid = 0;
+  board = new Map<string, number>();
+  stakes: number[];
+  fields = new Map<string, any>();
+  palisades = new Map<number, number>();
+  entrench = new Map<string, number>();
+  res: { supply: number; crop: number; tribute: number }[];
+  wagons: { col: number; row: number; hp: number }[][] = [[], []];
+  wagon_at = new Map<string, [number, number]>();
+  komi = 1;
+  round = 1;
+
+  constructor(bots: Policy[], seed: number, overrides?: Partial<Constants>) {
+    this.C = makeConstants(overrides);
+    this.seed = seed;
+    this.bots = bots;
+    this.stats = archStats(this.C);
+    this.costs = baseCosts(this.C);
+    this.stakes = Array(8).fill(this.C.STAKE_START);
+    this.res = [
+      { supply: this.C.START_SUPPLY, crop: this.C.START_CROP, tribute: 0 },
+      { supply: this.C.START_SUPPLY, crop: this.C.START_CROP, tribute: 0 },
+    ];
+  }
+
+  heartlandRows(p: number): number[] { return p === 0 ? [0, 1] : [6, 7]; }
+  backRow(p: number): number { return p === 0 ? 0 : 7; }
+  occupied(p: Pos): boolean { return this.board.has(key(p)) || this.wagon_at.has(key(p)); }
+  inBounds(p: Pos): boolean { return p[0] >= 0 && p[0] < 8 && p[1] >= 0 && p[1] < 8; }
+
+  newUnit(owner: number, arch: string): Unit {
+    const u = new Unit(this.next_uid, owner, arch, this.stats[arch]);
+    this.next_uid++;
+    this.units.set(u.uid, u);
+    return u;
+  }
+  place(u: Unit, pos: Pos) { this.board.set(key(pos), u.uid); u.pos = pos; }
+
+  freeHeartlandTile(p: number): Pos | null {
+    for (let c = 0; c < 8; c++)
+      for (const r of this.heartlandRows(p))
+        if (!this.occupied([c, r])) return [c, r];
+    return null;
+  }
+
+  setup() {
+    const C = this.C;
+    for (let p = 0; p < 2; p++) {
+      const plan = this.bots[p].setup(this, p);
+      const rows = this.heartlandRows(p);
+      const back = this.backRow(p);
+      const cols: number[] = [];
+      for (const c of plan.wagons) if (c >= 0 && c < 8 && !cols.includes(c)) cols.push(c);
+      for (let c = 0; c < 8 && cols.length < C.WAGON_COUNT; c++) if (!cols.includes(c)) cols.push(c);
+      cols.length = Math.min(cols.length, C.WAGON_COUNT);
+      cols.forEach((c, i) => {
+        this.wagons[p].push({ col: c, row: back, hp: C.WAGON_HP });
+        this.wagon_at.set(key([c, back]), [p, i]);
+      });
+      const want = ['hero', 'spear', 'sword', 'sword'];
+      const placements = plan.units.slice();
+      for (const arch of want) {
+        let pos: Pos | null = null;
+        for (let i = 0; i < placements.length; i++) {
+          const pl = placements[i];
+          if (pl.arch === arch && rows.includes(pl.pos[1]) && this.inBounds(pl.pos) && !this.occupied(pl.pos)) {
+            pos = pl.pos; placements.splice(i, 1); break;
+          }
+        }
+        if (pos === null) pos = this.freeHeartlandTile(p);
+        this.place(this.newUnit(p, arch), pos!);
+      }
+    }
+  }
+
+  // canonical snapshot — keys/values must match parity/dump_golden.py::snapshot
+  snapshot(): any {
+    const units = [...this.units.values()]
+      .map(u => ({
+        uid: u.uid, owner: u.owner, arch: u.arch, base_atk: u.base_atk,
+        base_guard: u.base_guard, hp: u.hp, max_hp: u.max_hp, mv: u.mv,
+        rmin: u.rmin, rmax: u.rmax, pos: u.pos === null ? null : [u.pos[0], u.pos[1]],
+        exhausted: u.exhausted, braced: u.braced, xp: u.xp, tier1: u.tier1,
+        tier2: u.tier2, wounded_round: u.wounded_round, face_down: u.face_down,
+      }))
+      .sort((a, b) => a.uid - b.uid);
+    return {
+      round: this.round, komi: this.komi, stakes: [...this.stakes],
+      res: this.res.map(r => ({ supply: r.supply, crop: r.crop, tribute: r.tribute })),
+      units,
+      wagons: this.wagons.map(side => side.map(w => ({ col: w.col, row: w.row, hp: w.hp }))),
+      fields: [...this.fields.entries()].map(([k, v]) => [k.split(',').map(Number), v]).sort(cmp),
+      palisades: [...this.palisades.entries()].sort((a, b) => a[0] - b[0]),
+      entrench: [...this.entrench.entries()].map(([k, v]) => [k.split(',').map(Number), v]).sort(cmp),
+    };
+  }
+
+  stateHash(): string {
+    return createHash('sha1').update(canonicalJSON(this.snapshot())).digest('hex').slice(0, 16);
+  }
+}
+
+function cmp(a: any, b: any): number { return canonicalJSON(a) < canonicalJSON(b) ? -1 : 1; }
+
+// json.dumps(sort_keys=True, separators=(',',':')) equivalent
+export function canonicalJSON(v: any): string {
+  if (v === null) return 'null';
+  if (typeof v === 'boolean') return v ? 'true' : 'false';
+  if (typeof v === 'number') return String(v);
+  if (typeof v === 'string') return JSON.stringify(v);
+  if (Array.isArray(v)) return '[' + v.map(canonicalJSON).join(',') + ']';
+  const keys = Object.keys(v).sort();
+  return '{' + keys.map(k => JSON.stringify(k) + ':' + canonicalJSON(v[k])).join(',') + '}';
+}
