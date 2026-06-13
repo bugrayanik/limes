@@ -45,9 +45,15 @@ Verified deterministic: same seed → identical sha1.
    (36 6×6 pairings × post-setup/per-phase/whole-match) byte-identical to the oracle.
 1. ✅ **Static board renderer** — engine state → DOM in the styleguide skin
    (8×8 grid, stake frontier, unit billboards, wagons, fields, palisades, HUD).
-2. Interactive hotseat turn loop (next).
-3. Solo vs bot (the policies are already ported).
-4. Polish (animations, Wagon art, tribe theming).
+2. ✅ **Interactive turn loop** — full 5-phase play: Muster (recruit/unlock/
+   build/reposition/tribute), Clash (click units → legal move/melee/shoot/charge
+   highlighting, 2 pulses), interventions (Surge/Shieldbearer), auto Frontier/
+   Pass, win screen. `controller.ts` drives the REAL engine sub-methods phase-by-
+   phase; `human.ts` (HumanPolicy) stages each decision into the engine's bot
+   interface, so play is identical to the parity-verified sim.
+3. ✅ **Solo vs bot** — pick any of the 6 ported policies as opponent (also
+   2-player **hotseat** on one screen). Setup screen selects mode/seat/tribes/seed.
+4. Polish (animations, Wagon art, interactive caravan pick, tribe theming).
 
 ## Ruleset note
 `engine.ts` ships `V3_CONFIG` — the sim-validated config (v1_base overrides +

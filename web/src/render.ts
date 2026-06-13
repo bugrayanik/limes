@@ -4,10 +4,10 @@
 import type { Game, Unit } from './engine';
 import { ROSTER } from './assets';
 
-const ARCH_LABEL: Record<string, string> = {
+export const ARCH_LABEL: Record<string, string> = {
   spear: 'Spearman', sword: 'Swordsman', cav: 'Cavalry', archer: 'Archer', siege: 'Siege', hero: 'Hero',
 };
-const TRIBE_COLOR: Record<string, string> = {
+export const TRIBE_COLOR: Record<string, string> = {
   roman: '#a32638', spartan: '#c4622d', hun: '#d9a418', gaul: '#3e7a3a',
   egyptian: '#2aa198', viking: '#2b4f81', persian: '#5b3a8e', teuton: '#6e7378',
 };
@@ -16,6 +16,7 @@ export interface RenderOpts { p0tribe: string; p1tribe: string; }
 const DEFAULTS: RenderOpts = { p0tribe: 'roman', p1tribe: 'viking' };
 
 const esc = (s: string) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+export const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 function unitCell(g: Game, u: Unit, tribe: string): string {
   const img = ROSTER[`${tribe}_${u.arch}`] ?? '';
@@ -70,11 +71,12 @@ export function renderBoard(g: Game, opts: Partial<RenderOpts> = {}): string {
       const cls = ['cell', `terr${terr}`, stakeline ? 'stakeline' : '', palHere ? 'has-pal' : ''].filter(Boolean).join(' ');
       let inner = '';
       const u = unitAt.get(k), w = wagonAt.get(k), f = g.fields.get(k);
-      if (u) inner = unitCell(g, u, tribeOf(u.owner));
+      let attrs = `data-pos="${k}"`;
+      if (u) { inner = unitCell(g, u, tribeOf(u.owner)); attrs += ` data-uid="${u.uid}" data-owner="${u.owner}"`; }
       else if (w) inner = wagonCell(w.p, w.hp, g.C.WAGON_HP, tribeOf(w.p));
       else if (f) inner = fieldCell(f);
       const palEl = palHere ? `<span class="pal owner${pal}" style="--c:${TRIBE_COLOR[tribeOf(pal!)]}" title="Palisade"></span>` : '';
-      cells.push(`<div class="${cls}" data-pos="${k}">${palEl}${inner}</div>`);
+      cells.push(`<div class="${cls}" ${attrs}>${palEl}${inner}</div>`);
     }
   }
 
