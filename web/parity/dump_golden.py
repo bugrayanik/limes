@@ -102,12 +102,11 @@ def main():
     a = ap.parse_args()
     cfg = json.loads(a.config) if a.config else None
     if a.suite:
-        # Cover all 6 policies as both seats so the per-phase (muster) parity
-        # exercises every policy's cfg branch, not just a subset.
-        pairs = [('HONEST', 'AGGRO'), ('TURTLE', 'PROBER'),
-                 ('AGGRO', 'AGGRO'), ('SANDBAGGER', 'HONEST'),
-                 ('RUNNER', 'TURTLE'), ('PROBER', 'SANDBAGGER'),
-                 ('AGGRO', 'RUNNER'), ('HONEST', 'TURTLE')]
+        # Full battery: every ordered pairing of all 6 policies, each at a
+        # distinct seed. Exercises every cfg branch over complete matches
+        # (combat, breach, rout, caravans, golden-goal/hard-stop).
+        names = ['HONEST', 'AGGRO', 'TURTLE', 'PROBER', 'SANDBAGGER', 'RUNNER']
+        pairs = [(p1, p2) for p1 in names for p2 in names]
         out = [run(70000 + i, p1, p2, cfg) for i, (p1, p2) in enumerate(pairs)]
         blob = json.dumps(out, indent=1)
     else:

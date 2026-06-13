@@ -109,18 +109,20 @@ export function makeConstants(overrides?: Partial<Constants>): Constants {
 //     clash hash MATCHES oracle (16/16). Terrain branches kept but inert.
 // [x] Phase 4 FRONTIER (stake-step, palisade absorption, trample/raid-annex,
 //     komi-holder-first breach). frontier hash MATCHES oracle (16/16).
-// [x] Phase 5 PASS & TRIBUTE (tribute accrual + komi update). pass hash MATCHES.
-//     ROUND 1 COMPLETE — all 5 phases byte-identical, 6 policies (16/16).
-// --- next: MULTI-ROUND parity. Add a full playRound() (round++, golden-goal,
-//     hard-stop, update_entrench) and check round_hashes[1..] for whole matches.
-//     This is what finally parity-exercises the combat/wagon/rout/intervention
-//     paths that round 1 (pre-contact) never reaches.
-// [ ] BLOCKER for round>=4: caravan() needs artifact_order, which the oracle
-//     builds via Python random.Random(seed).shuffle() (Mersenne Twister). Either
-//     port MT19937 + CPython shuffle, or have dump_golden export artifact_order
-//     and inject it into the TS Game (clean for parity; prototype can differ).
-// [ ] Bots clash/orders deep paths (combat target selection, charge, brace,
-//     interventions) are ported but only validated once contact happens (R>=2).
+// [x] Phase 5 PASS & TRIBUTE (tribute accrual + komi update + caravans).
+// [x] Round driver playRound() — golden-goal, hard-stop, metrics, updateEntrench.
+// [x] caravan()/applyArtifact() + MT19937 (src/mt19937.ts) reproducing CPython
+//     random.Random(seed).shuffle for artifact_order. TS engine is SELF-CONTAINED.
+//
+// ✅ ENGINE PORT COMPLETE. Full-match parity vs the Python oracle: 108/108
+//    (36 post-setup + 36 round-1 per-phase + 36 whole-match) across every 6×6
+//    policy pairing and all win types (golden-goal, ladder, rout, wagons).
+//    Combat/breach/rout/intervention/caravan paths all exercised and identical.
+//    Regenerate + check: python3 parity/dump_golden.py --suite --out
+//    parity/golden.json && bun parity/check_parity.ts
+//
+// Roadmap Phase 0 (rules port + parity harness) is DONE. Next: Phase 1, the
+// static board renderer (state → DOM in the styleguide skin).
 
 // ──────────────────────────────────────────────────────────────────────────
 // Phase 0 port: geometry, Unit, Game state + setup(), canonical snapshot.
@@ -128,6 +130,7 @@ export function makeConstants(overrides?: Partial<Constants>): Constants {
 // ──────────────────────────────────────────────────────────────────────────
 import { createHash } from 'node:crypto';
 import { Policy } from './bots';
+import { MT19937 } from './mt19937';
 
 export const ARCHES = ['spear', 'sword', 'cav', 'archer', 'siege'] as const;
 export const COUNTERS: Record<string, string> = { spear: 'cav', cav: 'archer', archer: 'spear' };
@@ -220,6 +223,11 @@ export class Game {
   terrain_on = false;
   ttype = new Map<string, string>();
   rivers = new Set<string>();
+  // Seeded artifact pool order (C-079); MT19937 reproduces random.Random(seed).
+  artifact_order: number[] = [];
+  lead_trace: (number | null)[] = [];
+  r1_winner: number | null = null;
+  r1_rows_winner: number | null = null;
 
   constructor(bots: Policy[], seed: number, overrides?: Partial<Constants>) {
     this.C = makeConstants(overrides);
@@ -232,6 +240,8 @@ export class Game {
       { supply: this.C.START_SUPPLY, crop: this.C.START_CROP, tribute: 0 },
       { supply: this.C.START_SUPPLY, crop: this.C.START_CROP, tribute: 0 },
     ];
+    this.artifact_order = [...Array(this.C.ARTIFACT_POOL).keys()].map(i => i + 1);
+    new MT19937(seed).shuffle(this.artifact_order);
   }
 
   heartlandRows(p: number): number[] { return p === 0 ? [0, 1] : [6, 7]; }
@@ -1041,6 +1051,105 @@ export class Game {
       for (const r of rows) next.set(key([c, r]), Math.min((this.entrench.get(key([c, r])) ?? 0) + 1, C.ENTRENCH_HOLD));
     }
     this.entrench = next;
+  }
+
+  // ── Phase 5: Pass & Tribute — caravans (C-078) ────────────────────────────
+  caravan(which: number) {
+    const C = this.C, n = C.CARAVAN_ARTIFACTS;
+    const start = which === 1 ? 0 : n;
+    let options = this.artifact_order.slice(start, start + n);
+    const rank = (p: number) => [this.wagonsAlive(p), this.ownedRows(p), p === this.komi ? 0 : 1];
+    const trailing = ntc(rank(0), rank(1)) <= 0 ? 0 : 1;   // min((0,1),key=rank): first wins ties
+    for (const p of [trailing, 1 - trailing, trailing]) {
+      if (!options.length) break;
+      let pick = this.bots[p].artifactPick(this, p, options.slice());
+      if (!options.includes(pick)) pick = options[0];
+      options = options.filter(x => x !== pick);
+      this.applyArtifact(p, pick);
+    }
+    // 4th discarded
+  }
+
+  applyArtifact(p: number, aid: number) {
+    const C = this.C, res = this.res[p];
+    if (aid === 1) res.supply += C.ARTIFACT_SUPPLY;
+    else if (aid === 2) res.crop += C.ARTIFACT_CROP;
+    else if (aid === 3) {
+      let hero: Unit | undefined;
+      for (const u of this.units.values()) if (u.owner === p && u.arch === 'hero') { hero = u; break; }
+      if (hero) hero.base_guard += 1;
+    } else if (aid === 4) {
+      const cands = this.onBoard(p).sort((a, b) =>
+        (b.xp - a.xp) || (this.costs[b.arch] - this.costs[a.arch]) || ntc(a.pos!, b.pos!));
+      if (cands.length) this.gainXp(cands[0], C.ARTIFACT_XP);
+    } else if (aid === 5) {
+      for (const c of this.bots[p].entrenchCols(this, p))
+        if (c >= 0 && c < 8 && !this.palisades.has(c)) { this.palisades.set(c, p); break; }
+    } else if (aid === 6) res.tribute += C.ARTIFACT_TRIBUTE;
+    else if (aid === 7) this.recruit_discount[p] = C.ARTIFACT_DISCOUNT;
+    else if (aid === 8) {
+      const [, crop] = this.computeHarvest(p);
+      const ftype = crop < this.onBoard(p).length ? 'crop' : 'supply';
+      for (let c = 0; c < 8; c++)
+        for (const r of this.heartlandRows(p)) {
+          const pos: Pos = [c, r];
+          if (!this.fields.has(key(pos)) && !this.wagon_at.has(key(pos))) {
+            this.fields.set(key(pos), { type: ftype, owner: p, annexed: null });
+            return;
+          }
+        }
+    }
+  }
+
+  // ── Round driver — full mirror of sim/engine.py play_round ────────────────
+  playRound() {
+    const C = this.C;
+    this.cap_dmg = [0, 0]; this.wagon_dmg_round = [0, 0];
+    this.rows_lost_round = [0, 0]; this.rows_taken_round = [0, 0]; this.unit_dmg_round = [0, 0];
+    this.musterPlayer(this.komi); this.musterPlayer(1 - this.komi);
+    for (const u of this.units.values()) u.face_down = false;
+    this.clash();
+    this.frontier();
+    const [l0, l1] = this.rows_lost_round;
+    if (l0 !== l1) this.komi = l0 > l1 ? 0 : 1;
+    // golden goal (C-070)
+    if (this.round >= C.GOLDEN_GOAL_ROUND) {
+      const t0 = this.rows_taken_round[0] > 0 || this.wagon_dmg_round[0] > 0;
+      const t1 = this.rows_taken_round[1] > 0 || this.wagon_dmg_round[1] > 0;
+      if (t0 || t1) {
+        let w: number;
+        if (t0 && t1) {
+          if (this.rows_taken_round[0] !== this.rows_taken_round[1]) w = this.rows_taken_round[0] > this.rows_taken_round[1] ? 0 : 1;
+          else if (this.wagon_dmg_round[0] !== this.wagon_dmg_round[1]) w = this.wagon_dmg_round[0] > this.wagon_dmg_round[1] ? 0 : 1;
+          else w = this.komi;
+        } else w = t0 ? 0 : 1;
+        throw new GameOver(w, 'golden-goal');
+      }
+    }
+    // Pass & Tribute
+    for (let p = 0; p < 2; p++) this.res[p].tribute += C.TRIBUTE_PER_ROW * this.rows_lost_round[p];
+    if (this.round === C.CARAVAN_ROUND_1) this.caravan(1);
+    else if (this.round === C.CARAVAN_ROUND_2) this.caravan(2);
+    // metrics
+    if (this.round === 1) {
+      const [r0, r1] = this.rows_taken_round;
+      if (r0 !== r1) { this.r1_winner = r0 > r1 ? 0 : 1; this.r1_rows_winner = this.r1_winner; }
+      else if (this.unit_dmg_round[0] !== this.unit_dmg_round[1]
+        && (!C.R1_REQUIRE_ENGAGE || Math.min(...this.unit_dmg_round) >= 1))
+        this.r1_winner = this.unit_dmg_round[0] > this.unit_dmg_round[1] ? 0 : 1;
+      if (C.FIRST_BLOOD_SUPPLY && this.r1_winner !== null) this.res[this.r1_winner].supply += C.FIRST_BLOOD_SUPPLY;
+    }
+    this.lead_trace.push(this.leadHolder());
+    // hard stop (C-071)
+    if (this.round >= C.HARD_STOP_ROUND) {
+      const a0 = this.wagonsAlive(0), a1 = this.wagonsAlive(1);
+      if (a0 !== a1) throw new GameOver(a0 > a1 ? 0 : 1, 'ladder');
+      const r0 = this.ownedRows(0), r1 = this.ownedRows(1);
+      if (r0 !== r1) throw new GameOver(r0 > r1 ? 0 : 1, 'ladder');
+      throw new GameOver(this.komi, 'ladder');
+    }
+    this.updateEntrench();
+    this.round++;
   }
 
   // Per-phase parity entry point (round 1). Replays the ported phases and

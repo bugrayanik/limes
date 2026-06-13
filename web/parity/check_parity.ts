@@ -11,7 +11,7 @@
 //                     TS, these are listed as PENDING targets.
 //
 // Run:  bun web/parity/check_parity.ts
-import { Game } from '../src/engine';
+import { Game, GameOver } from '../src/engine';
 import { makeBot } from '../src/bots';
 import golden from './golden.json';
 
@@ -19,6 +19,7 @@ type Match = {
   p1: string; p2: string; seed: number; config?: Record<string, number>;
   round_hashes: string[];
   phase_hashes_r1: [string, string][];
+  result: { winner: number | null; win_type: string | null; rounds: number };
 };
 
 let pass = 0, fail = 0;
@@ -69,6 +70,36 @@ if (!hasPhasePort) {
       console.log(`PASS  ${m.p1} vs ${m.p2} (seed ${m.seed})  [${done}]${next ? `  next: ${next}` : '  (round complete)'}`);
       pass++;
     }
+  }
+}
+
+// Full-match parity: replay every round through playRound() and assert the
+// per-round state hashes AND the final result (winner/win_type/rounds) match.
+// This is what exercises the combat/wagon/rout/intervention/caravan paths that
+// round 1 never reaches.
+console.log('\n── full-match parity (all rounds) ──');
+for (const m of golden as Match[]) {
+  const bots = [makeBot(m.p1), makeBot(m.p2)];
+  bots.forEach((b, p) => b.reset(m.seed, p));
+  const g = new Game(bots, m.seed, m.config && Object.keys(m.config).length ? m.config : undefined);
+  g.setup();
+  const hashes = [g.stateHash()];
+  let winner: number | null = null, wtype: string | null = null;
+  try { for (;;) { g.playRound(); hashes.push(g.stateHash()); } }
+  catch (e) { if (e instanceof GameOver) { winner = e.winner; wtype = e.wtype; } else throw e; }
+  let bad = -1;
+  for (let i = 0; i < Math.min(hashes.length, m.round_hashes.length); i++)
+    if (hashes[i] !== m.round_hashes[i]) { bad = i; break; }
+  const lenOk = hashes.length === m.round_hashes.length;
+  const rOk = winner === m.result.winner && wtype === m.result.win_type && g.round === m.result.rounds;
+  if (bad === -1 && lenOk && rOk) {
+    console.log(`PASS  ${m.p1} vs ${m.p2} (seed ${m.seed})  ${g.round} rounds → ${wtype} (P${winner})`);
+    pass++;
+  } else {
+    const why = bad !== -1 ? `round ${bad} hash` : !lenOk ? `length ${hashes.length}≠${m.round_hashes.length}`
+      : `result ${winner}/${wtype}/${g.round}≠${m.result.winner}/${m.result.win_type}/${m.result.rounds}`;
+    console.log(`FAIL  ${m.p1} vs ${m.p2} (seed ${m.seed})  ${why}`);
+    fail++;
   }
 }
 
