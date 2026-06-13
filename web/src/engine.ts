@@ -268,3 +268,42 @@ export function canonicalJSON(v: any): string {
   const keys = Object.keys(v).sort();
   return '{' + keys.map(k => JSON.stringify(k) + ':' + canonicalJSON(v[k])).join(',') + '}';
 }
+
+// ── Geometry + query helpers (faithful to sim/engine.py) ────────────────────
+export function manh(a: Pos, b: Pos): number { return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]); }
+export function inBounds(p: Pos): boolean { return p[0] >= 0 && p[0] < 8 && p[1] >= 0 && p[1] < 8; }
+export function neighbors(p: Pos): Pos[] {
+  const [c, r] = p; const out: Pos[] = [];
+  if (c > 0) out.push([c - 1, r]);
+  if (c < 7) out.push([c + 1, r]);
+  if (r > 0) out.push([c, r - 1]);
+  if (r < 7) out.push([c, r + 1]);
+  return out;
+}
+
+export interface Game {
+  territoryOf(p: Pos): number;
+  beyondOwn(u: Unit): boolean;
+  onBoard(owner?: number): Unit[];
+  reserve(owner: number): Unit[];
+  wagonsAlive(p: number): number;
+  wagonHp(p: number): number;
+  ownedRows(p: number): number;
+}
+Game.prototype.territoryOf = function (p: Pos): number { return p[1] < this.stakes[p[0]] ? 0 : 1; };
+Game.prototype.beyondOwn = function (u: Unit): boolean { return this.territoryOf(u.pos!) !== u.owner; };
+Game.prototype.onBoard = function (owner?: number): Unit[] {
+  let out = [...this.board.values()].map(uid => this.units.get(uid)!);
+  if (owner !== undefined) out = out.filter(u => u.owner === owner);
+  // Python sorts by pos tuple (col, then row)
+  return out.sort((a, b) => a.pos![0] - b.pos![0] || a.pos![1] - b.pos![1]);
+};
+Game.prototype.reserve = function (owner: number): Unit[] {
+  return [...this.units.values()].filter(u => u.pos === null && u.owner === owner)
+    .sort((a, b) => a.uid - b.uid);
+};
+Game.prototype.wagonsAlive = function (p: number): number { return this.wagons[p].filter(w => w.hp > 0).length; };
+Game.prototype.wagonHp = function (p: number): number { return this.wagons[p].reduce((s, w) => s + Math.max(0, w.hp), 0); };
+Game.prototype.ownedRows = function (p: number): number {
+  return p === 0 ? this.stakes.reduce((s, k) => s + k, 0) : this.stakes.reduce((s, k) => s + (8 - k), 0);
+};
