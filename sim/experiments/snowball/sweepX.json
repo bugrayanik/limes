@@ -1,0 +1,123 @@
+[
+ {
+  "overrides": {
+   "EXHAUSTION_START_ROUND": 8,
+   "EXHAUSTION_ACCEL_ROUND": 9,
+   "BREACH_CAP": 3,
+   "BREACH_CAP_LATE": 4,
+   "BREACH_CAP_RISE_ROUND": 9
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 89,
+   "A_conversion": 0.4472,
+   "B_games_with_change_after_r7": 124,
+   "B_rate": 0.31,
+   "win_types": {
+    "golden-goal": 258,
+    "ladder": 63,
+    "wagons": 71,
+    "rout": 8
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1028
+ },
+ {
+  "overrides": {
+   "EXHAUSTION_START_ROUND": 8,
+   "EXHAUSTION_ACCEL_ROUND": 9,
+   "BREACH_CAP": 3,
+   "BREACH_CAP_LATE": 4,
+   "BREACH_CAP_RISE_ROUND": 9,
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 81,
+   "A_conversion": 0.407,
+   "B_games_with_change_after_r7": 115,
+   "B_rate": 0.2875,
+   "win_types": {
+    "golden-goal": 254,
+    "ladder": 66,
+    "wagons": 76,
+    "rout": 4
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.143
+ },
+ {
+  "overrides": {
+   "GOLDEN_GOAL_ROUND": 12,
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 5
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 81,
+   "A_conversion": 0.407,
+   "B_games_with_change_after_r7": 115,
+   "B_rate": 0.2875,
+   "win_types": {
+    "golden-goal": 350,
+    "ladder": 23,
+    "wagons": 22,
+    "rout": 5
+   },
+   "median_rounds": 13.0
+  },
+  "score": 0.143
+ },
+ {
+  "overrides": {
+   "GOLDEN_GOAL_ROUND": 12
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 72,
+   "A_conversion": 0.3618,
+   "B_games_with_change_after_r7": 120,
+   "B_rate": 0.3,
+   "win_types": {
+    "golden-goal": 353,
+    "ladder": 24,
+    "rout": 5,
+    "wagons": 18
+   },
+   "median_rounds": 13.0
+  },
+  "score": 0.1882
+ },
+ {
+  "overrides": {
+   "WAGON_HP": 2,
+   "BREACH_CAP": 3
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 80,
+   "A_conversion": 0.402,
+   "B_games_with_change_after_r7": 181,
+   "B_rate": 0.4525,
+   "win_types": {
+    "golden-goal": 247,
+    "ladder": 38,
+    "wagons": 105,
+    "rout": 10
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2505
+ }
+]

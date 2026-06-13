@@ -1,0 +1,1662 @@
+{
+ "flat": {
+  "spear_vs_spear": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   }
+  },
+  "spear_vs_sword": {
+   "2": {
+    "canon_wins": {
+     "A": 2,
+     "B": 0,
+     "none": 2
+    },
+    "canon_mean_margin": 0.5,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 2,
+     "B": 0,
+     "none": 2
+    },
+    "canon_mean_margin": 0.5,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 2,
+     "B": 0,
+     "none": 2
+    },
+    "canon_mean_margin": 0.5,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 2,
+     "B": 0,
+     "none": 2
+    },
+    "canon_mean_margin": 0.5,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   }
+  },
+  "spear_vs_cav": {
+   "2": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   }
+  },
+  "spear_vs_archer": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   }
+  },
+  "spear_vs_siege": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0834,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0555,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0416,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0333,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   }
+  },
+  "sword_vs_spear": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   }
+  },
+  "sword_vs_sword": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   }
+  },
+  "sword_vs_cav": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5,
+    "mean_maximin_A": -0.9375,
+    "mean_maximin_B": 0.9375
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5,
+    "mean_maximin_A": -0.5,
+    "mean_maximin_B": 0.375
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5,
+    "mean_maximin_A": -0.5,
+    "mean_maximin_B": 0.375
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5,
+    "mean_maximin_A": -0.425,
+    "mean_maximin_B": 0.425
+   }
+  },
+  "sword_vs_archer": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5,
+    "mean_maximin_A": -0.6667,
+    "mean_maximin_B": 0.5
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5556,
+    "mean_maximin_A": -0.7778,
+    "mean_maximin_B": 0.6667
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5834,
+    "mean_maximin_A": -0.75,
+    "mean_maximin_B": 0.5834
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.6,
+    "mean_maximin_A": -0.7333,
+    "mean_maximin_B": 0.6
+   }
+  },
+  "sword_vs_siege": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": -1.0,
+    "mean_maximin_B": 1.0
+   }
+  },
+  "cav_vs_spear": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -1.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   }
+  },
+  "cav_vs_sword": {
+   "2": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.375,
+    "mean_maximin_A": 0.6875,
+    "mean_maximin_B": -0.6875
+   },
+   "3": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.375,
+    "mean_maximin_A": 0.375,
+    "mean_maximin_B": -0.375
+   },
+   "4": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.375,
+    "mean_maximin_A": 0.375,
+    "mean_maximin_B": -0.375
+   },
+   "5": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.375,
+    "mean_maximin_A": 0.375,
+    "mean_maximin_B": -0.425
+   }
+  },
+  "cav_vs_cav": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   }
+  },
+  "cav_vs_archer": {
+   "2": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.5,
+    "mean_maximin_A": 0.5,
+    "mean_maximin_B": -0.5
+   },
+   "3": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.5834,
+    "mean_maximin_A": 0.5834,
+    "mean_maximin_B": -0.5834
+   },
+   "4": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.5,
+    "mean_maximin_A": 0.5,
+    "mean_maximin_B": -0.5
+   },
+   "5": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.6,
+    "mean_maximin_A": 0.525,
+    "mean_maximin_B": -0.525
+   }
+  },
+  "cav_vs_siege": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.6666,
+    "mean_maximin_A": -0.6666,
+    "mean_maximin_B": 0.6666
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.7778,
+    "mean_maximin_A": -0.7778,
+    "mean_maximin_B": 0.7778
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.75,
+    "mean_maximin_A": -0.75,
+    "mean_maximin_B": 0.75
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.7,
+    "mean_maximin_A": -0.7,
+    "mean_maximin_B": 0.7
+   }
+  },
+  "archer_vs_spear": {
+   "2": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   }
+  },
+  "archer_vs_sword": {
+   "2": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.5,
+    "mean_maximin_A": 0.5,
+    "mean_maximin_B": -0.6667
+   },
+   "3": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.5556,
+    "mean_maximin_A": 0.5556,
+    "mean_maximin_B": -0.6667
+   },
+   "4": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.4584,
+    "mean_maximin_A": 0.4584,
+    "mean_maximin_B": -0.625
+   },
+   "5": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.5,
+    "mean_maximin_A": 0.5,
+    "mean_maximin_B": -0.6333
+   }
+  },
+  "archer_vs_cav": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5,
+    "mean_maximin_A": -0.5,
+    "mean_maximin_B": 0.5
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5834,
+    "mean_maximin_A": -0.5834,
+    "mean_maximin_B": 0.5834
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.5,
+    "mean_maximin_A": -0.5,
+    "mean_maximin_B": 0.5
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.6,
+    "mean_maximin_A": -0.525,
+    "mean_maximin_B": 0.525
+   }
+  },
+  "archer_vs_archer": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   }
+  },
+  "archer_vs_siege": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.6667,
+    "mean_maximin_A": -0.8334,
+    "mean_maximin_B": 0.6667
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.6667,
+    "mean_maximin_A": -0.8334,
+    "mean_maximin_B": 0.6667
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.6667,
+    "mean_maximin_A": -0.8334,
+    "mean_maximin_B": 0.6667
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "canon_mean_margin": -0.6667,
+    "mean_maximin_A": -0.8334,
+    "mean_maximin_B": 0.6667
+   }
+  },
+  "siege_vs_spear": {
+   "2": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0834,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0555,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0416,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0333,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   }
+  },
+  "siege_vs_sword": {
+   "2": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0834,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0555,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0416,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 1.0333,
+    "mean_maximin_A": 1.0,
+    "mean_maximin_B": -1.0
+   }
+  },
+  "siege_vs_cav": {
+   "2": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.6666,
+    "mean_maximin_A": 0.6666,
+    "mean_maximin_B": -0.6666
+   },
+   "3": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.7778,
+    "mean_maximin_A": 0.7778,
+    "mean_maximin_B": -0.7778
+   },
+   "4": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.75,
+    "mean_maximin_A": 0.75,
+    "mean_maximin_B": -0.75
+   },
+   "5": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.7,
+    "mean_maximin_A": 0.7,
+    "mean_maximin_B": -0.7
+   }
+  },
+  "siege_vs_archer": {
+   "2": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.6667,
+    "mean_maximin_A": 0.6667,
+    "mean_maximin_B": -0.8334
+   },
+   "3": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.6667,
+    "mean_maximin_A": 0.6667,
+    "mean_maximin_B": -0.8334
+   },
+   "4": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.6667,
+    "mean_maximin_A": 0.6667,
+    "mean_maximin_B": -0.8334
+   },
+   "5": {
+    "canon_wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "canon_mean_margin": 0.6667,
+    "mean_maximin_A": 0.6667,
+    "mean_maximin_B": -0.8334
+   }
+  },
+  "siege_vs_siege": {
+   "2": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "3": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "4": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   },
+   "5": {
+    "canon_wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "canon_mean_margin": 0.0,
+    "mean_maximin_A": 0.0,
+    "mean_maximin_B": 0.0
+   }
+  }
+ },
+ "terrain": {
+  "hills_B": {
+   "spear_vs_spear": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   },
+   "spear_vs_sword": {
+    "wins": {
+     "A": 2,
+     "B": 0,
+     "none": 2
+    },
+    "mean_margin": 0.5
+   },
+   "spear_vs_cav": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0
+   },
+   "spear_vs_archer": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "spear_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0555
+   },
+   "sword_vs_spear": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "sword_vs_sword": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   },
+   "sword_vs_cav": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.5
+   },
+   "sword_vs_archer": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.8334
+   },
+   "sword_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "cav_vs_spear": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "cav_vs_sword": {
+    "wins": {
+     "A": 2,
+     "B": 0,
+     "none": 2
+    },
+    "mean_margin": 0.125
+   },
+   "cav_vs_cav": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   },
+   "cav_vs_archer": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.2917
+   },
+   "cav_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.7778
+   },
+   "archer_vs_spear": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0
+   },
+   "archer_vs_sword": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.4444
+   },
+   "archer_vs_cav": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.7084
+   },
+   "archer_vs_archer": {
+    "wins": {
+     "A": 0,
+     "B": 2,
+     "none": 2
+    },
+    "mean_margin": -0.5
+   },
+   "archer_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.8334
+   },
+   "siege_vs_spear": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0555
+   },
+   "siege_vs_sword": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.1111
+   },
+   "siege_vs_cav": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.5
+   },
+   "siege_vs_archer": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.6667
+   },
+   "siege_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.3333
+   }
+  },
+  "woods_B": {
+   "spear_vs_spear": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   },
+   "spear_vs_sword": {
+    "wins": {
+     "A": 2,
+     "B": 0,
+     "none": 2
+    },
+    "mean_margin": 0.5
+   },
+   "spear_vs_cav": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0
+   },
+   "spear_vs_archer": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "spear_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0555
+   },
+   "sword_vs_spear": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "sword_vs_sword": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   },
+   "sword_vs_cav": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.5
+   },
+   "sword_vs_archer": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.5556
+   },
+   "sword_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "cav_vs_spear": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "cav_vs_sword": {
+    "wins": {
+     "A": 0,
+     "B": 2,
+     "none": 2
+    },
+    "mean_margin": -0.1
+   },
+   "cav_vs_cav": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   },
+   "cav_vs_archer": {
+    "wins": {
+     "A": 2,
+     "B": 2,
+     "none": 0
+    },
+    "mean_margin": -0.2361
+   },
+   "cav_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.7778
+   },
+   "archer_vs_spear": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0
+   },
+   "archer_vs_sword": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.4444
+   },
+   "archer_vs_cav": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.7084
+   },
+   "archer_vs_archer": {
+    "wins": {
+     "A": 0,
+     "B": 2,
+     "none": 2
+    },
+    "mean_margin": -0.5
+   },
+   "archer_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.8334
+   },
+   "siege_vs_spear": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0555
+   },
+   "siege_vs_sword": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.1111
+   },
+   "siege_vs_cav": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.5
+   },
+   "siege_vs_archer": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.6667
+   },
+   "siege_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.3333
+   }
+  },
+  "river_mid": {
+   "spear_vs_spear": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   },
+   "spear_vs_sword": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0
+   },
+   "spear_vs_cav": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0
+   },
+   "spear_vs_archer": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "spear_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0555
+   },
+   "sword_vs_spear": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "sword_vs_sword": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   },
+   "sword_vs_cav": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.625
+   },
+   "sword_vs_archer": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.9445
+   },
+   "sword_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "cav_vs_spear": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -1.0
+   },
+   "cav_vs_sword": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.625
+   },
+   "cav_vs_cav": {
+    "wins": {
+     "A": 1,
+     "B": 1,
+     "none": 2
+    },
+    "mean_margin": 0.0
+   },
+   "cav_vs_archer": {
+    "wins": {
+     "A": 2,
+     "B": 2,
+     "none": 0
+    },
+    "mean_margin": 0.0417
+   },
+   "cav_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.9445
+   },
+   "archer_vs_spear": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0
+   },
+   "archer_vs_sword": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.7223
+   },
+   "archer_vs_cav": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.5834
+   },
+   "archer_vs_archer": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   },
+   "archer_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 4,
+     "none": 0
+    },
+    "mean_margin": -0.6667
+   },
+   "siege_vs_spear": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0555
+   },
+   "siege_vs_sword": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 1.0555
+   },
+   "siege_vs_cav": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.9445
+   },
+   "siege_vs_archer": {
+    "wins": {
+     "A": 4,
+     "B": 0,
+     "none": 0
+    },
+    "mean_margin": 0.6667
+   },
+   "siege_vs_siege": {
+    "wins": {
+     "A": 0,
+     "B": 0,
+     "none": 4
+    },
+    "mean_margin": 0.0
+   }
+  }
+ }
+}

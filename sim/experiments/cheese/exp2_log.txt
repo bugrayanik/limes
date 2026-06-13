@@ -1,0 +1,1046 @@
+{
+ "matchup": "RUNNER vs HONEST",
+ "n": 200,
+ "seed0": 10000,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 1
+ },
+ "winrate_A": 0.735,
+ "wins": {
+  "RUNNER": 147,
+  "HONEST": 53
+ },
+ "win_types": {
+  "golden-goal": 72,
+  "wagons": 23,
+  "ladder": 103,
+  "rout": 2
+ },
+ "rounds_median": 20.0,
+ "total_rounds_played": 3626,
+ "A": {
+  "rows_total": 244,
+  "rows_per_round": 0.0673,
+  "rows_per_match": 1.22,
+  "pct_matches_with_any_carry": 0.71,
+  "advancing_rounds": 201,
+  "adv_round_share_of_rounds": 0.0554,
+  "cols_per_advancing_round_hist": {
+   "1": 161,
+   "2": 37,
+   "3+": 3
+  },
+  "lone_blocked_total": 906,
+  "lone_blocked_per_match": 4.53
+ },
+ "B": {
+  "rows_total": 243,
+  "rows_per_round": 0.067,
+  "rows_per_match": 1.22,
+  "pct_matches_with_any_carry": 0.64,
+  "advancing_rounds": 197,
+  "adv_round_share_of_rounds": 0.0543,
+  "cols_per_advancing_round_hist": {
+   "1": 153,
+   "2": 42,
+   "3+": 2
+  },
+  "lone_blocked_total": 386,
+  "lone_blocked_per_match": 1.93
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.365,
+  "reversals_max": 3,
+  "pct_matches_with_2plus_reversals": 0.045
+ },
+ "cell": "radius=1",
+ "elapsed_sec": 9.0
+}
+{
+ "matchup": "RUNNER vs TURTLE",
+ "n": 200,
+ "seed0": 10250,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 1
+ },
+ "winrate_A": 0.945,
+ "wins": {
+  "RUNNER": 189,
+  "TURTLE": 11
+ },
+ "win_types": {
+  "ladder": 107,
+  "golden-goal": 55,
+  "wagons": 34,
+  "rout": 4
+ },
+ "rounds_median": 20.0,
+ "total_rounds_played": 3536,
+ "A": {
+  "rows_total": 329,
+  "rows_per_round": 0.093,
+  "rows_per_match": 1.65,
+  "pct_matches_with_any_carry": 0.83,
+  "advancing_rounds": 276,
+  "adv_round_share_of_rounds": 0.0781,
+  "cols_per_advancing_round_hist": {
+   "1": 226,
+   "2": 48,
+   "3+": 2
+  },
+  "lone_blocked_total": 878,
+  "lone_blocked_per_match": 4.39
+ },
+ "B": {
+  "rows_total": 82,
+  "rows_per_round": 0.0232,
+  "rows_per_match": 0.41,
+  "pct_matches_with_any_carry": 0.305,
+  "advancing_rounds": 74,
+  "adv_round_share_of_rounds": 0.0209,
+  "cols_per_advancing_round_hist": {
+   "1": 67,
+   "2": 6,
+   "3+": 1
+  },
+  "lone_blocked_total": 27,
+  "lone_blocked_per_match": 0.135
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.29,
+  "reversals_max": 2,
+  "pct_matches_with_2plus_reversals": 0.035
+ },
+ "cell": "radius=1",
+ "elapsed_sec": 9.1
+}
+{
+ "matchup": "HONEST vs TURTLE",
+ "n": 200,
+ "seed0": 10500,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 1
+ },
+ "winrate_A": 0.645,
+ "wins": {
+  "HONEST": 129,
+  "TURTLE": 71
+ },
+ "win_types": {
+  "ladder": 160,
+  "golden-goal": 39,
+  "rout": 1
+ },
+ "rounds_median": 20.0,
+ "total_rounds_played": 3888,
+ "A": {
+  "rows_total": 83,
+  "rows_per_round": 0.0213,
+  "rows_per_match": 0.41,
+  "pct_matches_with_any_carry": 0.305,
+  "advancing_rounds": 77,
+  "adv_round_share_of_rounds": 0.0198,
+  "cols_per_advancing_round_hist": {
+   "1": 71,
+   "2": 6,
+   "3+": 0
+  },
+  "lone_blocked_total": 358,
+  "lone_blocked_per_match": 1.79
+ },
+ "B": {
+  "rows_total": 3,
+  "rows_per_round": 0.0008,
+  "rows_per_match": 0.01,
+  "pct_matches_with_any_carry": 0.015,
+  "advancing_rounds": 3,
+  "adv_round_share_of_rounds": 0.0008,
+  "cols_per_advancing_round_hist": {
+   "1": 3,
+   "2": 0,
+   "3+": 0
+  },
+  "lone_blocked_total": 0,
+  "lone_blocked_per_match": 0.0
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.005,
+  "reversals_max": 1,
+  "pct_matches_with_2plus_reversals": 0.0
+ },
+ "cell": "radius=1",
+ "elapsed_sec": 10.8
+}
+{
+ "matchup": "RUNNER vs HONEST",
+ "n": 200,
+ "seed0": 10750,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 2
+ },
+ "winrate_A": 0.265,
+ "wins": {
+  "RUNNER": 53,
+  "HONEST": 147
+ },
+ "win_types": {
+  "rout": 7,
+  "golden-goal": 134,
+  "wagons": 24,
+  "ladder": 35
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3387,
+ "A": {
+  "rows_total": 664,
+  "rows_per_round": 0.196,
+  "rows_per_match": 3.32,
+  "pct_matches_with_any_carry": 0.97,
+  "advancing_rounds": 527,
+  "adv_round_share_of_rounds": 0.1556,
+  "cols_per_advancing_round_hist": {
+   "1": 392,
+   "2": 133,
+   "3+": 2
+  },
+  "lone_blocked_total": 426,
+  "lone_blocked_per_match": 2.13
+ },
+ "B": {
+  "rows_total": 869,
+  "rows_per_round": 0.2566,
+  "rows_per_match": 4.34,
+  "pct_matches_with_any_carry": 0.98,
+  "advancing_rounds": 716,
+  "adv_round_share_of_rounds": 0.2114,
+  "cols_per_advancing_round_hist": {
+   "1": 581,
+   "2": 118,
+   "3+": 17
+  },
+  "lone_blocked_total": 190,
+  "lone_blocked_per_match": 0.95
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.735,
+  "reversals_max": 7,
+  "pct_matches_with_2plus_reversals": 0.51
+ },
+ "cell": "radius=2",
+ "elapsed_sec": 7.5
+}
+{
+ "matchup": "RUNNER vs TURTLE",
+ "n": 200,
+ "seed0": 11000,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 2
+ },
+ "winrate_A": 0.37,
+ "wins": {
+  "RUNNER": 74,
+  "TURTLE": 126
+ },
+ "win_types": {
+  "golden-goal": 149,
+  "ladder": 23,
+  "wagons": 24,
+  "rout": 4
+ },
+ "rounds_median": 17.0,
+ "total_rounds_played": 3385,
+ "A": {
+  "rows_total": 722,
+  "rows_per_round": 0.2133,
+  "rows_per_match": 3.61,
+  "pct_matches_with_any_carry": 0.985,
+  "advancing_rounds": 579,
+  "adv_round_share_of_rounds": 0.171,
+  "cols_per_advancing_round_hist": {
+   "1": 447,
+   "2": 122,
+   "3+": 10
+  },
+  "lone_blocked_total": 442,
+  "lone_blocked_per_match": 2.21
+ },
+ "B": {
+  "rows_total": 553,
+  "rows_per_round": 0.1634,
+  "rows_per_match": 2.77,
+  "pct_matches_with_any_carry": 0.895,
+  "advancing_rounds": 475,
+  "adv_round_share_of_rounds": 0.1403,
+  "cols_per_advancing_round_hist": {
+   "1": 408,
+   "2": 56,
+   "3+": 11
+  },
+  "lone_blocked_total": 32,
+  "lone_blocked_per_match": 0.16
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.29,
+  "reversals_max": 5,
+  "pct_matches_with_2plus_reversals": 0.4
+ },
+ "cell": "radius=2",
+ "elapsed_sec": 7.6
+}
+{
+ "matchup": "HONEST vs TURTLE",
+ "n": 200,
+ "seed0": 11250,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 2
+ },
+ "winrate_A": 0.715,
+ "wins": {
+  "HONEST": 143,
+  "TURTLE": 57
+ },
+ "win_types": {
+  "ladder": 23,
+  "golden-goal": 160,
+  "rout": 6,
+  "wagons": 11
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3390,
+ "A": {
+  "rows_total": 609,
+  "rows_per_round": 0.1796,
+  "rows_per_match": 3.04,
+  "pct_matches_with_any_carry": 0.97,
+  "advancing_rounds": 567,
+  "adv_round_share_of_rounds": 0.1673,
+  "cols_per_advancing_round_hist": {
+   "1": 526,
+   "2": 40,
+   "3+": 1
+  },
+  "lone_blocked_total": 193,
+  "lone_blocked_per_match": 0.965
+ },
+ "B": {
+  "rows_total": 178,
+  "rows_per_round": 0.0525,
+  "rows_per_match": 0.89,
+  "pct_matches_with_any_carry": 0.565,
+  "advancing_rounds": 176,
+  "adv_round_share_of_rounds": 0.0519,
+  "cols_per_advancing_round_hist": {
+   "1": 175,
+   "2": 0,
+   "3+": 1
+  },
+  "lone_blocked_total": 3,
+  "lone_blocked_per_match": 0.015
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.43,
+  "reversals_max": 3,
+  "pct_matches_with_2plus_reversals": 0.06
+ },
+ "cell": "radius=2",
+ "elapsed_sec": 7.6
+}
+{
+ "matchup": "RUNNER vs HONEST",
+ "n": 200,
+ "seed0": 11500,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 3
+ },
+ "winrate_A": 0.265,
+ "wins": {
+  "RUNNER": 53,
+  "HONEST": 147
+ },
+ "win_types": {
+  "ladder": 32,
+  "golden-goal": 148,
+  "wagons": 14,
+  "rout": 6
+ },
+ "rounds_median": 17.0,
+ "total_rounds_played": 3428,
+ "A": {
+  "rows_total": 897,
+  "rows_per_round": 0.2617,
+  "rows_per_match": 4.49,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 728,
+  "adv_round_share_of_rounds": 0.2124,
+  "cols_per_advancing_round_hist": {
+   "1": 571,
+   "2": 147,
+   "3+": 10
+  },
+  "lone_blocked_total": 242,
+  "lone_blocked_per_match": 1.21
+ },
+ "B": {
+  "rows_total": 1014,
+  "rows_per_round": 0.2958,
+  "rows_per_match": 5.07,
+  "pct_matches_with_any_carry": 0.99,
+  "advancing_rounds": 831,
+  "adv_round_share_of_rounds": 0.2424,
+  "cols_per_advancing_round_hist": {
+   "1": 667,
+   "2": 147,
+   "3+": 17
+  },
+  "lone_blocked_total": 76,
+  "lone_blocked_per_match": 0.38
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 2.29,
+  "reversals_max": 8,
+  "pct_matches_with_2plus_reversals": 0.655
+ },
+ "cell": "radius=3",
+ "elapsed_sec": 5.9
+}
+{
+ "matchup": "RUNNER vs TURTLE",
+ "n": 200,
+ "seed0": 11750,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 3
+ },
+ "winrate_A": 0.22,
+ "wins": {
+  "RUNNER": 44,
+  "TURTLE": 156
+ },
+ "win_types": {
+  "golden-goal": 171,
+  "wagons": 13,
+  "ladder": 10,
+  "rout": 6
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3319,
+ "A": {
+  "rows_total": 923,
+  "rows_per_round": 0.2781,
+  "rows_per_match": 4.62,
+  "pct_matches_with_any_carry": 0.995,
+  "advancing_rounds": 699,
+  "adv_round_share_of_rounds": 0.2106,
+  "cols_per_advancing_round_hist": {
+   "1": 500,
+   "2": 176,
+   "3+": 23
+  },
+  "lone_blocked_total": 236,
+  "lone_blocked_per_match": 1.18
+ },
+ "B": {
+  "rows_total": 694,
+  "rows_per_round": 0.2091,
+  "rows_per_match": 3.47,
+  "pct_matches_with_any_carry": 0.95,
+  "advancing_rounds": 602,
+  "adv_round_share_of_rounds": 0.1814,
+  "cols_per_advancing_round_hist": {
+   "1": 521,
+   "2": 71,
+   "3+": 10
+  },
+  "lone_blocked_total": 7,
+  "lone_blocked_per_match": 0.035
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.75,
+  "reversals_max": 6,
+  "pct_matches_with_2plus_reversals": 0.535
+ },
+ "cell": "radius=3",
+ "elapsed_sec": 4.1
+}
+{
+ "matchup": "HONEST vs TURTLE",
+ "n": 200,
+ "seed0": 12000,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 3
+ },
+ "winrate_A": 0.64,
+ "wins": {
+  "HONEST": 128,
+  "TURTLE": 72
+ },
+ "win_types": {
+  "golden-goal": 175,
+  "wagons": 16,
+  "ladder": 6,
+  "rout": 3
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3287,
+ "A": {
+  "rows_total": 802,
+  "rows_per_round": 0.244,
+  "rows_per_match": 4.01,
+  "pct_matches_with_any_carry": 0.98,
+  "advancing_rounds": 727,
+  "adv_round_share_of_rounds": 0.2212,
+  "cols_per_advancing_round_hist": {
+   "1": 657,
+   "2": 65,
+   "3+": 5
+  },
+  "lone_blocked_total": 23,
+  "lone_blocked_per_match": 0.115
+ },
+ "B": {
+  "rows_total": 274,
+  "rows_per_round": 0.0834,
+  "rows_per_match": 1.37,
+  "pct_matches_with_any_carry": 0.745,
+  "advancing_rounds": 268,
+  "adv_round_share_of_rounds": 0.0815,
+  "cols_per_advancing_round_hist": {
+   "1": 262,
+   "2": 6,
+   "3+": 0
+  },
+  "lone_blocked_total": 1,
+  "lone_blocked_per_match": 0.005
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.665,
+  "reversals_max": 4,
+  "pct_matches_with_2plus_reversals": 0.165
+ },
+ "cell": "radius=3",
+ "elapsed_sec": 4.1
+}
+{
+ "matchup": "RUNNER vs HONEST",
+ "n": 200,
+ "seed0": 12250,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 99
+ },
+ "winrate_A": 0.24,
+ "wins": {
+  "RUNNER": 48,
+  "HONEST": 152
+ },
+ "win_types": {
+  "ladder": 30,
+  "golden-goal": 153,
+  "rout": 8,
+  "wagons": 9
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3385,
+ "A": {
+  "rows_total": 1079,
+  "rows_per_round": 0.3188,
+  "rows_per_match": 5.39,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 880,
+  "adv_round_share_of_rounds": 0.26,
+  "cols_per_advancing_round_hist": {
+   "1": 700,
+   "2": 162,
+   "3+": 18
+  },
+  "lone_blocked_total": 4,
+  "lone_blocked_per_match": 0.02
+ },
+ "B": {
+  "rows_total": 1248,
+  "rows_per_round": 0.3687,
+  "rows_per_match": 6.24,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 1006,
+  "adv_round_share_of_rounds": 0.2972,
+  "cols_per_advancing_round_hist": {
+   "1": 798,
+   "2": 177,
+   "3+": 31
+  },
+  "lone_blocked_total": 2,
+  "lone_blocked_per_match": 0.01
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 3.045,
+  "reversals_max": 8,
+  "pct_matches_with_2plus_reversals": 0.86
+ },
+ "cell": "radius=99",
+ "elapsed_sec": 4.4
+}
+{
+ "matchup": "RUNNER vs TURTLE",
+ "n": 200,
+ "seed0": 12500,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 99
+ },
+ "winrate_A": 0.23,
+ "wins": {
+  "RUNNER": 46,
+  "TURTLE": 154
+ },
+ "win_types": {
+  "golden-goal": 175,
+  "wagons": 10,
+  "ladder": 12,
+  "rout": 3
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3335,
+ "A": {
+  "rows_total": 1088,
+  "rows_per_round": 0.3262,
+  "rows_per_match": 5.44,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 869,
+  "adv_round_share_of_rounds": 0.2606,
+  "cols_per_advancing_round_hist": {
+   "1": 679,
+   "2": 163,
+   "3+": 27
+  },
+  "lone_blocked_total": 5,
+  "lone_blocked_per_match": 0.025
+ },
+ "B": {
+  "rows_total": 835,
+  "rows_per_round": 0.2504,
+  "rows_per_match": 4.17,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 735,
+  "adv_round_share_of_rounds": 0.2204,
+  "cols_per_advancing_round_hist": {
+   "1": 646,
+   "2": 80,
+   "3+": 9
+  },
+  "lone_blocked_total": 0,
+  "lone_blocked_per_match": 0.0
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 2.2,
+  "reversals_max": 6,
+  "pct_matches_with_2plus_reversals": 0.635
+ },
+ "cell": "radius=99",
+ "elapsed_sec": 4.4
+}
+{
+ "matchup": "HONEST vs TURTLE",
+ "n": 200,
+ "seed0": 12750,
+ "overrides": {
+  "LONE_RUNNER_RADIUS": 99
+ },
+ "winrate_A": 0.545,
+ "wins": {
+  "HONEST": 109,
+  "TURTLE": 91
+ },
+ "win_types": {
+  "golden-goal": 175,
+  "wagons": 11,
+  "rout": 10,
+  "ladder": 4
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3235,
+ "A": {
+  "rows_total": 809,
+  "rows_per_round": 0.2501,
+  "rows_per_match": 4.04,
+  "pct_matches_with_any_carry": 0.98,
+  "advancing_rounds": 734,
+  "adv_round_share_of_rounds": 0.2269,
+  "cols_per_advancing_round_hist": {
+   "1": 666,
+   "2": 61,
+   "3+": 7
+  },
+  "lone_blocked_total": 0,
+  "lone_blocked_per_match": 0.0
+ },
+ "B": {
+  "rows_total": 319,
+  "rows_per_round": 0.0986,
+  "rows_per_match": 1.59,
+  "pct_matches_with_any_carry": 0.8,
+  "advancing_rounds": 312,
+  "adv_round_share_of_rounds": 0.0964,
+  "cols_per_advancing_round_hist": {
+   "1": 305,
+   "2": 7,
+   "3+": 0
+  },
+  "lone_blocked_total": 0,
+  "lone_blocked_per_match": 0.0
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.85,
+  "reversals_max": 5,
+  "pct_matches_with_2plus_reversals": 0.225
+ },
+ "cell": "radius=99",
+ "elapsed_sec": 4.2
+}
+{
+ "matchup": "NZ-RUNNER vs NZ-HONEST",
+ "n": 200,
+ "seed0": 13000,
+ "overrides": {
+  "ZOC_ENABLED": 0
+ },
+ "winrate_A": 0.4,
+ "wins": {
+  "NZ-RUNNER": 80,
+  "NZ-HONEST": 120
+ },
+ "win_types": {
+  "wagons": 31,
+  "golden-goal": 134,
+  "ladder": 22,
+  "rout": 13
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3276,
+ "A": {
+  "rows_total": 748,
+  "rows_per_round": 0.2283,
+  "rows_per_match": 3.74,
+  "pct_matches_with_any_carry": 0.985,
+  "advancing_rounds": 574,
+  "adv_round_share_of_rounds": 0.1752,
+  "cols_per_advancing_round_hist": {
+   "1": 414,
+   "2": 147,
+   "3+": 13
+  },
+  "lone_blocked_total": 483,
+  "lone_blocked_per_match": 2.415
+ },
+ "B": {
+  "rows_total": 865,
+  "rows_per_round": 0.264,
+  "rows_per_match": 4.33,
+  "pct_matches_with_any_carry": 0.97,
+  "advancing_rounds": 681,
+  "adv_round_share_of_rounds": 0.2079,
+  "cols_per_advancing_round_hist": {
+   "1": 514,
+   "2": 150,
+   "3+": 17
+  },
+  "lone_blocked_total": 303,
+  "lone_blocked_per_match": 1.515
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.745,
+  "reversals_max": 8,
+  "pct_matches_with_2plus_reversals": 0.5
+ },
+ "cell": "zoc=off",
+ "elapsed_sec": 3.9
+}
+{
+ "matchup": "NZ-RUNNER vs NZ-TURTLE",
+ "n": 200,
+ "seed0": 13250,
+ "overrides": {
+  "ZOC_ENABLED": 0
+ },
+ "winrate_A": 0.495,
+ "wins": {
+  "NZ-RUNNER": 99,
+  "NZ-TURTLE": 101
+ },
+ "win_types": {
+  "golden-goal": 120,
+  "ladder": 41,
+  "wagons": 37,
+  "rout": 2
+ },
+ "rounds_median": 17.0,
+ "total_rounds_played": 3398,
+ "A": {
+  "rows_total": 763,
+  "rows_per_round": 0.2245,
+  "rows_per_match": 3.81,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 614,
+  "adv_round_share_of_rounds": 0.1807,
+  "cols_per_advancing_round_hist": {
+   "1": 481,
+   "2": 118,
+   "3+": 15
+  },
+  "lone_blocked_total": 447,
+  "lone_blocked_per_match": 2.235
+ },
+ "B": {
+  "rows_total": 501,
+  "rows_per_round": 0.1474,
+  "rows_per_match": 2.5,
+  "pct_matches_with_any_carry": 0.89,
+  "advancing_rounds": 446,
+  "adv_round_share_of_rounds": 0.1313,
+  "cols_per_advancing_round_hist": {
+   "1": 398,
+   "2": 42,
+   "3+": 6
+  },
+  "lone_blocked_total": 28,
+  "lone_blocked_per_match": 0.14
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.27,
+  "reversals_max": 4,
+  "pct_matches_with_2plus_reversals": 0.38
+ },
+ "cell": "zoc=off",
+ "elapsed_sec": 3.7
+}
+{
+ "matchup": "NZ-HONEST vs NZ-TURTLE",
+ "n": 200,
+ "seed0": 13500,
+ "overrides": {
+  "ZOC_ENABLED": 0
+ },
+ "winrate_A": 0.79,
+ "wins": {
+  "NZ-HONEST": 158,
+  "NZ-TURTLE": 42
+ },
+ "win_types": {
+  "ladder": 20,
+  "golden-goal": 161,
+  "rout": 9,
+  "wagons": 10
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3374,
+ "A": {
+  "rows_total": 609,
+  "rows_per_round": 0.1805,
+  "rows_per_match": 3.04,
+  "pct_matches_with_any_carry": 0.975,
+  "advancing_rounds": 563,
+  "adv_round_share_of_rounds": 0.1669,
+  "cols_per_advancing_round_hist": {
+   "1": 518,
+   "2": 44,
+   "3+": 1
+  },
+  "lone_blocked_total": 179,
+  "lone_blocked_per_match": 0.895
+ },
+ "B": {
+  "rows_total": 165,
+  "rows_per_round": 0.0489,
+  "rows_per_match": 0.82,
+  "pct_matches_with_any_carry": 0.555,
+  "advancing_rounds": 163,
+  "adv_round_share_of_rounds": 0.0483,
+  "cols_per_advancing_round_hist": {
+   "1": 161,
+   "2": 2,
+   "3+": 0
+  },
+  "lone_blocked_total": 7,
+  "lone_blocked_per_match": 0.035
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.33,
+  "reversals_max": 3,
+  "pct_matches_with_2plus_reversals": 0.05
+ },
+ "cell": "zoc=off",
+ "elapsed_sec": 3.6
+}
+{
+ "matchup": "NZ-RUNNER vs NZ-HONEST",
+ "n": 200,
+ "seed0": 13750,
+ "overrides": {
+  "ZOC_ENABLED": 0,
+  "LONE_RUNNER_RADIUS": 99
+ },
+ "winrate_A": 0.33,
+ "wins": {
+  "NZ-RUNNER": 66,
+  "NZ-HONEST": 134
+ },
+ "win_types": {
+  "golden-goal": 135,
+  "wagons": 25,
+  "rout": 22,
+  "ladder": 18
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3200,
+ "A": {
+  "rows_total": 1115,
+  "rows_per_round": 0.3484,
+  "rows_per_match": 5.58,
+  "pct_matches_with_any_carry": 0.995,
+  "advancing_rounds": 904,
+  "adv_round_share_of_rounds": 0.2825,
+  "cols_per_advancing_round_hist": {
+   "1": 713,
+   "2": 173,
+   "3+": 18
+  },
+  "lone_blocked_total": 0,
+  "lone_blocked_per_match": 0.0
+ },
+ "B": {
+  "rows_total": 1266,
+  "rows_per_round": 0.3956,
+  "rows_per_match": 6.33,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 1032,
+  "adv_round_share_of_rounds": 0.3225,
+  "cols_per_advancing_round_hist": {
+   "1": 820,
+   "2": 193,
+   "3+": 19
+  },
+  "lone_blocked_total": 1,
+  "lone_blocked_per_match": 0.005
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 3.05,
+  "reversals_max": 9,
+  "pct_matches_with_2plus_reversals": 0.795
+ },
+ "cell": "zoc=off+radius=99",
+ "elapsed_sec": 3.5
+}
+{
+ "matchup": "NZ-RUNNER vs NZ-TURTLE",
+ "n": 200,
+ "seed0": 14000,
+ "overrides": {
+  "ZOC_ENABLED": 0,
+  "LONE_RUNNER_RADIUS": 99
+ },
+ "winrate_A": 0.25,
+ "wins": {
+  "NZ-RUNNER": 50,
+  "NZ-TURTLE": 150
+ },
+ "win_types": {
+  "wagons": 25,
+  "golden-goal": 158,
+  "rout": 10,
+  "ladder": 7
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3176,
+ "A": {
+  "rows_total": 1099,
+  "rows_per_round": 0.346,
+  "rows_per_match": 5.5,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 888,
+  "adv_round_share_of_rounds": 0.2796,
+  "cols_per_advancing_round_hist": {
+   "1": 688,
+   "2": 189,
+   "3+": 11
+  },
+  "lone_blocked_total": 3,
+  "lone_blocked_per_match": 0.015
+ },
+ "B": {
+  "rows_total": 859,
+  "rows_per_round": 0.2705,
+  "rows_per_match": 4.29,
+  "pct_matches_with_any_carry": 0.965,
+  "advancing_rounds": 737,
+  "adv_round_share_of_rounds": 0.2321,
+  "cols_per_advancing_round_hist": {
+   "1": 630,
+   "2": 93,
+   "3+": 14
+  },
+  "lone_blocked_total": 0,
+  "lone_blocked_per_match": 0.0
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 2.215,
+  "reversals_max": 7,
+  "pct_matches_with_2plus_reversals": 0.64
+ },
+ "cell": "zoc=off+radius=99",
+ "elapsed_sec": 3.4
+}
+{
+ "matchup": "NZ-HONEST vs NZ-TURTLE",
+ "n": 200,
+ "seed0": 14250,
+ "overrides": {
+  "ZOC_ENABLED": 0,
+  "LONE_RUNNER_RADIUS": 99
+ },
+ "winrate_A": 0.585,
+ "wins": {
+  "NZ-HONEST": 117,
+  "NZ-TURTLE": 83
+ },
+ "win_types": {
+  "golden-goal": 164,
+  "wagons": 22,
+  "rout": 12,
+  "ladder": 2
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 3224,
+ "A": {
+  "rows_total": 824,
+  "rows_per_round": 0.2556,
+  "rows_per_match": 4.12,
+  "pct_matches_with_any_carry": 0.96,
+  "advancing_rounds": 738,
+  "adv_round_share_of_rounds": 0.2289,
+  "cols_per_advancing_round_hist": {
+   "1": 657,
+   "2": 76,
+   "3+": 5
+  },
+  "lone_blocked_total": 0,
+  "lone_blocked_per_match": 0.0
+ },
+ "B": {
+  "rows_total": 336,
+  "rows_per_round": 0.1042,
+  "rows_per_match": 1.68,
+  "pct_matches_with_any_carry": 0.78,
+  "advancing_rounds": 327,
+  "adv_round_share_of_rounds": 0.1014,
+  "cols_per_advancing_round_hist": {
+   "1": 318,
+   "2": 9,
+   "3+": 0
+  },
+  "lone_blocked_total": 0,
+  "lone_blocked_per_match": 0.0
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.795,
+  "reversals_max": 4,
+  "pct_matches_with_2plus_reversals": 0.195
+ },
+ "cell": "zoc=off+radius=99",
+ "elapsed_sec": 3.4
+}

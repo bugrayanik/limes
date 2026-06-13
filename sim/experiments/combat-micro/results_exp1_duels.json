@@ -1,0 +1,506 @@
+{
+ "spear_vs_spear": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 0,
+   "none": 20
+  },
+  "canon_mean_margin": 0.0,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.0,
+  "mean_maximin_B": 0.0
+ },
+ "spear_vs_sword": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 20,
+   "none": 0
+  },
+  "canon_mean_margin": -0.2,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.5,
+  "mean_maximin_A": -0.2,
+  "mean_maximin_B": 0.1
+ },
+ "spear_vs_cav": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 16,
+   "B": 0,
+   "none": 4
+  },
+  "canon_mean_margin": 0.6,
+  "A_secure_win_rate": 0.1,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.025,
+  "mean_maximin_B": -0.025
+ },
+ "spear_vs_archer": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 20,
+   "none": 0
+  },
+  "canon_mean_margin": -1.0,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 1.0,
+  "mean_maximin_A": -0.6667,
+  "mean_maximin_B": 0.6667
+ },
+ "spear_vs_siege": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 20,
+   "none": 0
+  },
+  "canon_mean_margin": -1.0,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.9,
+  "mean_maximin_A": -1.0,
+  "mean_maximin_B": 0.875
+ },
+ "spear_vs_hero": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 20,
+   "none": 0
+  },
+  "canon_mean_margin": -0.7143,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.6,
+  "mean_maximin_A": -0.6571,
+  "mean_maximin_B": 0.4286
+ },
+ "sword_vs_spear": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 20,
+   "B": 0,
+   "none": 0
+  },
+  "canon_mean_margin": 0.2,
+  "A_secure_win_rate": 0.5,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.1,
+  "mean_maximin_B": -0.2
+ },
+ "sword_vs_sword": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 0,
+   "none": 20
+  },
+  "canon_mean_margin": 0.0,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.0,
+  "mean_maximin_B": 0.0
+ },
+ "sword_vs_cav": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 4,
+   "B": 16,
+   "none": 0
+  },
+  "canon_mean_margin": -0.36,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.8,
+  "mean_maximin_A": -0.4,
+  "mean_maximin_B": 0.4
+ },
+ "sword_vs_archer": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 20,
+   "B": 0,
+   "none": 0
+  },
+  "canon_mean_margin": 0.4,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.5,
+  "mean_maximin_A": -0.3333,
+  "mean_maximin_B": 0.1266
+ },
+ "sword_vs_siege": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 2,
+   "B": 18,
+   "none": 0
+  },
+  "canon_mean_margin": -0.84,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.9,
+  "mean_maximin_A": -1.0,
+  "mean_maximin_B": 0.84
+ },
+ "sword_vs_hero": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 12,
+   "none": 8
+  },
+  "canon_mean_margin": -0.2572,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.6,
+  "mean_maximin_A": -0.1715,
+  "mean_maximin_B": 0.1143
+ },
+ "cav_vs_spear": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 16,
+   "none": 4
+  },
+  "canon_mean_margin": -0.6,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.1,
+  "mean_maximin_A": -0.025,
+  "mean_maximin_B": 0.025
+ },
+ "cav_vs_sword": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 16,
+   "B": 4,
+   "none": 0
+  },
+  "canon_mean_margin": 0.36,
+  "A_secure_win_rate": 0.8,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.4,
+  "mean_maximin_B": -0.4
+ },
+ "cav_vs_cav": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 0,
+   "none": 20
+  },
+  "canon_mean_margin": 0.0,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.0,
+  "mean_maximin_B": 0.0
+ },
+ "cav_vs_archer": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 20,
+   "B": 0,
+   "none": 0
+  },
+  "canon_mean_margin": 0.8,
+  "A_secure_win_rate": 1.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.65,
+  "mean_maximin_B": -0.65
+ },
+ "cav_vs_siege": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 14,
+   "B": 6,
+   "none": 0
+  },
+  "canon_mean_margin": 0.2,
+  "A_secure_win_rate": 0.4,
+  "B_secure_win_rate": 0.3,
+  "mean_maximin_A": -0.35,
+  "mean_maximin_B": 0.0
+ },
+ "cav_vs_hero": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 8,
+   "B": 6,
+   "none": 6
+  },
+  "canon_mean_margin": -0.0286,
+  "A_secure_win_rate": 0.4,
+  "B_secure_win_rate": 0.3,
+  "mean_maximin_A": 0.0571,
+  "mean_maximin_B": -0.0571
+ },
+ "archer_vs_spear": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 20,
+   "B": 0,
+   "none": 0
+  },
+  "canon_mean_margin": 1.0,
+  "A_secure_win_rate": 1.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.6667,
+  "mean_maximin_B": -0.6667
+ },
+ "archer_vs_sword": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 10,
+   "none": 10
+  },
+  "canon_mean_margin": -0.3333,
+  "A_secure_win_rate": 0.5,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.1266,
+  "mean_maximin_B": -0.3333
+ },
+ "archer_vs_cav": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 20,
+   "none": 0
+  },
+  "canon_mean_margin": -0.8,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 1.0,
+  "mean_maximin_A": -0.65,
+  "mean_maximin_B": 0.65
+ },
+ "archer_vs_archer": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 0,
+   "none": 20
+  },
+  "canon_mean_margin": 0.0,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.0,
+  "mean_maximin_B": 0.0
+ },
+ "archer_vs_siege": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 20,
+   "none": 0
+  },
+  "canon_mean_margin": -0.6666,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 1.0,
+  "mean_maximin_A": -0.8,
+  "mean_maximin_B": 0.6
+ },
+ "archer_vs_hero": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 20,
+   "none": 0
+  },
+  "canon_mean_margin": -0.7428,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 1.0,
+  "mean_maximin_A": -0.6285,
+  "mean_maximin_B": 0.6285
+ },
+ "siege_vs_spear": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 20,
+   "B": 0,
+   "none": 0
+  },
+  "canon_mean_margin": 1.0,
+  "A_secure_win_rate": 0.9,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.875,
+  "mean_maximin_B": -1.0
+ },
+ "siege_vs_sword": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 18,
+   "B": 2,
+   "none": 0
+  },
+  "canon_mean_margin": 0.84,
+  "A_secure_win_rate": 0.9,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.84,
+  "mean_maximin_B": -1.0
+ },
+ "siege_vs_cav": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 8,
+   "B": 12,
+   "none": 0
+  },
+  "canon_mean_margin": -0.0917,
+  "A_secure_win_rate": 0.4,
+  "B_secure_win_rate": 0.4,
+  "mean_maximin_A": 0.0333,
+  "mean_maximin_B": -0.35
+ },
+ "siege_vs_archer": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 20,
+   "B": 0,
+   "none": 0
+  },
+  "canon_mean_margin": 0.6666,
+  "A_secure_win_rate": 1.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.6,
+  "mean_maximin_B": -0.8
+ },
+ "siege_vs_siege": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 0,
+   "none": 20
+  },
+  "canon_mean_margin": 0.0,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.0,
+  "mean_maximin_B": 0.0
+ },
+ "siege_vs_hero": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 12,
+   "none": 8
+  },
+  "canon_mean_margin": -0.3857,
+  "A_secure_win_rate": 0.4,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.1714,
+  "mean_maximin_B": -1.0
+ },
+ "hero_vs_spear": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 20,
+   "B": 0,
+   "none": 0
+  },
+  "canon_mean_margin": 0.7143,
+  "A_secure_win_rate": 0.6,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.4286,
+  "mean_maximin_B": -0.6571
+ },
+ "hero_vs_sword": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 12,
+   "B": 0,
+   "none": 8
+  },
+  "canon_mean_margin": 0.2572,
+  "A_secure_win_rate": 0.6,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.1143,
+  "mean_maximin_B": -0.1715
+ },
+ "hero_vs_cav": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 6,
+   "B": 8,
+   "none": 6
+  },
+  "canon_mean_margin": 0.0286,
+  "A_secure_win_rate": 0.3,
+  "B_secure_win_rate": 0.4,
+  "mean_maximin_A": -0.0571,
+  "mean_maximin_B": 0.0571
+ },
+ "hero_vs_archer": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 20,
+   "B": 0,
+   "none": 0
+  },
+  "canon_mean_margin": 0.7428,
+  "A_secure_win_rate": 1.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.6285,
+  "mean_maximin_B": -0.6285
+ },
+ "hero_vs_siege": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 12,
+   "B": 0,
+   "none": 8
+  },
+  "canon_mean_margin": 0.3857,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.4,
+  "mean_maximin_A": -1.0,
+  "mean_maximin_B": 0.1714
+ },
+ "hero_vs_hero": {
+  "configs": 10,
+  "runs_canon": 20,
+  "canon_wins": {
+   "A": 0,
+   "B": 0,
+   "none": 20
+  },
+  "canon_mean_margin": 0.0,
+  "A_secure_win_rate": 0.0,
+  "B_secure_win_rate": 0.0,
+  "mean_maximin_A": 0.0,
+  "mean_maximin_B": 0.0
+ }
+}

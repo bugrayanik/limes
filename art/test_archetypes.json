@@ -1,0 +1,7 @@
+[
+  {"name": "test_spearman",  "desc": "ancient tribal spearman warrior, bronze-tipped spear and round wooden shield, leather and fur armor, war paint", "seed": 2001},
+  {"name": "test_swordsman", "desc": "ancient tribal swordsman, short iron sword and tall oval shield, scale armor over tunic, crested helmet", "seed": 2002},
+  {"name": "test_cavalry",   "desc": "ancient tribal cavalry rider mounted on a sturdy warhorse, lance and small shield, cloak flowing, bronze helmet", "seed": 2003},
+  {"name": "test_archer",    "desc": "ancient tribal archer, recurve bow drawn, leather quiver, hooded cloak, light tunic and arm guards", "seed": 2004},
+  {"name": "test_siege",     "desc": "ancient siege engineer crew with a wooden ballista war machine, ropes and iron fittings, two crew members", "seed": 2005}
+]

@@ -1,0 +1,173 @@
+{
+ "label": "baseline",
+ "config": {
+  "n_per_pairing": 120,
+  "pairings": 10,
+  "total": 1200,
+  "seed0": 1,
+  "terrain_base": 500000,
+  "overrides": {}
+ },
+ "pooled": {
+  "n": 1200,
+  "A_decided_r1": 598,
+  "A_converted": 216,
+  "A_conversion": 0.3612,
+  "B_games_with_change_after_r7": 525,
+  "B_rate": 0.4375,
+  "win_types": {
+   "golden-goal": 902,
+   "ladder": 111,
+   "wagons": 161,
+   "rout": 26
+  },
+  "median_rounds": 16.0
+ },
+ "per_pairing": {
+  "HONEST-HONEST": {
+   "n": 120,
+   "A_decided_r1": 77,
+   "A_converted": 35,
+   "A_conversion": 0.4545,
+   "B_games_with_change_after_r7": 63,
+   "B_rate": 0.525,
+   "win_types": {
+    "golden-goal": 96,
+    "ladder": 18,
+    "wagons": 3,
+    "rout": 3
+   },
+   "median_rounds": 16.5
+  },
+  "HONEST-AGGRO": {
+   "n": 120,
+   "A_decided_r1": 69,
+   "A_converted": 25,
+   "A_conversion": 0.3623,
+   "B_games_with_change_after_r7": 45,
+   "B_rate": 0.375,
+   "win_types": {
+    "wagons": 29,
+    "rout": 6,
+    "golden-goal": 73,
+    "ladder": 12
+   },
+   "median_rounds": 16.0
+  },
+  "HONEST-TURTLE": {
+   "n": 120,
+   "A_decided_r1": 109,
+   "A_converted": 30,
+   "A_conversion": 0.2752,
+   "B_games_with_change_after_r7": 37,
+   "B_rate": 0.3083,
+   "win_types": {
+    "golden-goal": 95,
+    "ladder": 10,
+    "wagons": 13,
+    "rout": 2
+   },
+   "median_rounds": 16.0
+  },
+  "HONEST-PROBER": {
+   "n": 120,
+   "A_decided_r1": 109,
+   "A_converted": 28,
+   "A_conversion": 0.2569,
+   "B_games_with_change_after_r7": 31,
+   "B_rate": 0.2583,
+   "win_types": {
+    "golden-goal": 98,
+    "wagons": 17,
+    "ladder": 3,
+    "rout": 2
+   },
+   "median_rounds": 16.0
+  },
+  "AGGRO-AGGRO": {
+   "n": 120,
+   "A_decided_r1": 79,
+   "A_converted": 37,
+   "A_conversion": 0.4684,
+   "B_games_with_change_after_r7": 30,
+   "B_rate": 0.25,
+   "win_types": {
+    "wagons": 61,
+    "rout": 9,
+    "golden-goal": 49,
+    "ladder": 1
+   },
+   "median_rounds": 15.5
+  },
+  "AGGRO-TURTLE": {
+   "n": 120,
+   "A_decided_r1": 80,
+   "A_converted": 34,
+   "A_conversion": 0.425,
+   "B_games_with_change_after_r7": 38,
+   "B_rate": 0.3167,
+   "win_types": {
+    "golden-goal": 94,
+    "wagons": 15,
+    "ladder": 8,
+    "rout": 3
+   },
+   "median_rounds": 16.0
+  },
+  "AGGRO-PROBER": {
+   "n": 120,
+   "A_decided_r1": 75,
+   "A_converted": 27,
+   "A_conversion": 0.36,
+   "B_games_with_change_after_r7": 49,
+   "B_rate": 0.4083,
+   "win_types": {
+    "golden-goal": 91,
+    "wagons": 23,
+    "rout": 1,
+    "ladder": 5
+   },
+   "median_rounds": 16.0
+  },
+  "TURTLE-TURTLE": {
+   "n": 120,
+   "A_decided_r1": 0,
+   "A_converted": 0,
+   "A_conversion": null,
+   "B_games_with_change_after_r7": 71,
+   "B_rate": 0.5917,
+   "win_types": {
+    "golden-goal": 101,
+    "ladder": 19
+   },
+   "median_rounds": 16.0
+  },
+  "TURTLE-PROBER": {
+   "n": 120,
+   "A_decided_r1": 0,
+   "A_converted": 0,
+   "A_conversion": null,
+   "B_games_with_change_after_r7": 93,
+   "B_rate": 0.775,
+   "win_types": {
+    "ladder": 15,
+    "golden-goal": 105
+   },
+   "median_rounds": 16.0
+  },
+  "PROBER-PROBER": {
+   "n": 120,
+   "A_decided_r1": 0,
+   "A_converted": 0,
+   "A_conversion": null,
+   "B_games_with_change_after_r7": 68,
+   "B_rate": 0.5667,
+   "win_types": {
+    "golden-goal": 100,
+    "ladder": 20
+   },
+   "median_rounds": 16.0
+  }
+ },
+ "elapsed_sec": 29.8
+}

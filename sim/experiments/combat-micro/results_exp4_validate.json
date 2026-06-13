@@ -1,0 +1,1126 @@
+{
+ "BASE": {
+  "1v1_spear_vs_cav": {
+   "canon": [
+    16,
+    0,
+    4
+   ],
+   "secA": 0.1,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_archer_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_sword": {
+   "canon": [
+    16,
+    4,
+    0
+   ],
+   "secA": 0.8,
+   "secB": 0.0
+  },
+  "1v1_sword_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.0,
+   "secB": 0.5
+  },
+  "1v1_cav_vs_siege": {
+   "canon": [
+    14,
+    6,
+    0
+   ],
+   "secA": 0.4,
+   "secB": 0.3
+  },
+  "1v1_siege_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.9,
+   "secB": 0.0
+  },
+  "1v1_siege_vs_sword": {
+   "canon": [
+    18,
+    2,
+    0
+   ],
+   "secA": 0.9,
+   "secB": 0.0
+  },
+  "1v1_siege_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_hero_vs_siege": {
+   "canon": [
+    12,
+    0,
+    8
+   ],
+   "secA": 0.0,
+   "secB": 0.4
+  },
+  "1v1_sword_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.5,
+   "secB": 0.0
+  },
+  "1v1_hero_vs_sword": {
+   "canon": [
+    12,
+    0,
+    8
+   ],
+   "secA": 0.6,
+   "secB": 0.0
+  },
+  "3v3_spear_vs_spear": [
+   0,
+   0,
+   4
+  ],
+  "3v3_spear_vs_sword": [
+   2,
+   0,
+   2
+  ],
+  "3v3_spear_vs_cav": [
+   4,
+   0,
+   0
+  ],
+  "3v3_spear_vs_archer": [
+   0,
+   4,
+   0
+  ],
+  "3v3_spear_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_spear": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_sword": [
+   0,
+   0,
+   4
+  ],
+  "3v3_sword_vs_cav": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_archer": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_cav_vs_spear": [
+   0,
+   4,
+   0
+  ],
+  "3v3_cav_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_cav_vs_cav": [
+   0,
+   0,
+   4
+  ],
+  "3v3_cav_vs_archer": [
+   4,
+   0,
+   0
+  ],
+  "3v3_cav_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_archer_vs_spear": [
+   4,
+   0,
+   0
+  ],
+  "3v3_archer_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_archer_vs_cav": [
+   0,
+   4,
+   0
+  ],
+  "3v3_archer_vs_archer": [
+   0,
+   0,
+   4
+  ],
+  "3v3_archer_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_siege_vs_spear": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_cav": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_archer": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_siege": [
+   0,
+   0,
+   4
+  ],
+  "cost_spear6_vs_sword4": [
+   "A",
+   "A"
+  ],
+  "cost_spear6_vs_archer4": [
+   "B",
+   "B"
+  ],
+  "cost_spear6_vs_cav3": [
+   "A",
+   "A"
+  ],
+  "cost_spear6_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_archer4": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_cav3": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_archer4_vs_cav3": [
+   "B",
+   "B"
+  ],
+  "cost_archer4_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_cav3_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "comp_wins": {
+   "spear6": 4,
+   "archer4": 4,
+   "siege2s": 8,
+   "cav3": 4
+  }
+ },
+ "O1_siegeAtk2": {
+  "1v1_spear_vs_cav": {
+   "canon": [
+    16,
+    0,
+    4
+   ],
+   "secA": 0.1,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_archer_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_sword": {
+   "canon": [
+    16,
+    4,
+    0
+   ],
+   "secA": 0.8,
+   "secB": 0.0
+  },
+  "1v1_sword_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.0,
+   "secB": 0.5
+  },
+  "1v1_cav_vs_siege": {
+   "canon": [
+    14,
+    6,
+    0
+   ],
+   "secA": 0.4,
+   "secB": 0.3
+  },
+  "1v1_siege_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.9,
+   "secB": 0.0
+  },
+  "1v1_siege_vs_sword": {
+   "canon": [
+    18,
+    2,
+    0
+   ],
+   "secA": 0.9,
+   "secB": 0.0
+  },
+  "1v1_siege_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_hero_vs_siege": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.0,
+   "secB": 0.4
+  },
+  "1v1_sword_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.5,
+   "secB": 0.0
+  },
+  "1v1_hero_vs_sword": {
+   "canon": [
+    12,
+    0,
+    8
+   ],
+   "secA": 0.6,
+   "secB": 0.0
+  },
+  "3v3_spear_vs_spear": [
+   0,
+   0,
+   4
+  ],
+  "3v3_spear_vs_sword": [
+   2,
+   0,
+   2
+  ],
+  "3v3_spear_vs_cav": [
+   4,
+   0,
+   0
+  ],
+  "3v3_spear_vs_archer": [
+   0,
+   4,
+   0
+  ],
+  "3v3_spear_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_spear": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_sword": [
+   0,
+   0,
+   4
+  ],
+  "3v3_sword_vs_cav": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_archer": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_cav_vs_spear": [
+   0,
+   4,
+   0
+  ],
+  "3v3_cav_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_cav_vs_cav": [
+   0,
+   0,
+   4
+  ],
+  "3v3_cav_vs_archer": [
+   4,
+   0,
+   0
+  ],
+  "3v3_cav_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_archer_vs_spear": [
+   4,
+   0,
+   0
+  ],
+  "3v3_archer_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_archer_vs_cav": [
+   0,
+   4,
+   0
+  ],
+  "3v3_archer_vs_archer": [
+   0,
+   0,
+   4
+  ],
+  "3v3_archer_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_siege_vs_spear": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_cav": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_archer": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_siege": [
+   0,
+   0,
+   4
+  ],
+  "cost_spear6_vs_sword4": [
+   "A",
+   "A"
+  ],
+  "cost_spear6_vs_archer4": [
+   "B",
+   "B"
+  ],
+  "cost_spear6_vs_cav3": [
+   "A",
+   "A"
+  ],
+  "cost_spear6_vs_siege2s": [
+   "N",
+   "N"
+  ],
+  "cost_sword4_vs_archer4": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_cav3": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_archer4_vs_cav3": [
+   "B",
+   "B"
+  ],
+  "cost_archer4_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_cav3_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "comp_wins": {
+   "spear6": 4,
+   "archer4": 4,
+   "cav3": 4,
+   "siege2s": 6
+  }
+ },
+ "O2_swordHp6": {
+  "1v1_spear_vs_cav": {
+   "canon": [
+    16,
+    0,
+    4
+   ],
+   "secA": 0.1,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_archer_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_sword": {
+   "canon": [
+    12,
+    4,
+    4
+   ],
+   "secA": 0.6,
+   "secB": 0.0
+  },
+  "1v1_sword_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.0,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_siege": {
+   "canon": [
+    14,
+    6,
+    0
+   ],
+   "secA": 0.4,
+   "secB": 0.3
+  },
+  "1v1_siege_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.9,
+   "secB": 0.0
+  },
+  "1v1_siege_vs_sword": {
+   "canon": [
+    18,
+    2,
+    0
+   ],
+   "secA": 0.9,
+   "secB": 0.0
+  },
+  "1v1_siege_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_hero_vs_siege": {
+   "canon": [
+    12,
+    0,
+    8
+   ],
+   "secA": 0.0,
+   "secB": 0.4
+  },
+  "1v1_sword_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.5,
+   "secB": 0.0
+  },
+  "1v1_hero_vs_sword": {
+   "canon": [
+    12,
+    0,
+    8
+   ],
+   "secA": 0.6,
+   "secB": 0.0
+  },
+  "3v3_spear_vs_spear": [
+   0,
+   0,
+   4
+  ],
+  "3v3_spear_vs_sword": [
+   2,
+   0,
+   2
+  ],
+  "3v3_spear_vs_cav": [
+   4,
+   0,
+   0
+  ],
+  "3v3_spear_vs_archer": [
+   0,
+   4,
+   0
+  ],
+  "3v3_spear_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_spear": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_sword": [
+   0,
+   0,
+   4
+  ],
+  "3v3_sword_vs_cav": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_archer": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_cav_vs_spear": [
+   0,
+   4,
+   0
+  ],
+  "3v3_cav_vs_sword": [
+   2,
+   0,
+   2
+  ],
+  "3v3_cav_vs_cav": [
+   0,
+   0,
+   4
+  ],
+  "3v3_cav_vs_archer": [
+   4,
+   0,
+   0
+  ],
+  "3v3_cav_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_archer_vs_spear": [
+   4,
+   0,
+   0
+  ],
+  "3v3_archer_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_archer_vs_cav": [
+   0,
+   4,
+   0
+  ],
+  "3v3_archer_vs_archer": [
+   0,
+   0,
+   4
+  ],
+  "3v3_archer_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_siege_vs_spear": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_cav": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_archer": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_siege": [
+   0,
+   0,
+   4
+  ],
+  "cost_spear6_vs_sword4": [
+   "A",
+   "A"
+  ],
+  "cost_spear6_vs_archer4": [
+   "B",
+   "B"
+  ],
+  "cost_spear6_vs_cav3": [
+   "A",
+   "A"
+  ],
+  "cost_spear6_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_archer4": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_cav3": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_archer4_vs_cav3": [
+   "B",
+   "B"
+  ],
+  "cost_archer4_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_cav3_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "comp_wins": {
+   "spear6": 4,
+   "archer4": 4,
+   "siege2s": 8,
+   "cav3": 4
+  }
+ },
+ "O3_both": {
+  "1v1_spear_vs_cav": {
+   "canon": [
+    16,
+    0,
+    4
+   ],
+   "secA": 0.1,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_archer_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_sword": {
+   "canon": [
+    12,
+    4,
+    4
+   ],
+   "secA": 0.6,
+   "secB": 0.0
+  },
+  "1v1_sword_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.0,
+   "secB": 0.0
+  },
+  "1v1_cav_vs_siege": {
+   "canon": [
+    14,
+    6,
+    0
+   ],
+   "secA": 0.4,
+   "secB": 0.3
+  },
+  "1v1_siege_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.9,
+   "secB": 0.0
+  },
+  "1v1_siege_vs_sword": {
+   "canon": [
+    18,
+    2,
+    0
+   ],
+   "secA": 0.9,
+   "secB": 0.0
+  },
+  "1v1_siege_vs_archer": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 1.0,
+   "secB": 0.0
+  },
+  "1v1_hero_vs_siege": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.0,
+   "secB": 0.4
+  },
+  "1v1_sword_vs_spear": {
+   "canon": [
+    20,
+    0,
+    0
+   ],
+   "secA": 0.5,
+   "secB": 0.0
+  },
+  "1v1_hero_vs_sword": {
+   "canon": [
+    12,
+    0,
+    8
+   ],
+   "secA": 0.6,
+   "secB": 0.0
+  },
+  "3v3_spear_vs_spear": [
+   0,
+   0,
+   4
+  ],
+  "3v3_spear_vs_sword": [
+   2,
+   0,
+   2
+  ],
+  "3v3_spear_vs_cav": [
+   4,
+   0,
+   0
+  ],
+  "3v3_spear_vs_archer": [
+   0,
+   4,
+   0
+  ],
+  "3v3_spear_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_spear": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_sword": [
+   0,
+   0,
+   4
+  ],
+  "3v3_sword_vs_cav": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_archer": [
+   0,
+   4,
+   0
+  ],
+  "3v3_sword_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_cav_vs_spear": [
+   0,
+   4,
+   0
+  ],
+  "3v3_cav_vs_sword": [
+   2,
+   0,
+   2
+  ],
+  "3v3_cav_vs_cav": [
+   0,
+   0,
+   4
+  ],
+  "3v3_cav_vs_archer": [
+   4,
+   0,
+   0
+  ],
+  "3v3_cav_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_archer_vs_spear": [
+   4,
+   0,
+   0
+  ],
+  "3v3_archer_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_archer_vs_cav": [
+   0,
+   4,
+   0
+  ],
+  "3v3_archer_vs_archer": [
+   0,
+   0,
+   4
+  ],
+  "3v3_archer_vs_siege": [
+   0,
+   4,
+   0
+  ],
+  "3v3_siege_vs_spear": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_sword": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_cav": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_archer": [
+   4,
+   0,
+   0
+  ],
+  "3v3_siege_vs_siege": [
+   0,
+   0,
+   4
+  ],
+  "cost_spear6_vs_sword4": [
+   "A",
+   "A"
+  ],
+  "cost_spear6_vs_archer4": [
+   "B",
+   "B"
+  ],
+  "cost_spear6_vs_cav3": [
+   "A",
+   "A"
+  ],
+  "cost_spear6_vs_siege2s": [
+   "N",
+   "N"
+  ],
+  "cost_sword4_vs_archer4": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_cav3": [
+   "B",
+   "B"
+  ],
+  "cost_sword4_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_archer4_vs_cav3": [
+   "B",
+   "B"
+  ],
+  "cost_archer4_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "cost_cav3_vs_siege2s": [
+   "B",
+   "B"
+  ],
+  "comp_wins": {
+   "spear6": 4,
+   "archer4": 4,
+   "cav3": 4,
+   "siege2s": 6
+  }
+ }
+}

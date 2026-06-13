@@ -1,0 +1,89 @@
+[
+ {
+  "overrides": {
+   "EXHAUSTION_START_ROUND": 8,
+   "EXHAUSTION_ACCEL_ROUND": 9,
+   "BREACH_CAP": 3,
+   "BREACH_CAP_LATE": 4,
+   "BREACH_CAP_RISE_ROUND": 9,
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 1200,
+   "A_decided_r1": 598,
+   "A_converted": 262,
+   "A_conversion": 0.4381,
+   "B_games_with_change_after_r7": 371,
+   "B_rate": 0.3092,
+   "win_types": {
+    "golden-goal": 747,
+    "wagons": 227,
+    "ladder": 209,
+    "rout": 17
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1119
+ },
+ {
+  "overrides": {
+   "EXHAUSTION_START_ROUND": 8,
+   "EXHAUSTION_ACCEL_ROUND": 9,
+   "BREACH_CAP": 3,
+   "BREACH_CAP_LATE": 4,
+   "BREACH_CAP_RISE_ROUND": 9,
+   "SUPPLY_STRAIN_CROP": 4,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 1200,
+   "A_decided_r1": 598,
+   "A_converted": 259,
+   "A_conversion": 0.4331,
+   "B_games_with_change_after_r7": 390,
+   "B_rate": 0.325,
+   "win_types": {
+    "golden-goal": 766,
+    "ladder": 188,
+    "wagons": 234,
+    "rout": 12
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1169
+ },
+ {
+  "overrides": {
+   "EXHAUSTION_START_ROUND": 8,
+   "EXHAUSTION_ACCEL_ROUND": 9,
+   "BREACH_CAP": 3,
+   "BREACH_CAP_LATE": 4,
+   "BREACH_CAP_RISE_ROUND": 9,
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 8,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 1200,
+   "A_decided_r1": 598,
+   "A_converted": 254,
+   "A_conversion": 0.4247,
+   "B_games_with_change_after_r7": 327,
+   "B_rate": 0.2725,
+   "win_types": {
+    "golden-goal": 771,
+    "ladder": 221,
+    "wagons": 199,
+    "rout": 9
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1253
+ }
+]

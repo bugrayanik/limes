@@ -1,0 +1,1533 @@
+{
+ "trib2": {
+  "overrides": {
+   "TRIBUTE_PER_ROW": 2
+  },
+  "scorecard": {
+   "C_worst_pairing": "flat|HONEST_vs_PROBER=0.772",
+   "C_pairings_outside_45_55": 4,
+   "D_median_round_all": 16.0,
+   "D_median_round_wagons_rout": 14.0,
+   "D_wagons_rout_share": 0.1636,
+   "D_golden_goal_share": 0.7308,
+   "D_ladder_share": 0.1056,
+   "win_types": {
+    "ladder": 528,
+    "golden-goal": 3654,
+    "wagons": 698,
+    "rout": 120
+   }
+  },
+  "per_pairing": {
+   "flat|HONEST_vs_HONEST": {
+    "n": 500,
+    "winrate_A": 0.494,
+    "win_types": {
+     "ladder": 70,
+     "golden-goal": 404,
+     "wagons": 18,
+     "rout": 8
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.11,
+    "rounds_min": 10,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.052,
+    "golden_goal_share": 0.808,
+    "ladder_share": 0.14,
+    "r1_conversion": 0.505,
+    "lead_change_after_r7_rate": 0.518
+   },
+   "flat|HONEST_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.464,
+    "win_types": {
+     "golden-goal": 286,
+     "wagons": 121,
+     "ladder": 76,
+     "rout": 17
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.43,
+    "rounds_min": 7,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14.0,
+    "wagons_or_rout_share": 0.276,
+    "golden_goal_share": 0.572,
+    "ladder_share": 0.152,
+    "r1_conversion": 0.4269,
+    "lead_change_after_r7_rate": 0.294
+   },
+   "flat|HONEST_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.742,
+    "win_types": {
+     "golden-goal": 410,
+     "ladder": 49,
+     "wagons": 27,
+     "rout": 14
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.79,
+    "rounds_min": 10,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15,
+    "wagons_or_rout_share": 0.082,
+    "golden_goal_share": 0.82,
+    "ladder_share": 0.098,
+    "r1_conversion": 0.258,
+    "lead_change_after_r7_rate": 0.272
+   },
+   "flat|HONEST_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.772,
+    "win_types": {
+     "golden-goal": 377,
+     "wagons": 97,
+     "ladder": 21,
+     "rout": 5
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.4,
+    "rounds_min": 13,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.204,
+    "golden_goal_share": 0.754,
+    "ladder_share": 0.042,
+    "r1_conversion": 0.228,
+    "lead_change_after_r7_rate": 0.3
+   },
+   "flat|AGGRO_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.532,
+    "win_types": {
+     "wagons": 214,
+     "rout": 43,
+     "golden-goal": 228,
+     "ladder": 15
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 14.24,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 12,
+    "wagons_or_rout_share": 0.514,
+    "golden_goal_share": 0.456,
+    "ladder_share": 0.03,
+    "r1_conversion": 0.4076,
+    "lead_change_after_r7_rate": 0.262
+   },
+   "flat|AGGRO_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.562,
+    "win_types": {
+     "wagons": 113,
+     "golden-goal": 326,
+     "ladder": 43,
+     "rout": 18
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.09,
+    "rounds_min": 7,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14,
+    "wagons_or_rout_share": 0.262,
+    "golden_goal_share": 0.652,
+    "ladder_share": 0.086,
+    "r1_conversion": 0.4294,
+    "lead_change_after_r7_rate": 0.296
+   },
+   "flat|AGGRO_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.502,
+    "win_types": {
+     "rout": 15,
+     "golden-goal": 354,
+     "wagons": 107,
+     "ladder": 24
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.2,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14.0,
+    "wagons_or_rout_share": 0.244,
+    "golden_goal_share": 0.708,
+    "ladder_share": 0.048,
+    "r1_conversion": 0.4837,
+    "lead_change_after_r7_rate": 0.332
+   },
+   "flat|TURTLE_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.528,
+    "win_types": {
+     "golden-goal": 391,
+     "ladder": 109
+    },
+    "rounds_median": 17.0,
+    "rounds_mean": 17.57,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": null,
+    "wagons_or_rout_share": 0.0,
+    "golden_goal_share": 0.782,
+    "ladder_share": 0.218,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.608
+   },
+   "flat|TURTLE_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.594,
+    "win_types": {
+     "golden-goal": 430,
+     "ladder": 70
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.05,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": null,
+    "wagons_or_rout_share": 0.0,
+    "golden_goal_share": 0.86,
+    "ladder_share": 0.14,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.766
+   },
+   "flat|PROBER_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.49,
+    "win_types": {
+     "golden-goal": 448,
+     "ladder": 51,
+     "wagons": 1
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.71,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16,
+    "wagons_or_rout_share": 0.002,
+    "golden_goal_share": 0.896,
+    "ladder_share": 0.102,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.62
+   }
+  }
+ },
+ "strain2": {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2
+  },
+  "scorecard": {
+   "C_worst_pairing": "flat|HONEST_vs_PROBER=0.760",
+   "C_pairings_outside_45_55": 4,
+   "D_median_round_all": 16.0,
+   "D_median_round_wagons_rout": 14,
+   "D_wagons_rout_share": 0.1582,
+   "D_golden_goal_share": 0.732,
+   "D_ladder_share": 0.1098,
+   "win_types": {
+    "golden-goal": 3660,
+    "ladder": 549,
+    "wagons": 685,
+    "rout": 106
+   }
+  },
+  "per_pairing": {
+   "flat|HONEST_vs_HONEST": {
+    "n": 500,
+    "winrate_A": 0.514,
+    "win_types": {
+     "golden-goal": 386,
+     "ladder": 87,
+     "wagons": 18,
+     "rout": 9
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.31,
+    "rounds_min": 10,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15,
+    "wagons_or_rout_share": 0.054,
+    "golden_goal_share": 0.772,
+    "ladder_share": 0.174,
+    "r1_conversion": 0.4917,
+    "lead_change_after_r7_rate": 0.6
+   },
+   "flat|HONEST_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.53,
+    "win_types": {
+     "golden-goal": 267,
+     "wagons": 148,
+     "ladder": 60,
+     "rout": 25
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.15,
+    "rounds_min": 7,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14,
+    "wagons_or_rout_share": 0.346,
+    "golden_goal_share": 0.534,
+    "ladder_share": 0.12,
+    "r1_conversion": 0.3808,
+    "lead_change_after_r7_rate": 0.344
+   },
+   "flat|HONEST_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.704,
+    "win_types": {
+     "golden-goal": 425,
+     "ladder": 45,
+     "wagons": 20,
+     "rout": 10
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.87,
+    "rounds_min": 10,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.5,
+    "wagons_or_rout_share": 0.06,
+    "golden_goal_share": 0.85,
+    "ladder_share": 0.09,
+    "r1_conversion": 0.296,
+    "lead_change_after_r7_rate": 0.238
+   },
+   "flat|HONEST_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.76,
+    "win_types": {
+     "golden-goal": 399,
+     "ladder": 17,
+     "wagons": 80,
+     "rout": 4
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.39,
+    "rounds_min": 12,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16.0,
+    "wagons_or_rout_share": 0.168,
+    "golden_goal_share": 0.798,
+    "ladder_share": 0.034,
+    "r1_conversion": 0.24,
+    "lead_change_after_r7_rate": 0.276
+   },
+   "flat|AGGRO_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.522,
+    "win_types": {
+     "golden-goal": 193,
+     "wagons": 250,
+     "rout": 30,
+     "ladder": 27
+    },
+    "rounds_median": 15.0,
+    "rounds_mean": 13.68,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 11.0,
+    "wagons_or_rout_share": 0.56,
+    "golden_goal_share": 0.386,
+    "ladder_share": 0.054,
+    "r1_conversion": 0.4457,
+    "lead_change_after_r7_rate": 0.23
+   },
+   "flat|AGGRO_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.444,
+    "win_types": {
+     "wagons": 76,
+     "golden-goal": 360,
+     "ladder": 51,
+     "rout": 13
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.52,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14,
+    "wagons_or_rout_share": 0.178,
+    "golden_goal_share": 0.72,
+    "ladder_share": 0.102,
+    "r1_conversion": 0.4174,
+    "lead_change_after_r7_rate": 0.332
+   },
+   "flat|AGGRO_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.474,
+    "win_types": {
+     "wagons": 92,
+     "golden-goal": 359,
+     "rout": 15,
+     "ladder": 34
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.21,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14,
+    "wagons_or_rout_share": 0.214,
+    "golden_goal_share": 0.718,
+    "ladder_share": 0.068,
+    "r1_conversion": 0.4392,
+    "lead_change_after_r7_rate": 0.352
+   },
+   "flat|TURTLE_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.52,
+    "win_types": {
+     "golden-goal": 385,
+     "ladder": 115
+    },
+    "rounds_median": 17.0,
+    "rounds_mean": 17.62,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": null,
+    "wagons_or_rout_share": 0.0,
+    "golden_goal_share": 0.77,
+    "ladder_share": 0.23,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.594
+   },
+   "flat|TURTLE_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.59,
+    "win_types": {
+     "golden-goal": 437,
+     "ladder": 63
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.01,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": null,
+    "wagons_or_rout_share": 0.0,
+    "golden_goal_share": 0.874,
+    "ladder_share": 0.126,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.756
+   },
+   "flat|PROBER_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.476,
+    "win_types": {
+     "golden-goal": 449,
+     "ladder": 50,
+     "wagons": 1
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.7,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16,
+    "wagons_or_rout_share": 0.002,
+    "golden_goal_share": 0.898,
+    "ladder_share": 0.1,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.61
+   }
+  }
+ },
+ "trib2_strain2": {
+  "overrides": {
+   "TRIBUTE_PER_ROW": 2,
+   "SUPPLY_STRAIN_CROP": 2
+  },
+  "scorecard": {
+   "C_worst_pairing": "flat|HONEST_vs_TURTLE=0.728",
+   "C_pairings_outside_45_55": 3,
+   "D_median_round_all": 16.0,
+   "D_median_round_wagons_rout": 14.0,
+   "D_wagons_rout_share": 0.1688,
+   "D_golden_goal_share": 0.717,
+   "D_ladder_share": 0.1142,
+   "win_types": {
+    "golden-goal": 3585,
+    "wagons": 725,
+    "ladder": 571,
+    "rout": 119
+   }
+  },
+  "per_pairing": {
+   "flat|HONEST_vs_HONEST": {
+    "n": 500,
+    "winrate_A": 0.48,
+    "win_types": {
+     "golden-goal": 377,
+     "wagons": 21,
+     "ladder": 91,
+     "rout": 11
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.26,
+    "rounds_min": 10,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.064,
+    "golden_goal_share": 0.754,
+    "ladder_share": 0.182,
+    "r1_conversion": 0.5316,
+    "lead_change_after_r7_rate": 0.6
+   },
+   "flat|HONEST_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.478,
+    "win_types": {
+     "golden-goal": 260,
+     "wagons": 154,
+     "ladder": 64,
+     "rout": 22
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.07,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14.0,
+    "wagons_or_rout_share": 0.352,
+    "golden_goal_share": 0.52,
+    "ladder_share": 0.128,
+    "r1_conversion": 0.4269,
+    "lead_change_after_r7_rate": 0.328
+   },
+   "flat|HONEST_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.728,
+    "win_types": {
+     "golden-goal": 395,
+     "ladder": 59,
+     "wagons": 30,
+     "rout": 16
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.93,
+    "rounds_min": 10,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16.0,
+    "wagons_or_rout_share": 0.092,
+    "golden_goal_share": 0.79,
+    "ladder_share": 0.118,
+    "r1_conversion": 0.272,
+    "lead_change_after_r7_rate": 0.286
+   },
+   "flat|HONEST_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.722,
+    "win_types": {
+     "wagons": 74,
+     "golden-goal": 403,
+     "ladder": 19,
+     "rout": 4
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.45,
+    "rounds_min": 12,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16.0,
+    "wagons_or_rout_share": 0.156,
+    "golden_goal_share": 0.806,
+    "ladder_share": 0.038,
+    "r1_conversion": 0.278,
+    "lead_change_after_r7_rate": 0.326
+   },
+   "flat|AGGRO_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.486,
+    "win_types": {
+     "golden-goal": 199,
+     "wagons": 239,
+     "rout": 36,
+     "ladder": 26
+    },
+    "rounds_median": 15.0,
+    "rounds_mean": 14.02,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 12,
+    "wagons_or_rout_share": 0.55,
+    "golden_goal_share": 0.398,
+    "ladder_share": 0.052,
+    "r1_conversion": 0.4194,
+    "lead_change_after_r7_rate": 0.27
+   },
+   "flat|AGGRO_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.496,
+    "win_types": {
+     "wagons": 91,
+     "golden-goal": 345,
+     "ladder": 51,
+     "rout": 13
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.5,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.208,
+    "golden_goal_share": 0.69,
+    "ladder_share": 0.102,
+    "r1_conversion": 0.4324,
+    "lead_change_after_r7_rate": 0.342
+   },
+   "flat|AGGRO_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.496,
+    "win_types": {
+     "wagons": 115,
+     "golden-goal": 339,
+     "rout": 17,
+     "ladder": 29
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 15.97,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14.0,
+    "wagons_or_rout_share": 0.264,
+    "golden_goal_share": 0.678,
+    "ladder_share": 0.058,
+    "r1_conversion": 0.4955,
+    "lead_change_after_r7_rate": 0.364
+   },
+   "flat|TURTLE_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.518,
+    "win_types": {
+     "golden-goal": 385,
+     "ladder": 115
+    },
+    "rounds_median": 17.0,
+    "rounds_mean": 17.6,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": null,
+    "wagons_or_rout_share": 0.0,
+    "golden_goal_share": 0.77,
+    "ladder_share": 0.23,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.608
+   },
+   "flat|TURTLE_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.594,
+    "win_types": {
+     "ladder": 66,
+     "golden-goal": 434
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.02,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": null,
+    "wagons_or_rout_share": 0.0,
+    "golden_goal_share": 0.868,
+    "ladder_share": 0.132,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.764
+   },
+   "flat|PROBER_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.476,
+    "win_types": {
+     "golden-goal": 448,
+     "ladder": 51,
+     "wagons": 1
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.69,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16,
+    "wagons_or_rout_share": 0.002,
+    "golden_goal_share": 0.896,
+    "ladder_share": 0.102,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.622
+   }
+  }
+ },
+ "exh14": {
+  "overrides": {
+   "EXHAUSTION_START_ROUND": 14,
+   "EXHAUSTION_ACCEL_ROUND": 15
+  },
+  "scorecard": {
+   "C_worst_pairing": "flat|HONEST_vs_PROBER=0.798",
+   "C_pairings_outside_45_55": 3,
+   "D_median_round_all": 16.0,
+   "D_median_round_wagons_rout": 14.0,
+   "D_wagons_rout_share": 0.1436,
+   "D_golden_goal_share": 0.7402,
+   "D_ladder_share": 0.1162,
+   "win_types": {
+    "golden-goal": 3701,
+    "ladder": 581,
+    "rout": 130,
+    "wagons": 588
+   }
+  },
+  "per_pairing": {
+   "flat|HONEST_vs_HONEST": {
+    "n": 500,
+    "winrate_A": 0.496,
+    "win_types": {
+     "golden-goal": 379,
+     "ladder": 102,
+     "rout": 10,
+     "wagons": 9
+    },
+    "rounds_median": 17.0,
+    "rounds_mean": 17.44,
+    "rounds_min": 10,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15,
+    "wagons_or_rout_share": 0.038,
+    "golden_goal_share": 0.758,
+    "ladder_share": 0.204,
+    "r1_conversion": 0.5216,
+    "lead_change_after_r7_rate": 0.564
+   },
+   "flat|HONEST_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.53,
+    "win_types": {
+     "golden-goal": 318,
+     "ladder": 50,
+     "rout": 20,
+     "wagons": 112
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.19,
+    "rounds_min": 7,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14.0,
+    "wagons_or_rout_share": 0.264,
+    "golden_goal_share": 0.636,
+    "ladder_share": 0.1,
+    "r1_conversion": 0.4692,
+    "lead_change_after_r7_rate": 0.346
+   },
+   "flat|HONEST_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.662,
+    "win_types": {
+     "golden-goal": 425,
+     "wagons": 4,
+     "ladder": 57,
+     "rout": 14
+    },
+    "rounds_median": 17.0,
+    "rounds_mean": 17.28,
+    "rounds_min": 10,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14.0,
+    "wagons_or_rout_share": 0.036,
+    "golden_goal_share": 0.85,
+    "ladder_share": 0.114,
+    "r1_conversion": 0.338,
+    "lead_change_after_r7_rate": 0.256
+   },
+   "flat|HONEST_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.798,
+    "win_types": {
+     "golden-goal": 400,
+     "wagons": 57,
+     "ladder": 36,
+     "rout": 7
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.83,
+    "rounds_min": 13,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16.0,
+    "wagons_or_rout_share": 0.128,
+    "golden_goal_share": 0.8,
+    "ladder_share": 0.072,
+    "r1_conversion": 0.202,
+    "lead_change_after_r7_rate": 0.26
+   },
+   "flat|AGGRO_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.51,
+    "win_types": {
+     "wagons": 231,
+     "golden-goal": 211,
+     "rout": 46,
+     "ladder": 12
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 14.19,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 12,
+    "wagons_or_rout_share": 0.554,
+    "golden_goal_share": 0.422,
+    "ladder_share": 0.024,
+    "r1_conversion": 0.4839,
+    "lead_change_after_r7_rate": 0.308
+   },
+   "flat|AGGRO_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.53,
+    "win_types": {
+     "golden-goal": 353,
+     "wagons": 95,
+     "ladder": 36,
+     "rout": 16
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.22,
+    "rounds_min": 7,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14,
+    "wagons_or_rout_share": 0.222,
+    "golden_goal_share": 0.706,
+    "ladder_share": 0.072,
+    "r1_conversion": 0.4685,
+    "lead_change_after_r7_rate": 0.318
+   },
+   "flat|AGGRO_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.496,
+    "win_types": {
+     "golden-goal": 385,
+     "wagons": 80,
+     "ladder": 18,
+     "rout": 17
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.13,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 14,
+    "wagons_or_rout_share": 0.194,
+    "golden_goal_share": 0.77,
+    "ladder_share": 0.036,
+    "r1_conversion": 0.5727,
+    "lead_change_after_r7_rate": 0.35
+   },
+   "flat|TURTLE_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.488,
+    "win_types": {
+     "ladder": 134,
+     "golden-goal": 366
+    },
+    "rounds_median": 18.0,
+    "rounds_mean": 18.11,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": null,
+    "wagons_or_rout_share": 0.0,
+    "golden_goal_share": 0.732,
+    "ladder_share": 0.268,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.806
+   },
+   "flat|TURTLE_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.58,
+    "win_types": {
+     "golden-goal": 412,
+     "ladder": 88
+    },
+    "rounds_median": 17.0,
+    "rounds_mean": 17.59,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": null,
+    "wagons_or_rout_share": 0.0,
+    "golden_goal_share": 0.824,
+    "ladder_share": 0.176,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.822
+   },
+   "flat|PROBER_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.522,
+    "win_types": {
+     "ladder": 48,
+     "golden-goal": 452
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.02,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": null,
+    "wagons_or_rout_share": 0.0,
+    "golden_goal_share": 0.904,
+    "ladder_share": 0.096,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.646
+   }
+  }
+ },
+ "wagonhp2": {
+  "overrides": {
+   "WAGON_HP": 2
+  },
+  "scorecard": {
+   "C_worst_pairing": "flat|HONEST_vs_PROBER=0.782",
+   "C_pairings_outside_45_55": 4,
+   "D_median_round_all": 16.0,
+   "D_median_round_wagons_rout": 14.0,
+   "D_wagons_rout_share": 0.3028,
+   "D_golden_goal_share": 0.5966,
+   "D_ladder_share": 0.1006,
+   "win_types": {
+    "golden-goal": 2983,
+    "rout": 151,
+    "wagons": 1363,
+    "ladder": 503
+   }
+  },
+  "per_pairing": {
+   "flat|HONEST_vs_HONEST": {
+    "n": 500,
+    "winrate_A": 0.502,
+    "win_types": {
+     "golden-goal": 315,
+     "rout": 22,
+     "wagons": 84,
+     "ladder": 79
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.11,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.212,
+    "golden_goal_share": 0.63,
+    "ladder_share": 0.158,
+    "r1_conversion": 0.5216,
+    "lead_change_after_r7_rate": 0.552
+   },
+   "flat|HONEST_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.504,
+    "win_types": {
+     "wagons": 224,
+     "ladder": 50,
+     "golden-goal": 200,
+     "rout": 26
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 15.12,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 13.0,
+    "wagons_or_rout_share": 0.5,
+    "golden_goal_share": 0.4,
+    "ladder_share": 0.1,
+    "r1_conversion": 0.3692,
+    "lead_change_after_r7_rate": 0.302
+   },
+   "flat|HONEST_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.77,
+    "win_types": {
+     "golden-goal": 335,
+     "wagons": 97,
+     "ladder": 51,
+     "rout": 17
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.66,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.228,
+    "golden_goal_share": 0.67,
+    "ladder_share": 0.102,
+    "r1_conversion": 0.23,
+    "lead_change_after_r7_rate": 0.202
+   },
+   "flat|HONEST_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.782,
+    "win_types": {
+     "golden-goal": 295,
+     "wagons": 168,
+     "ladder": 22,
+     "rout": 15
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.1,
+    "rounds_min": 11,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15,
+    "wagons_or_rout_share": 0.366,
+    "golden_goal_share": 0.59,
+    "ladder_share": 0.044,
+    "r1_conversion": 0.218,
+    "lead_change_after_r7_rate": 0.25
+   },
+   "flat|AGGRO_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.502,
+    "win_types": {
+     "golden-goal": 128,
+     "wagons": 329,
+     "ladder": 12,
+     "rout": 31
+    },
+    "rounds_median": 12.0,
+    "rounds_mean": 12.04,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 10.0,
+    "wagons_or_rout_share": 0.72,
+    "golden_goal_share": 0.256,
+    "ladder_share": 0.024,
+    "r1_conversion": 0.5249,
+    "lead_change_after_r7_rate": 0.272
+   },
+   "flat|AGGRO_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.538,
+    "win_types": {
+     "wagons": 181,
+     "golden-goal": 257,
+     "ladder": 38,
+     "rout": 24
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 15.43,
+    "rounds_min": 6,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 13,
+    "wagons_or_rout_share": 0.41,
+    "golden_goal_share": 0.514,
+    "ladder_share": 0.076,
+    "r1_conversion": 0.4384,
+    "lead_change_after_r7_rate": 0.31
+   },
+   "flat|AGGRO_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.56,
+    "win_types": {
+     "wagons": 208,
+     "golden-goal": 254,
+     "ladder": 22,
+     "rout": 16
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 15.19,
+    "rounds_min": 6,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 13.0,
+    "wagons_or_rout_share": 0.448,
+    "golden_goal_share": 0.508,
+    "ladder_share": 0.044,
+    "r1_conversion": 0.4214,
+    "lead_change_after_r7_rate": 0.324
+   },
+   "flat|TURTLE_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.536,
+    "win_types": {
+     "golden-goal": 387,
+     "ladder": 110,
+     "wagons": 3
+    },
+    "rounds_median": 17.0,
+    "rounds_mean": 17.58,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16,
+    "wagons_or_rout_share": 0.006,
+    "golden_goal_share": 0.774,
+    "ladder_share": 0.22,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.598
+   },
+   "flat|TURTLE_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.586,
+    "win_types": {
+     "golden-goal": 420,
+     "ladder": 68,
+     "wagons": 12
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.03,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16.0,
+    "wagons_or_rout_share": 0.024,
+    "golden_goal_share": 0.84,
+    "ladder_share": 0.136,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.758
+   },
+   "flat|PROBER_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.48,
+    "win_types": {
+     "wagons": 57,
+     "golden-goal": 392,
+     "ladder": 51
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.7,
+    "rounds_min": 15,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16,
+    "wagons_or_rout_share": 0.114,
+    "golden_goal_share": 0.784,
+    "ladder_share": 0.102,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.614
+   }
+  }
+ },
+ "wagonhp2_breach3": {
+  "overrides": {
+   "WAGON_HP": 2,
+   "BREACH_CAP": 3,
+   "BREACH_CAP_LATE": 4,
+   "BREACH_CAP_RISE_ROUND": 11
+  },
+  "scorecard": {
+   "C_worst_pairing": "flat|HONEST_vs_PROBER=0.782",
+   "C_pairings_outside_45_55": 4,
+   "D_median_round_all": 16.0,
+   "D_median_round_wagons_rout": 14.0,
+   "D_wagons_rout_share": 0.3048,
+   "D_golden_goal_share": 0.5948,
+   "D_ladder_share": 0.1004,
+   "win_types": {
+    "golden-goal": 2974,
+    "rout": 148,
+    "wagons": 1376,
+    "ladder": 502
+   }
+  },
+  "per_pairing": {
+   "flat|HONEST_vs_HONEST": {
+    "n": 500,
+    "winrate_A": 0.502,
+    "win_types": {
+     "golden-goal": 315,
+     "rout": 22,
+     "wagons": 84,
+     "ladder": 79
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.11,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.212,
+    "golden_goal_share": 0.63,
+    "ladder_share": 0.158,
+    "r1_conversion": 0.5216,
+    "lead_change_after_r7_rate": 0.552
+   },
+   "flat|HONEST_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.504,
+    "win_types": {
+     "wagons": 230,
+     "ladder": 48,
+     "golden-goal": 197,
+     "rout": 25
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 15.0,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 13,
+    "wagons_or_rout_share": 0.51,
+    "golden_goal_share": 0.394,
+    "ladder_share": 0.096,
+    "r1_conversion": 0.3692,
+    "lead_change_after_r7_rate": 0.304
+   },
+   "flat|HONEST_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.77,
+    "win_types": {
+     "golden-goal": 335,
+     "wagons": 97,
+     "ladder": 51,
+     "rout": 17
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.66,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.228,
+    "golden_goal_share": 0.67,
+    "ladder_share": 0.102,
+    "r1_conversion": 0.23,
+    "lead_change_after_r7_rate": 0.202
+   },
+   "flat|HONEST_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.782,
+    "win_types": {
+     "golden-goal": 295,
+     "wagons": 168,
+     "ladder": 22,
+     "rout": 15
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.08,
+    "rounds_min": 11,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15,
+    "wagons_or_rout_share": 0.366,
+    "golden_goal_share": 0.59,
+    "ladder_share": 0.044,
+    "r1_conversion": 0.218,
+    "lead_change_after_r7_rate": 0.25
+   },
+   "flat|AGGRO_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.508,
+    "win_types": {
+     "golden-goal": 128,
+     "wagons": 332,
+     "ladder": 11,
+     "rout": 29
+    },
+    "rounds_median": 12.0,
+    "rounds_mean": 11.91,
+    "rounds_min": 4,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 10,
+    "wagons_or_rout_share": 0.722,
+    "golden_goal_share": 0.256,
+    "ladder_share": 0.022,
+    "r1_conversion": 0.5249,
+    "lead_change_after_r7_rate": 0.266
+   },
+   "flat|AGGRO_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.54,
+    "win_types": {
+     "wagons": 183,
+     "golden-goal": 254,
+     "ladder": 39,
+     "rout": 24
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 15.38,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 13,
+    "wagons_or_rout_share": 0.414,
+    "golden_goal_share": 0.508,
+    "ladder_share": 0.078,
+    "r1_conversion": 0.4414,
+    "lead_change_after_r7_rate": 0.31
+   },
+   "flat|AGGRO_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.562,
+    "win_types": {
+     "wagons": 210,
+     "golden-goal": 251,
+     "ladder": 23,
+     "rout": 16
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 15.17,
+    "rounds_min": 6,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 13.0,
+    "wagons_or_rout_share": 0.452,
+    "golden_goal_share": 0.502,
+    "ladder_share": 0.046,
+    "r1_conversion": 0.4243,
+    "lead_change_after_r7_rate": 0.324
+   },
+   "flat|TURTLE_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.536,
+    "win_types": {
+     "golden-goal": 387,
+     "ladder": 110,
+     "wagons": 3
+    },
+    "rounds_median": 17.0,
+    "rounds_mean": 17.58,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16,
+    "wagons_or_rout_share": 0.006,
+    "golden_goal_share": 0.774,
+    "ladder_share": 0.22,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.598
+   },
+   "flat|TURTLE_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.586,
+    "win_types": {
+     "golden-goal": 420,
+     "ladder": 68,
+     "wagons": 12
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.03,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16.0,
+    "wagons_or_rout_share": 0.024,
+    "golden_goal_share": 0.84,
+    "ladder_share": 0.136,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.758
+   },
+   "flat|PROBER_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.48,
+    "win_types": {
+     "wagons": 57,
+     "golden-goal": 392,
+     "ladder": 51
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.7,
+    "rounds_min": 15,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16,
+    "wagons_or_rout_share": 0.114,
+    "golden_goal_share": 0.784,
+    "ladder_share": 0.102,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.614
+   }
+  }
+ },
+ "trib2_strain2_wagonhp2": {
+  "overrides": {
+   "TRIBUTE_PER_ROW": 2,
+   "SUPPLY_STRAIN_CROP": 2,
+   "WAGON_HP": 2
+  },
+  "scorecard": {
+   "C_worst_pairing": "flat|HONEST_vs_PROBER=0.738",
+   "C_pairings_outside_45_55": 4,
+   "D_median_round_all": 16.0,
+   "D_median_round_wagons_rout": 13.0,
+   "D_wagons_rout_share": 0.3088,
+   "D_golden_goal_share": 0.58,
+   "D_ladder_share": 0.1112,
+   "win_types": {
+    "wagons": 1400,
+    "golden-goal": 2900,
+    "ladder": 556,
+    "rout": 144
+   }
+  },
+  "per_pairing": {
+   "flat|HONEST_vs_HONEST": {
+    "n": 500,
+    "winrate_A": 0.488,
+    "win_types": {
+     "wagons": 61,
+     "golden-goal": 335,
+     "ladder": 90,
+     "rout": 14
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.12,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15,
+    "wagons_or_rout_share": 0.15,
+    "golden_goal_share": 0.67,
+    "ladder_share": 0.18,
+    "r1_conversion": 0.5282,
+    "lead_change_after_r7_rate": 0.602
+   },
+   "flat|HONEST_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.45,
+    "win_types": {
+     "golden-goal": 164,
+     "ladder": 58,
+     "wagons": 256,
+     "rout": 22
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 14.84,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 13.0,
+    "wagons_or_rout_share": 0.556,
+    "golden_goal_share": 0.328,
+    "ladder_share": 0.116,
+    "r1_conversion": 0.4038,
+    "lead_change_after_r7_rate": 0.316
+   },
+   "flat|HONEST_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.714,
+    "win_types": {
+     "golden-goal": 333,
+     "ladder": 63,
+     "wagons": 83,
+     "rout": 21
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.77,
+    "rounds_min": 8,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.208,
+    "golden_goal_share": 0.666,
+    "ladder_share": 0.126,
+    "r1_conversion": 0.286,
+    "lead_change_after_r7_rate": 0.278
+   },
+   "flat|HONEST_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.738,
+    "win_types": {
+     "wagons": 176,
+     "golden-goal": 292,
+     "ladder": 24,
+     "rout": 8
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.14,
+    "rounds_min": 11,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 15.0,
+    "wagons_or_rout_share": 0.368,
+    "golden_goal_share": 0.584,
+    "ladder_share": 0.048,
+    "r1_conversion": 0.262,
+    "lead_change_after_r7_rate": 0.322
+   },
+   "flat|AGGRO_vs_AGGRO": {
+    "n": 500,
+    "winrate_A": 0.504,
+    "win_types": {
+     "wagons": 349,
+     "golden-goal": 103,
+     "rout": 36,
+     "ladder": 12
+    },
+    "rounds_median": 11.0,
+    "rounds_mean": 11.38,
+    "rounds_min": 5,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 10,
+    "wagons_or_rout_share": 0.77,
+    "golden_goal_share": 0.206,
+    "ladder_share": 0.024,
+    "r1_conversion": 0.3636,
+    "lead_change_after_r7_rate": 0.224
+   },
+   "flat|AGGRO_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.616,
+    "win_types": {
+     "wagons": 197,
+     "golden-goal": 236,
+     "ladder": 47,
+     "rout": 20
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 15.32,
+    "rounds_min": 6,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 13,
+    "wagons_or_rout_share": 0.434,
+    "golden_goal_share": 0.472,
+    "ladder_share": 0.094,
+    "r1_conversion": 0.4685,
+    "lead_change_after_r7_rate": 0.332
+   },
+   "flat|AGGRO_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.532,
+    "win_types": {
+     "wagons": 207,
+     "golden-goal": 241,
+     "rout": 23,
+     "ladder": 29
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 14.92,
+    "rounds_min": 6,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 13.0,
+    "wagons_or_rout_share": 0.46,
+    "golden_goal_share": 0.482,
+    "ladder_share": 0.058,
+    "r1_conversion": 0.5015,
+    "lead_change_after_r7_rate": 0.342
+   },
+   "flat|TURTLE_vs_TURTLE": {
+    "n": 500,
+    "winrate_A": 0.518,
+    "win_types": {
+     "golden-goal": 383,
+     "ladder": 115,
+     "wagons": 2
+    },
+    "rounds_median": 17.0,
+    "rounds_mean": 17.6,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16.0,
+    "wagons_or_rout_share": 0.004,
+    "golden_goal_share": 0.766,
+    "ladder_share": 0.23,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.608
+   },
+   "flat|TURTLE_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.598,
+    "win_types": {
+     "ladder": 67,
+     "golden-goal": 419,
+     "wagons": 14
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 17.03,
+    "rounds_min": 16,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16.0,
+    "wagons_or_rout_share": 0.028,
+    "golden_goal_share": 0.838,
+    "ladder_share": 0.134,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.764
+   },
+   "flat|PROBER_vs_PROBER": {
+    "n": 500,
+    "winrate_A": 0.478,
+    "win_types": {
+     "wagons": 55,
+     "golden-goal": 394,
+     "ladder": 51
+    },
+    "rounds_median": 16.0,
+    "rounds_mean": 16.69,
+    "rounds_min": 15,
+    "rounds_max": 20,
+    "median_round_wagons_or_rout": 16,
+    "wagons_or_rout_share": 0.11,
+    "golden_goal_share": 0.788,
+    "ladder_share": 0.102,
+    "r1_conversion": null,
+    "lead_change_after_r7_rate": 0.624
+   }
+  }
+ }
+}

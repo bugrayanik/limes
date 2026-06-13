@@ -1,0 +1,30 @@
+{
+ "trib2": {
+  "TRIBUTE_PER_ROW": 2
+ },
+ "strain2": {
+  "SUPPLY_STRAIN_CROP": 2
+ },
+ "trib2_strain2": {
+  "TRIBUTE_PER_ROW": 2,
+  "SUPPLY_STRAIN_CROP": 2
+ },
+ "exh14": {
+  "EXHAUSTION_START_ROUND": 14,
+  "EXHAUSTION_ACCEL_ROUND": 15
+ },
+ "wagonhp2": {
+  "WAGON_HP": 2
+ },
+ "wagonhp2_breach3": {
+  "WAGON_HP": 2,
+  "BREACH_CAP": 3,
+  "BREACH_CAP_LATE": 4,
+  "BREACH_CAP_RISE_ROUND": 11
+ },
+ "trib2_strain2_wagonhp2": {
+  "TRIBUTE_PER_ROW": 2,
+  "SUPPLY_STRAIN_CROP": 2,
+  "WAGON_HP": 2
+ }
+}

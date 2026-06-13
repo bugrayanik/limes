@@ -1,0 +1,12 @@
+{
+ "accel0": {"EXHAUSTION_ACCEL": 0},
+ "accel1": {"EXHAUSTION_ACCEL": 1},
+ "wagonhp2_accel1": {"WAGON_HP": 2, "EXHAUSTION_ACCEL": 1},
+ "wagonhp2_accel1_gg14": {"WAGON_HP": 2, "EXHAUSTION_ACCEL": 1,
+   "GOLDEN_GOAL_ROUND": 14, "HARD_STOP_ROUND": 18},
+ "wagonhp2_accel0_gg14": {"WAGON_HP": 2, "EXHAUSTION_ACCEL": 0,
+   "GOLDEN_GOAL_ROUND": 14, "HARD_STOP_ROUND": 18},
+ "wagonhp2_accel1_gg14_trib2": {"WAGON_HP": 2, "EXHAUSTION_ACCEL": 1,
+   "GOLDEN_GOAL_ROUND": 14, "HARD_STOP_ROUND": 18,
+   "TRIBUTE_PER_ROW": 2, "SUPPLY_STRAIN_CROP": 2}
+}

@@ -1,0 +1,866 @@
+[
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 92,
+   "A_conversion": 0.4623,
+   "B_games_with_change_after_r7": 167,
+   "B_rate": 0.4175,
+   "win_types": {
+    "golden-goal": 291,
+    "ladder": 48,
+    "wagons": 53,
+    "rout": 8
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1552
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 92,
+   "A_conversion": 0.4623,
+   "B_games_with_change_after_r7": 167,
+   "B_rate": 0.4175,
+   "win_types": {
+    "golden-goal": 292,
+    "ladder": 48,
+    "wagons": 52,
+    "rout": 8
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1552
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 86,
+   "A_conversion": 0.4322,
+   "B_games_with_change_after_r7": 168,
+   "B_rate": 0.42,
+   "win_types": {
+    "golden-goal": 284,
+    "ladder": 48,
+    "wagons": 61,
+    "rout": 7
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1878
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 86,
+   "A_conversion": 0.4322,
+   "B_games_with_change_after_r7": 168,
+   "B_rate": 0.42,
+   "win_types": {
+    "golden-goal": 283,
+    "ladder": 49,
+    "wagons": 61,
+    "rout": 7
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1878
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 87,
+   "A_conversion": 0.4372,
+   "B_games_with_change_after_r7": 170,
+   "B_rate": 0.425,
+   "win_types": {
+    "golden-goal": 291,
+    "ladder": 49,
+    "wagons": 51,
+    "rout": 9
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1878
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 87,
+   "A_conversion": 0.4372,
+   "B_games_with_change_after_r7": 171,
+   "B_rate": 0.4275,
+   "win_types": {
+    "golden-goal": 289,
+    "ladder": 52,
+    "wagons": 52,
+    "rout": 7
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1903
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 89,
+   "A_conversion": 0.4472,
+   "B_games_with_change_after_r7": 175,
+   "B_rate": 0.4375,
+   "win_types": {
+    "golden-goal": 284,
+    "ladder": 43,
+    "wagons": 62,
+    "rout": 11
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1903
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 89,
+   "A_conversion": 0.4472,
+   "B_games_with_change_after_r7": 175,
+   "B_rate": 0.4375,
+   "win_types": {
+    "golden-goal": 284,
+    "ladder": 43,
+    "wagons": 62,
+    "rout": 11
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1903
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 87,
+   "A_conversion": 0.4372,
+   "B_games_with_change_after_r7": 171,
+   "B_rate": 0.4275,
+   "win_types": {
+    "golden-goal": 291,
+    "ladder": 49,
+    "wagons": 51,
+    "rout": 9
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1903
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 89,
+   "A_conversion": 0.4472,
+   "B_games_with_change_after_r7": 178,
+   "B_rate": 0.445,
+   "win_types": {
+    "golden-goal": 287,
+    "ladder": 43,
+    "wagons": 55,
+    "rout": 15
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1978
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 89,
+   "A_conversion": 0.4472,
+   "B_games_with_change_after_r7": 178,
+   "B_rate": 0.445,
+   "win_types": {
+    "golden-goal": 286,
+    "ladder": 43,
+    "wagons": 56,
+    "rout": 15
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.1978
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 86,
+   "A_conversion": 0.4322,
+   "B_games_with_change_after_r7": 173,
+   "B_rate": 0.4325,
+   "win_types": {
+    "golden-goal": 294,
+    "ladder": 53,
+    "wagons": 47,
+    "rout": 6
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2003
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 85,
+   "A_conversion": 0.4271,
+   "B_games_with_change_after_r7": 171,
+   "B_rate": 0.4275,
+   "win_types": {
+    "golden-goal": 289,
+    "ladder": 52,
+    "wagons": 52,
+    "rout": 7
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2004
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 83,
+   "A_conversion": 0.4171,
+   "B_games_with_change_after_r7": 169,
+   "B_rate": 0.4225,
+   "win_types": {
+    "golden-goal": 290,
+    "ladder": 39,
+    "wagons": 63,
+    "rout": 8
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2054
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 83,
+   "A_conversion": 0.4171,
+   "B_games_with_change_after_r7": 169,
+   "B_rate": 0.4225,
+   "win_types": {
+    "golden-goal": 290,
+    "ladder": 39,
+    "wagons": 63,
+    "rout": 8
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2054
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 87,
+   "A_conversion": 0.4372,
+   "B_games_with_change_after_r7": 178,
+   "B_rate": 0.445,
+   "win_types": {
+    "golden-goal": 275,
+    "wagons": 64,
+    "ladder": 48,
+    "rout": 13
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2078
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 87,
+   "A_conversion": 0.4372,
+   "B_games_with_change_after_r7": 178,
+   "B_rate": 0.445,
+   "win_types": {
+    "golden-goal": 275,
+    "wagons": 64,
+    "ladder": 48,
+    "rout": 13
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2078
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 84,
+   "A_conversion": 0.4221,
+   "B_games_with_change_after_r7": 173,
+   "B_rate": 0.4325,
+   "win_types": {
+    "golden-goal": 295,
+    "ladder": 54,
+    "wagons": 45,
+    "rout": 6
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2104
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 83,
+   "A_conversion": 0.4171,
+   "B_games_with_change_after_r7": 172,
+   "B_rate": 0.43,
+   "win_types": {
+    "golden-goal": 284,
+    "ladder": 47,
+    "wagons": 63,
+    "rout": 6
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2129
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 83,
+   "A_conversion": 0.4171,
+   "B_games_with_change_after_r7": 172,
+   "B_rate": 0.43,
+   "win_types": {
+    "golden-goal": 285,
+    "ladder": 46,
+    "wagons": 63,
+    "rout": 6
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2129
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 78,
+   "A_conversion": 0.392,
+   "B_games_with_change_after_r7": 168,
+   "B_rate": 0.42,
+   "win_types": {
+    "golden-goal": 294,
+    "ladder": 48,
+    "wagons": 52,
+    "rout": 6
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.228
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 81,
+   "A_conversion": 0.407,
+   "B_games_with_change_after_r7": 175,
+   "B_rate": 0.4375,
+   "win_types": {
+    "golden-goal": 299,
+    "ladder": 43,
+    "wagons": 51,
+    "rout": 7
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2305
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 82,
+   "A_conversion": 0.4121,
+   "B_games_with_change_after_r7": 179,
+   "B_rate": 0.4475,
+   "win_types": {
+    "golden-goal": 285,
+    "wagons": 58,
+    "ladder": 45,
+    "rout": 12
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2354
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 80,
+   "A_conversion": 0.402,
+   "B_games_with_change_after_r7": 175,
+   "B_rate": 0.4375,
+   "win_types": {
+    "golden-goal": 298,
+    "ladder": 44,
+    "wagons": 51,
+    "rout": 7
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2355
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 2,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 76,
+   "A_conversion": 0.3819,
+   "B_games_with_change_after_r7": 168,
+   "B_rate": 0.42,
+   "win_types": {
+    "golden-goal": 298,
+    "ladder": 47,
+    "wagons": 49,
+    "rout": 6
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2381
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 0,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 81,
+   "A_conversion": 0.407,
+   "B_games_with_change_after_r7": 179,
+   "B_rate": 0.4475,
+   "win_types": {
+    "golden-goal": 286,
+    "wagons": 57,
+    "ladder": 45,
+    "rout": 12
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2405
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 76,
+   "A_conversion": 0.3819,
+   "B_games_with_change_after_r7": 174,
+   "B_rate": 0.435,
+   "win_types": {
+    "golden-goal": 282,
+    "ladder": 57,
+    "wagons": 55,
+    "rout": 6
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2531
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 76,
+   "A_conversion": 0.3819,
+   "B_games_with_change_after_r7": 174,
+   "B_rate": 0.435,
+   "win_types": {
+    "golden-goal": 282,
+    "ladder": 57,
+    "wagons": 55,
+    "rout": 6
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2531
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 77,
+   "A_conversion": 0.3869,
+   "B_games_with_change_after_r7": 180,
+   "B_rate": 0.45,
+   "win_types": {
+    "golden-goal": 304,
+    "ladder": 37,
+    "wagons": 49,
+    "rout": 10
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2631
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 73,
+   "A_conversion": 0.3668,
+   "B_games_with_change_after_r7": 172,
+   "B_rate": 0.43,
+   "win_types": {
+    "golden-goal": 287,
+    "ladder": 53,
+    "wagons": 55,
+    "rout": 5
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2632
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 0,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 73,
+   "A_conversion": 0.3668,
+   "B_games_with_change_after_r7": 172,
+   "B_rate": 0.43,
+   "win_types": {
+    "golden-goal": 288,
+    "ladder": 53,
+    "wagons": 54,
+    "rout": 5
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2632
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 1,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 75,
+   "A_conversion": 0.3769,
+   "B_games_with_change_after_r7": 180,
+   "B_rate": 0.45,
+   "win_types": {
+    "golden-goal": 308,
+    "ladder": 37,
+    "wagons": 45,
+    "rout": 10
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.2731
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 67,
+   "A_conversion": 0.3367,
+   "B_games_with_change_after_r7": 179,
+   "B_rate": 0.4475,
+   "win_types": {
+    "golden-goal": 290,
+    "ladder": 45,
+    "rout": 10,
+    "wagons": 55
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.3108
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 5,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 66,
+   "A_conversion": 0.3317,
+   "B_games_with_change_after_r7": 179,
+   "B_rate": 0.4475,
+   "win_types": {
+    "golden-goal": 290,
+    "ladder": 44,
+    "rout": 10,
+    "wagons": 56
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.3158
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 1
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 67,
+   "A_conversion": 0.3367,
+   "B_games_with_change_after_r7": 182,
+   "B_rate": 0.455,
+   "win_types": {
+    "golden-goal": 294,
+    "ladder": 40,
+    "rout": 13,
+    "wagons": 53
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.3183
+ },
+ {
+  "overrides": {
+   "SUPPLY_STRAIN_CROP": 2,
+   "TRIBUTE_PER_ROW": 1,
+   "WAGON_BOUNTY": 3,
+   "ENTRENCH_PALISADES": 2
+  },
+  "pooled": {
+   "n": 400,
+   "A_decided_r1": 199,
+   "A_converted": 66,
+   "A_conversion": 0.3317,
+   "B_games_with_change_after_r7": 182,
+   "B_rate": 0.455,
+   "win_types": {
+    "golden-goal": 294,
+    "ladder": 39,
+    "rout": 13,
+    "wagons": 54
+   },
+   "median_rounds": 16.0
+  },
+  "score": 0.3233
+ }
+]

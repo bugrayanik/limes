@@ -1,0 +1,495 @@
+{
+ "matchup": "RUNNER vs HONEST",
+ "n": 150,
+ "seed0": 1000,
+ "overrides": {},
+ "winrate_A": 0.2933,
+ "wins": {
+  "RUNNER": 44,
+  "HONEST": 106
+ },
+ "win_types": {
+  "wagons": 20,
+  "golden-goal": 95,
+  "ladder": 29,
+  "rout": 6
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 2514,
+ "A": {
+  "rows_total": 534,
+  "rows_per_round": 0.2124,
+  "rows_per_match": 3.56,
+  "pct_matches_with_any_carry": 0.9733,
+  "advancing_rounds": 414,
+  "adv_round_share_of_rounds": 0.1647,
+  "cols_per_advancing_round_hist": {
+   "1": 302,
+   "2": 104,
+   "3+": 8
+  },
+  "lone_blocked_total": 336,
+  "lone_blocked_per_match": 2.24
+ },
+ "B": {
+  "rows_total": 622,
+  "rows_per_round": 0.2474,
+  "rows_per_match": 4.15,
+  "pct_matches_with_any_carry": 0.9667,
+  "advancing_rounds": 494,
+  "adv_round_share_of_rounds": 0.1965,
+  "cols_per_advancing_round_hist": {
+   "1": 382,
+   "2": 97,
+   "3+": 15
+  },
+  "lone_blocked_total": 127,
+  "lone_blocked_per_match": 0.847
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.74,
+  "reversals_max": 7,
+  "pct_matches_with_2plus_reversals": 0.52
+ },
+ "elapsed_sec": 7.3
+}
+{
+ "matchup": "RUNNER vs AGGRO",
+ "n": 150,
+ "seed0": 1200,
+ "overrides": {},
+ "winrate_A": 0.7733,
+ "wins": {
+  "RUNNER": 116,
+  "AGGRO": 34
+ },
+ "win_types": {
+  "wagons": 93,
+  "golden-goal": 47,
+  "rout": 8,
+  "ladder": 2
+ },
+ "rounds_median": 13.0,
+ "total_rounds_played": 1921,
+ "A": {
+  "rows_total": 1415,
+  "rows_per_round": 0.7366,
+  "rows_per_match": 9.43,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 871,
+  "adv_round_share_of_rounds": 0.4534,
+  "cols_per_advancing_round_hist": {
+   "1": 455,
+   "2": 317,
+   "3+": 99
+  },
+  "lone_blocked_total": 553,
+  "lone_blocked_per_match": 3.687
+ },
+ "B": {
+  "rows_total": 914,
+  "rows_per_round": 0.4758,
+  "rows_per_match": 6.09,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 667,
+  "adv_round_share_of_rounds": 0.3472,
+  "cols_per_advancing_round_hist": {
+   "1": 464,
+   "2": 161,
+   "3+": 42
+  },
+  "lone_blocked_total": 161,
+  "lone_blocked_per_match": 1.073
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 3.207,
+  "reversals_max": 11,
+  "pct_matches_with_2plus_reversals": 0.6933
+ },
+ "elapsed_sec": 3.8
+}
+{
+ "matchup": "RUNNER vs TURTLE",
+ "n": 150,
+ "seed0": 1400,
+ "overrides": {},
+ "winrate_A": 0.4133,
+ "wins": {
+  "RUNNER": 62,
+  "TURTLE": 88
+ },
+ "win_types": {
+  "golden-goal": 103,
+  "ladder": 34,
+  "rout": 3,
+  "wagons": 10
+ },
+ "rounds_median": 17.0,
+ "total_rounds_played": 2607,
+ "A": {
+  "rows_total": 524,
+  "rows_per_round": 0.201,
+  "rows_per_match": 3.49,
+  "pct_matches_with_any_carry": 0.9933,
+  "advancing_rounds": 415,
+  "adv_round_share_of_rounds": 0.1592,
+  "cols_per_advancing_round_hist": {
+   "1": 316,
+   "2": 90,
+   "3+": 9
+  },
+  "lone_blocked_total": 304,
+  "lone_blocked_per_match": 2.027
+ },
+ "B": {
+  "rows_total": 360,
+  "rows_per_round": 0.1381,
+  "rows_per_match": 2.4,
+  "pct_matches_with_any_carry": 0.8867,
+  "advancing_rounds": 322,
+  "adv_round_share_of_rounds": 0.1235,
+  "cols_per_advancing_round_hist": {
+   "1": 290,
+   "2": 27,
+   "3+": 5
+  },
+  "lone_blocked_total": 14,
+  "lone_blocked_per_match": 0.093
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.133,
+  "reversals_max": 5,
+  "pct_matches_with_2plus_reversals": 0.34
+ },
+ "elapsed_sec": 6.3
+}
+{
+ "matchup": "RUNNER vs PROBER",
+ "n": 150,
+ "seed0": 1600,
+ "overrides": {},
+ "winrate_A": 0.4667,
+ "wins": {
+  "RUNNER": 70,
+  "PROBER": 80
+ },
+ "win_types": {
+  "golden-goal": 111,
+  "ladder": 19,
+  "wagons": 17,
+  "rout": 3
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 2474,
+ "A": {
+  "rows_total": 507,
+  "rows_per_round": 0.2049,
+  "rows_per_match": 3.38,
+  "pct_matches_with_any_carry": 0.9933,
+  "advancing_rounds": 406,
+  "adv_round_share_of_rounds": 0.1641,
+  "cols_per_advancing_round_hist": {
+   "1": 312,
+   "2": 88,
+   "3+": 6
+  },
+  "lone_blocked_total": 286,
+  "lone_blocked_per_match": 1.907
+ },
+ "B": {
+  "rows_total": 364,
+  "rows_per_round": 0.1471,
+  "rows_per_match": 2.43,
+  "pct_matches_with_any_carry": 0.8933,
+  "advancing_rounds": 305,
+  "adv_round_share_of_rounds": 0.1233,
+  "cols_per_advancing_round_hist": {
+   "1": 255,
+   "2": 42,
+   "3+": 8
+  },
+  "lone_blocked_total": 21,
+  "lone_blocked_per_match": 0.14
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.187,
+  "reversals_max": 4,
+  "pct_matches_with_2plus_reversals": 0.34
+ },
+ "elapsed_sec": 6.3
+}
+{
+ "matchup": "RUNNER vs SANDBAGGER",
+ "n": 150,
+ "seed0": 1800,
+ "overrides": {},
+ "winrate_A": 0.2,
+ "wins": {
+  "RUNNER": 30,
+  "SANDBAGGER": 120
+ },
+ "win_types": {
+  "golden-goal": 92,
+  "wagons": 23,
+  "ladder": 20,
+  "rout": 15
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 2466,
+ "A": {
+  "rows_total": 572,
+  "rows_per_round": 0.232,
+  "rows_per_match": 3.81,
+  "pct_matches_with_any_carry": 0.9867,
+  "advancing_rounds": 456,
+  "adv_round_share_of_rounds": 0.1849,
+  "cols_per_advancing_round_hist": {
+   "1": 348,
+   "2": 100,
+   "3+": 8
+  },
+  "lone_blocked_total": 294,
+  "lone_blocked_per_match": 1.96
+ },
+ "B": {
+  "rows_total": 889,
+  "rows_per_round": 0.3605,
+  "rows_per_match": 5.93,
+  "pct_matches_with_any_carry": 0.9933,
+  "advancing_rounds": 667,
+  "adv_round_share_of_rounds": 0.2705,
+  "cols_per_advancing_round_hist": {
+   "1": 491,
+   "2": 136,
+   "3+": 40
+  },
+  "lone_blocked_total": 179,
+  "lone_blocked_per_match": 1.193
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.9,
+  "reversals_max": 9,
+  "pct_matches_with_2plus_reversals": 0.5467
+ },
+ "elapsed_sec": 5.4
+}
+{
+ "matchup": "HONEST vs TURTLE",
+ "n": 300,
+ "seed0": 3000,
+ "overrides": {},
+ "winrate_A": 0.7367,
+ "wins": {
+  "HONEST": 221,
+  "TURTLE": 79
+ },
+ "win_types": {
+  "golden-goal": 242,
+  "ladder": 30,
+  "rout": 9,
+  "wagons": 19
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 5050,
+ "A": {
+  "rows_total": 884,
+  "rows_per_round": 0.175,
+  "rows_per_match": 2.95,
+  "pct_matches_with_any_carry": 0.97,
+  "advancing_rounds": 804,
+  "adv_round_share_of_rounds": 0.1592,
+  "cols_per_advancing_round_hist": {
+   "1": 727,
+   "2": 74,
+   "3+": 3
+  },
+  "lone_blocked_total": 253,
+  "lone_blocked_per_match": 0.843
+ },
+ "B": {
+  "rows_total": 277,
+  "rows_per_round": 0.0549,
+  "rows_per_match": 0.92,
+  "pct_matches_with_any_carry": 0.61,
+  "advancing_rounds": 275,
+  "adv_round_share_of_rounds": 0.0545,
+  "cols_per_advancing_round_hist": {
+   "1": 273,
+   "2": 2,
+   "3+": 0
+  },
+  "lone_blocked_total": 8,
+  "lone_blocked_per_match": 0.027
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.37,
+  "reversals_max": 3,
+  "pct_matches_with_2plus_reversals": 0.0533
+ },
+ "elapsed_sec": 12.0
+}
+{
+ "matchup": "AGGRO vs TURTLE",
+ "n": 300,
+ "seed0": 3400,
+ "overrides": {},
+ "winrate_A": 0.52,
+ "wins": {
+  "AGGRO": 156,
+  "TURTLE": 144
+ },
+ "win_types": {
+  "golden-goal": 207,
+  "wagons": 53,
+  "ladder": 34,
+  "rout": 6
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 4927,
+ "A": {
+  "rows_total": 1459,
+  "rows_per_round": 0.2961,
+  "rows_per_match": 4.86,
+  "pct_matches_with_any_carry": 0.9967,
+  "advancing_rounds": 1117,
+  "adv_round_share_of_rounds": 0.2267,
+  "cols_per_advancing_round_hist": {
+   "1": 826,
+   "2": 240,
+   "3+": 51
+  },
+  "lone_blocked_total": 287,
+  "lone_blocked_per_match": 0.957
+ },
+ "B": {
+  "rows_total": 1211,
+  "rows_per_round": 0.2458,
+  "rows_per_match": 4.04,
+  "pct_matches_with_any_carry": 0.9567,
+  "advancing_rounds": 1054,
+  "adv_round_share_of_rounds": 0.2139,
+  "cols_per_advancing_round_hist": {
+   "1": 914,
+   "2": 124,
+   "3+": 16
+  },
+  "lone_blocked_total": 98,
+  "lone_blocked_per_match": 0.327
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.3,
+  "reversals_max": 6,
+  "pct_matches_with_2plus_reversals": 0.39
+ },
+ "elapsed_sec": 8.2
+}
+{
+ "matchup": "ARCHSPAM vs TURTLE",
+ "n": 300,
+ "seed0": 5000,
+ "overrides": {},
+ "winrate_A": 0.8933,
+ "wins": {
+  "ARCHSPAM": 268,
+  "TURTLE": 32
+ },
+ "win_types": {
+  "golden-goal": 184,
+  "ladder": 8,
+  "wagons": 100,
+  "rout": 8
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 4763,
+ "A": {
+  "rows_total": 1378,
+  "rows_per_round": 0.2893,
+  "rows_per_match": 4.59,
+  "pct_matches_with_any_carry": 1.0,
+  "advancing_rounds": 1096,
+  "adv_round_share_of_rounds": 0.2301,
+  "cols_per_advancing_round_hist": {
+   "1": 833,
+   "2": 245,
+   "3+": 18
+  },
+  "lone_blocked_total": 114,
+  "lone_blocked_per_match": 0.38
+ },
+ "B": {
+  "rows_total": 963,
+  "rows_per_round": 0.2022,
+  "rows_per_match": 3.21,
+  "pct_matches_with_any_carry": 0.9467,
+  "advancing_rounds": 868,
+  "adv_round_share_of_rounds": 0.1822,
+  "cols_per_advancing_round_hist": {
+   "1": 778,
+   "2": 85,
+   "3+": 5
+  },
+  "lone_blocked_total": 26,
+  "lone_blocked_per_match": 0.087
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 0.673,
+  "reversals_max": 4,
+  "pct_matches_with_2plus_reversals": 0.1767
+ },
+ "elapsed_sec": 9.1
+}
+{
+ "matchup": "ARCHSPAM vs HONEST",
+ "n": 300,
+ "seed0": 5400,
+ "overrides": {},
+ "winrate_A": 0.7267,
+ "wins": {
+  "ARCHSPAM": 218,
+  "HONEST": 82
+ },
+ "win_types": {
+  "wagons": 102,
+  "golden-goal": 145,
+  "ladder": 32,
+  "rout": 21
+ },
+ "rounds_median": 16.0,
+ "total_rounds_played": 4753,
+ "A": {
+  "rows_total": 1552,
+  "rows_per_round": 0.3265,
+  "rows_per_match": 5.17,
+  "pct_matches_with_any_carry": 0.9867,
+  "advancing_rounds": 1214,
+  "adv_round_share_of_rounds": 0.2554,
+  "cols_per_advancing_round_hist": {
+   "1": 897,
+   "2": 297,
+   "3+": 20
+  },
+  "lone_blocked_total": 185,
+  "lone_blocked_per_match": 0.617
+ },
+ "B": {
+  "rows_total": 1944,
+  "rows_per_round": 0.409,
+  "rows_per_match": 6.48,
+  "pct_matches_with_any_carry": 0.9967,
+  "advancing_rounds": 1415,
+  "adv_round_share_of_rounds": 0.2977,
+  "cols_per_advancing_round_hist": {
+   "1": 983,
+   "2": 340,
+   "3+": 92
+  },
+  "lone_blocked_total": 381,
+  "lone_blocked_per_match": 1.27
+ },
+ "oscillation": {
+  "reversals_per_match_mean": 1.623,
+  "reversals_max": 8,
+  "pct_matches_with_2plus_reversals": 0.4533
+ },
+ "elapsed_sec": 5.9
+}

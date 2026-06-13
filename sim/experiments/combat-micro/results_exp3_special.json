@@ -1,0 +1,657 @@
+{
+ "A_charge_anatomy": [
+  {
+   "cav": "charge",
+   "sword": "aggro",
+   "cav_w": 16,
+   "sword_w": 4,
+   "none": 0
+  },
+  {
+   "cav": "charge",
+   "sword": "hold",
+   "cav_w": 20,
+   "sword_w": 0,
+   "none": 0
+  },
+  {
+   "cav": "noorbit",
+   "sword": "aggro",
+   "cav_w": 16,
+   "sword_w": 4,
+   "none": 0
+  },
+  {
+   "cav": "noorbit",
+   "sword": "hold",
+   "cav_w": 20,
+   "sword_w": 0,
+   "none": 0
+  },
+  {
+   "cav": "aggro",
+   "sword": "aggro",
+   "cav_w": 0,
+   "sword_w": 14,
+   "none": 6
+  },
+  {
+   "cav": "aggro",
+   "sword": "hold",
+   "cav_w": 0,
+   "sword_w": 2,
+   "none": 18
+  }
+ ],
+ "B spear6 vs sword4 [std]": [
+  {
+   "winner": 0,
+   "n0": 6,
+   "n1": 0,
+   "hp0": 24,
+   "hp1": 0,
+   "margin": 1.0,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B spear6 vs sword4 [mir]": [
+  {
+   "winner": 0,
+   "n0": 6,
+   "n1": 0,
+   "hp0": 24,
+   "hp1": 0,
+   "margin": 1.0,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B spear6 vs archer4 [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 4,
+   "hp0": 0,
+   "hp1": 14,
+   "margin": -1.1667,
+   "pulses": 9,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B spear6 vs archer4 [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 4,
+   "hp0": 0,
+   "hp1": 14,
+   "margin": -1.1667,
+   "pulses": 9,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B spear6 vs cav3 [std]": [
+  {
+   "winner": 0,
+   "n0": 6,
+   "n1": 0,
+   "hp0": 24,
+   "hp1": 0,
+   "margin": 1.0,
+   "pulses": 3,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B spear6 vs cav3 [mir]": [
+  {
+   "winner": 0,
+   "n0": 6,
+   "n1": 0,
+   "hp0": 24,
+   "hp1": 0,
+   "margin": 1.0,
+   "pulses": 3,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B spear6 vs siege2s [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 3,
+   "hp0": 0,
+   "hp1": 12,
+   "margin": -1.2,
+   "pulses": 15,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B spear6 vs siege2s [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 3,
+   "hp0": 0,
+   "hp1": 12,
+   "margin": -1.2,
+   "pulses": 15,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B sword4 vs archer4 [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 4,
+   "hp0": 0,
+   "hp1": 5,
+   "margin": -0.4167,
+   "pulses": 4,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B sword4 vs archer4 [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 4,
+   "hp0": 0,
+   "hp1": 5,
+   "margin": -0.4167,
+   "pulses": 4,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B sword4 vs cav3 [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 2,
+   "hp0": 0,
+   "hp1": 3,
+   "margin": -0.25,
+   "pulses": 5,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B sword4 vs cav3 [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 2,
+   "hp0": 0,
+   "hp1": 3,
+   "margin": -0.25,
+   "pulses": 5,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B sword4 vs siege2s [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 3,
+   "hp0": 0,
+   "hp1": 10,
+   "margin": -1.0,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B sword4 vs siege2s [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 3,
+   "hp0": 0,
+   "hp1": 10,
+   "margin": -1.0,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B archer4 vs cav3 [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 2,
+   "margin": -0.1667,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B archer4 vs cav3 [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 2,
+   "margin": -0.1667,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B archer4 vs siege2s [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 4,
+   "margin": -0.4,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B archer4 vs siege2s [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 4,
+   "margin": -0.4,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B cav3 vs siege2s [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 2,
+   "hp0": 0,
+   "hp1": 3,
+   "margin": -0.3,
+   "pulses": 3,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "B cav3 vs siege2s [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 1,
+   "margin": -0.1,
+   "pulses": 3,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "C wall+archers vs cav-strike [std]": [
+  {
+   "winner": 0,
+   "n0": 5,
+   "n1": 0,
+   "hp0": 18,
+   "hp1": 0,
+   "margin": 1.0,
+   "pulses": 10,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "C wall+archers vs cav-strike [mir]": [
+  {
+   "winner": 0,
+   "n0": 5,
+   "n1": 0,
+   "hp0": 18,
+   "hp1": 0,
+   "margin": 1.0,
+   "pulses": 10,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "C wall+archers vs sword-strike [std]": [
+  {
+   "winner": 0,
+   "n0": 3,
+   "n1": 0,
+   "hp0": 7,
+   "hp1": 0,
+   "margin": 0.3889,
+   "pulses": 18,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "C wall+archers vs sword-strike [mir]": [
+  {
+   "winner": 0,
+   "n0": 3,
+   "n1": 0,
+   "hp0": 7,
+   "hp1": 0,
+   "margin": 0.3889,
+   "pulses": 18,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "C cav-strike vs sword-strike [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 2,
+   "margin": -0.1111,
+   "pulses": 7,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "C cav-strike vs sword-strike [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 2,
+   "margin": -0.1111,
+   "pulses": 7,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "D_fortress": [
+  {
+   "tag": "D1 ctr spear T2g+brace+support vs 2xT2-atk sword flank+archer",
+   "dead": true,
+   "hp_left": 0,
+   "pulses": 4,
+   "dead_any": true
+  },
+  {
+   "tag": "D2 same but attackers NOT T2",
+   "dead": true,
+   "hp_left": 0,
+   "pulses": 5,
+   "dead_any": true
+  },
+  {
+   "tag": "D3 corner spear T2g braced, friend, archer+siege only",
+   "dead": true,
+   "hp_left": 0,
+   "pulses": 2,
+   "dead_any": true
+  },
+  {
+   "tag": "D4 corner spear T2g braced vs T2-atk archer+siege",
+   "dead": true,
+   "hp_left": 0,
+   "pulses": 2,
+   "dead_any": true
+  },
+  {
+   "tag": "D5 hill spear T2g+brace+support vs 2xT2 sword+T2 archer",
+   "dead": true,
+   "hp_left": 0,
+   "pulses": 4,
+   "dead_any": true
+  }
+ ],
+ "E hero vs 2 swords [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 2,
+   "margin": -0.2,
+   "pulses": 3,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "E hero vs 2 swords [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 2,
+   "margin": -0.2,
+   "pulses": 3,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "E hero vs 1 sword [std]": [
+  {
+   "winner": null,
+   "n0": 1,
+   "n1": 1,
+   "hp0": 7,
+   "hp1": 5,
+   "margin": 0.0,
+   "pulses": 40,
+   "rout": false,
+   "gameover": false,
+   "decided": false
+  }
+ ],
+ "E hero vs 1 sword [mir]": [
+  {
+   "winner": null,
+   "n0": 1,
+   "n1": 1,
+   "hp0": 7,
+   "hp1": 5,
+   "margin": -0.0,
+   "pulses": 40,
+   "rout": false,
+   "gameover": false,
+   "decided": false
+  }
+ ],
+ "E hero+sword vs 2 swords [std]": [
+  {
+   "winner": null,
+   "n0": 1,
+   "n1": 1,
+   "hp0": 5,
+   "hp1": 5,
+   "margin": -0.0833,
+   "pulses": 40,
+   "rout": false,
+   "gameover": false,
+   "decided": false
+  }
+ ],
+ "E hero+sword vs 2 swords [mir]": [
+  {
+   "winner": null,
+   "n0": 1,
+   "n1": 1,
+   "hp0": 5,
+   "hp1": 5,
+   "margin": -0.0833,
+   "pulses": 40,
+   "rout": false,
+   "gameover": false,
+   "decided": false
+  }
+ ],
+ "E hero vs 3 spears (rout net?) [std]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 1,
+   "margin": -0.0833,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "E hero vs 3 spears (rout net?) [mir]": [
+  {
+   "winner": 1,
+   "n0": 0,
+   "n1": 1,
+   "hp0": 0,
+   "hp1": 1,
+   "margin": -0.0833,
+   "pulses": 6,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "E hero pre-surrounded by 4 spears": [
+  {
+   "winner": null,
+   "n0": 1,
+   "n1": 4,
+   "hp0": 7,
+   "hp1": 16,
+   "margin": 0.0,
+   "pulses": 1,
+   "rout": true,
+   "gameover": false,
+   "decided": false
+  }
+ ],
+ "F mirror 3xsword aggro [std]": [
+  {
+   "winner": null,
+   "n0": 0,
+   "n1": 0,
+   "hp0": 0,
+   "hp1": 0,
+   "margin": 0.0,
+   "pulses": 3,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "F mirror 3xsword aggro [mir]": [
+  {
+   "winner": null,
+   "n0": 0,
+   "n1": 0,
+   "hp0": 0,
+   "hp1": 0,
+   "margin": -0.0,
+   "pulses": 3,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "F mirror 3xcav aggro [std]": [
+  {
+   "winner": null,
+   "n0": 0,
+   "n1": 0,
+   "hp0": 0,
+   "hp1": 0,
+   "margin": 0.0,
+   "pulses": 2,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "F mirror 3xcav aggro [mir]": [
+  {
+   "winner": null,
+   "n0": 0,
+   "n1": 0,
+   "hp0": 0,
+   "hp1": 0,
+   "margin": -0.0,
+   "pulses": 2,
+   "rout": false,
+   "gameover": false,
+   "decided": true
+  }
+ ],
+ "F mirror 3xspear aggro [std]": [
+  {
+   "winner": null,
+   "n0": 3,
+   "n1": 3,
+   "hp0": 12,
+   "hp1": 12,
+   "margin": 0.0,
+   "pulses": 40,
+   "rout": false,
+   "gameover": false,
+   "decided": false
+  }
+ ],
+ "F mirror 3xspear aggro [mir]": [
+  {
+   "winner": null,
+   "n0": 3,
+   "n1": 3,
+   "hp0": 12,
+   "hp1": 12,
+   "margin": -0.0,
+   "pulses": 40,
+   "rout": false,
+   "gameover": false,
+   "decided": false
+  }
+ ]
+}

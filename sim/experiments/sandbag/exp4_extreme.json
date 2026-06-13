@@ -1,0 +1,128 @@
+{
+ "SANDBAGGER*sandbag_until=8,desperation_round=9 vs SANDBAGGER*sandbag_until=0 [TPR=1]": {
+  "n": 600,
+  "wins_A": 324,
+  "winrate_A": 0.54,
+  "win_types": {
+   "rout": 36,
+   "golden-goal": 369,
+   "ladder": 82,
+   "wagons": 113
+  },
+  "rounds_median": 16.0,
+  "A_rows_conceded_mean": 5.42,
+  "B_rows_conceded_mean": 4.7,
+  "A_surge_mean": 4.55,
+  "A_shield_mean": 0.04,
+  "A_trib_as_supply_mean": 1.2,
+  "B_surge_mean": 3.34,
+  "B_shield_mean": 0.03,
+  "B_trib_as_supply_mean": 1.36,
+  "ci95": 0.0399
+ },
+ "SANDBAGGER*sandbag_until=8,desperation_round=9 vs SANDBAGGER*sandbag_until=0 [TPR=3]": {
+  "n": 600,
+  "wins_A": 307,
+  "winrate_A": 0.5117,
+  "win_types": {
+   "golden-goal": 386,
+   "wagons": 82,
+   "ladder": 86,
+   "rout": 46
+  },
+  "rounds_median": 16.0,
+  "A_rows_conceded_mean": 5.58,
+  "B_rows_conceded_mean": 4.76,
+  "A_surge_mean": 5.9,
+  "A_shield_mean": 0.07,
+  "A_trib_as_supply_mean": 10.65,
+  "B_surge_mean": 4.1,
+  "B_shield_mean": 0.06,
+  "B_trib_as_supply_mean": 9.7,
+  "ci95": 0.04
+ },
+ "SANDBAGGER*sandbag_until=8,desperation_round=9 vs SANDBAGGER*sandbag_until=0 [TPR=6]": {
+  "n": 600,
+  "wins_A": 289,
+  "winrate_A": 0.4817,
+  "win_types": {
+   "wagons": 72,
+   "golden-goal": 393,
+   "rout": 36,
+   "ladder": 99
+  },
+  "rounds_median": 17.0,
+  "A_rows_conceded_mean": 6.01,
+  "B_rows_conceded_mean": 4.42,
+  "A_surge_mean": 5.75,
+  "A_shield_mean": 0.07,
+  "A_trib_as_supply_mean": 29.59,
+  "B_surge_mean": 4.28,
+  "B_shield_mean": 0.08,
+  "B_trib_as_supply_mean": 21.59,
+  "ci95": 0.04
+ },
+ "SANDBAGGER*sandbag_until=8,desperation_round=9 vs HONEST [TPR=1]": {
+  "n": 600,
+  "wins_A": 501,
+  "winrate_A": 0.835,
+  "win_types": {
+   "golden-goal": 394,
+   "ladder": 79,
+   "wagons": 93,
+   "rout": 34
+  },
+  "rounds_median": 16.0,
+  "A_rows_conceded_mean": 2.93,
+  "B_rows_conceded_mean": 4.48,
+  "A_surge_mean": 2.91,
+  "A_shield_mean": 0.01,
+  "A_trib_as_supply_mean": 0.18,
+  "B_surge_mean": 3.12,
+  "B_shield_mean": 0.04,
+  "B_trib_as_supply_mean": 0.8,
+  "ci95": 0.0297
+ },
+ "SANDBAGGER*sandbag_until=8,desperation_round=9 vs AGGRO [TPR=1]": {
+  "n": 600,
+  "wins_A": 378,
+  "winrate_A": 0.63,
+  "win_types": {
+   "ladder": 59,
+   "golden-goal": 304,
+   "wagons": 203,
+   "rout": 34
+  },
+  "rounds_median": 16.0,
+  "A_rows_conceded_mean": 5.41,
+  "B_rows_conceded_mean": 7.61,
+  "A_surge_mean": 4.21,
+  "A_shield_mean": 0.02,
+  "A_trib_as_supply_mean": 1.48,
+  "B_surge_mean": 3.37,
+  "B_shield_mean": 0.05,
+  "B_trib_as_supply_mean": 3.57,
+  "ci95": 0.0386
+ },
+ "SANDBAGGER*sandbag_until=8,desperation_round=9 vs AGGRO [TPR=3]": {
+  "n": 600,
+  "wins_A": 323,
+  "winrate_A": 0.5383,
+  "win_types": {
+   "golden-goal": 344,
+   "rout": 32,
+   "ladder": 63,
+   "wagons": 161
+  },
+  "rounds_median": 16.0,
+  "A_rows_conceded_mean": 5.94,
+  "B_rows_conceded_mean": 6.98,
+  "A_surge_mean": 5.11,
+  "A_shield_mean": 0.05,
+  "A_trib_as_supply_mean": 12.34,
+  "B_surge_mean": 4.16,
+  "B_shield_mean": 0.06,
+  "B_trib_as_supply_mean": 15.79,
+  "ci95": 0.0399
+ }
+}

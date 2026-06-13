@@ -1,0 +1,14 @@
+{
+ "flat_wintypes": {
+  "ladder": 38,
+  "golden-goal": 243,
+  "rout": 4,
+  "wagons": 15
+ },
+ "terr_wintypes": {
+  "golden-goal": 237,
+  "ladder": 41,
+  "rout": 10,
+  "wagons": 12
+ }
+}
