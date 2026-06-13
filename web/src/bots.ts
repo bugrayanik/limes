@@ -774,6 +774,21 @@ export class Policy {
     return unit.arch === 'spear' || unit.arch === 'hero' ? 'guard' : 'atk';
   }
 
+  breachTarget(_g: Game, _me: number, _u: Unit, tied: [number, any][]): number {
+    return argminTuple(tied, iw => [iw[1].hp, iw[1].col])[0];
+  }
+
+  artifactPick(g: Game, me: number, options: number[]): number {
+    const cropShort = this._projCropIncome(g, me) < g.onBoard(me).length;
+    const m = this.cfg.mode;
+    let pref: number[];
+    if (m === 'push' || m === 'runner' || m === 'sandbag')
+      pref = cropShort ? [2, 1, 4, 7, 6, 3, 8, 5] : [1, 4, 7, 3, 6, 2, 8, 5];
+    else pref = cropShort ? [2, 8, 5, 1, 3, 6, 4, 7] : [8, 5, 1, 3, 2, 6, 4, 7];
+    for (const aid of pref) if (options.includes(aid)) return aid;
+    return options[0];
+  }
+
   routAllocate(g: Game, _me: number, victim: number, dmg: number): number[] {
     const hp = new Map<number, number>();
     g.wagons[victim].forEach((w, i) => { if (w.hp > 0) hp.set(i, w.hp); });

@@ -107,15 +107,20 @@ export function makeConstants(overrides?: Partial<Constants>): Constants {
 // [x] Phase 3 CLASH   (validateOrder, 4 sub-phases, ZoC lockstep, combat math,
 //     wards/displacement/rout/interventions + bot orders/bfs/plan/goal layer).
 //     clash hash MATCHES oracle (16/16). Terrain branches kept but inert.
-// --- next: continue play_round in oracle order; extend phaseHashesR1(). ---
-// [ ] Phase 4 FRONTIER (carry/contest/stake-step/trample/breach/entrench)
-// [ ] Phase 5 PASS & TRIBUTE + komi + caravans + golden-goal/hard-stop
-// When all 5 match for round 1, extend checkpoints to all rounds → full parity.
-//
-// CAVEAT: round 1 is pre-contact — no fields/harvest, no tribute, no
-// copy-surcharge, and clash is pure movement (no damage/wagon/rout/intervention
-// /charge resolution connects yet). Those paths are ported but only get
-// parity-exercised once frontier+pass land and MULTI-ROUND hashes run.
+// [x] Phase 4 FRONTIER (stake-step, palisade absorption, trample/raid-annex,
+//     komi-holder-first breach). frontier hash MATCHES oracle (16/16).
+// [x] Phase 5 PASS & TRIBUTE (tribute accrual + komi update). pass hash MATCHES.
+//     ROUND 1 COMPLETE — all 5 phases byte-identical, 6 policies (16/16).
+// --- next: MULTI-ROUND parity. Add a full playRound() (round++, golden-goal,
+//     hard-stop, update_entrench) and check round_hashes[1..] for whole matches.
+//     This is what finally parity-exercises the combat/wagon/rout/intervention
+//     paths that round 1 (pre-contact) never reaches.
+// [ ] BLOCKER for round>=4: caravan() needs artifact_order, which the oracle
+//     builds via Python random.Random(seed).shuffle() (Mersenne Twister). Either
+//     port MT19937 + CPython shuffle, or have dump_golden export artifact_order
+//     and inject it into the TS Game (clean for parity; prototype can differ).
+// [ ] Bots clash/orders deep paths (combat target selection, charge, brace,
+//     interventions) are ported but only validated once contact happens (R>=2).
 
 // ──────────────────────────────────────────────────────────────────────────
 // Phase 0 port: geometry, Unit, Game state + setup(), canonical snapshot.
@@ -957,6 +962,87 @@ export class Game {
     this.wards = [];
   }
 
+  // ── Phase 4: Frontier ─────────────────────────────────────────────────────
+  frontier() {
+    const C = this.C;
+    const transfers: [number, Pos][] = [];
+    for (let c = 0; c < 8; c++) {
+      const k = this.stakes[c];
+      const [p1, p2] = this.columnClaims(c);
+      if (p1 === p2) continue;
+      const mover = p1 ? 0 : 1;
+      const newk = mover === 0 ? k + 1 : k - 1;
+      if (!(C.STAKE_MIN <= newk && newk <= C.STAKE_MAX)) continue;
+      const pushed = 1 - mover;
+      if (this.palisades.get(c) === pushed) { this.palisades.delete(c); continue; }
+      const taken: Pos = mover === 0 ? [c, k] : [c, k - 1];
+      if (C.ENTRENCH_HOLD && (this.entrench.get(key(taken)) ?? 0) >= C.ENTRENCH_HOLD) {
+        this.entrench.set(key(taken), 0); continue;
+      }
+      this.stakes[c] = newk;
+      this.rows_lost_round[pushed]++; this.rows_taken_round[mover]++;
+      transfers.push([mover, mover === 0 ? [c, k] : [c, k - 1]]);
+    }
+    // Trample (C-059..C-061)
+    for (const [mover, tile] of transfers) {
+      const f = this.fields.get(key(tile));
+      if (!f) continue;
+      if (f.owner === mover) { if (f.annexed !== null) f.annexed = null; continue; }
+      const controller = f.annexed !== null ? f.annexed : f.owner;
+      if (controller === mover) continue;
+      const choice = this.bots[mover].trampleChoice(this, mover, tile, f);
+      if (choice === 'annex') f.annexed = mover;
+      else { (this.res[mover] as any)[f.type] += C.RAID_GAIN; this.fields.delete(key(tile)); }
+    }
+    // Breach (C-062..C-064), komi-holder's breachers first
+    for (const p of [this.komi, 1 - this.komi]) {
+      const enemy = 1 - p, rows = this.heartlandRows(enemy);
+      const breachers = this.onBoard(p).filter(u => rows.includes(u.pos![1]));
+      let hit = false;
+      for (const u of breachers) {
+        if (this.capRemaining(p) <= 0) break;
+        const live = this.wagons[enemy].map((w, i) => [i, w] as [number, any]).filter(([, w]) => w.hp > 0);
+        if (!live.length) break;
+        const same = live.filter(([, w]) => w.col === u.pos![0]);
+        let idx: number;
+        if (same.length) idx = same[0][0];
+        else {
+          const bestD = Math.min(...live.map(([, w]) => Math.abs(w.col - u.pos![0])));
+          const tied = live.filter(([, w]) => Math.abs(w.col - u.pos![0]) === bestD).sort((a, b) => a[1].col - b[1].col);
+          idx = tied[0][0];
+          if (tied.length > 1) {
+            const pick = this.bots[p].breachTarget(this, p, u, tied);
+            if (tied.some(([i]) => i === pick)) idx = pick;
+          }
+        }
+        hit = this.damageWagon(p, enemy, idx, true) || hit;
+      }
+      if (hit) this.wagonWinCheck('wagons');
+    }
+  }
+
+  leadHolder(): number | null {
+    const score = (p: number) => [this.wagonsAlive(p), this.wagonHp(p), this.ownedRows(p)];
+    const c = ntc(score(0), score(1));
+    return c > 0 ? 0 : c < 0 ? 1 : null;
+  }
+
+  updateEntrench() {
+    const C = this.C;
+    if (!C.ENTRENCH_HOLD) return;
+    const start = C.STAKE_START;
+    const next = new Map<string, number>();
+    for (let c = 0; c < 8; c++) {
+      const k = this.stakes[c];
+      let rows: number[];
+      if (k > start) rows = [...Array(k - start).keys()].map(i => i + start);
+      else if (k < start) rows = [...Array(start - k).keys()].map(i => i + k);
+      else continue;
+      for (const r of rows) next.set(key([c, r]), Math.min((this.entrench.get(key([c, r])) ?? 0) + 1, C.ENTRENCH_HOLD));
+    }
+    this.entrench = next;
+  }
+
   // Per-phase parity entry point (round 1). Replays the ported phases and
   // returns [[label, hash], …]; check_parity.ts compares against the oracle's
   // phase_hashes_r1 and reports the first divergence. Only ported phases appear.
@@ -972,6 +1058,17 @@ export class Game {
     // Phase 3: Clash (round accumulators already [0,0] at round 1)
     this.clash();
     out.push(['clash', this.stateHash()]);
+    // Phase 4: Frontier + komi update (C-005)
+    this.frontier();
+    const [l0, l1] = this.rows_lost_round;
+    if (l0 !== l1) this.komi = l0 > l1 ? 0 : 1;
+    out.push(['frontier', this.stateHash()]);
+    // golden goal: round >= GOLDEN_GOAL_ROUND — inert at round 1
+    // Phase 5: Pass & Tribute. Tribute accrues from rows lost; caravans fire
+    // only at rounds CARAVAN_ROUND_1/2 (not round 1). Metrics (r1_winner,
+    // lead_trace) don't enter the state hash. FIRST_BLOOD_SUPPLY is off.
+    for (let p = 0; p < 2; p++) this.res[p].tribute += this.C.TRIBUTE_PER_ROW * this.rows_lost_round[p];
+    out.push(['pass', this.stateHash()]);
     return out;
   }
 
