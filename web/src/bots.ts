@@ -5,7 +5,28 @@
 // web/parity/check_parity.ts (post-setup + per-phase 'muster' hash).
 
 import type { Game, Pos, Unit } from './engine';
-import { manh, inBounds, neighbors } from './engine';
+import { manh, inBounds, neighbors, COUNTERS } from './engine';
+
+// max()/min() with a key, returning the FIRST extremum (Python semantics).
+function argmax<T>(arr: T[], fn: (t: T) => number): T {
+  let best = arr[0], bs = fn(arr[0]);
+  for (let i = 1; i < arr.length; i++) { const s = fn(arr[i]); if (s > bs) { bs = s; best = arr[i]; } }
+  return best;
+}
+function argmin<T>(arr: T[], fn: (t: T) => number): T {
+  let best = arr[0], bs = fn(arr[0]);
+  for (let i = 1; i < arr.length; i++) { const s = fn(arr[i]); if (s < bs) { bs = s; best = arr[i]; } }
+  return best;
+}
+function argminTuple<T>(arr: T[], fn: (t: T) => number[]): T {
+  let best = arr[0], bk = fn(arr[0]);
+  for (let i = 1; i < arr.length; i++) { const k = fn(arr[i]); if (cmpNum(k, bk) < 0) { bk = k; best = arr[i]; } }
+  return best;
+}
+function cmpNum(a: number[], b: number[]): number {
+  for (let i = 0; i < Math.max(a.length, b.length); i++) if (a[i] !== b[i]) return a[i] < b[i] ? -1 : 1;
+  return 0;
+}
 
 const bkey = (p: Pos) => `${p[0]},${p[1]}`;
 
@@ -383,6 +404,387 @@ export class Policy {
   }
 
   standardBearer(_g: Game, _me: number): number | null { return null; }
+
+  // -- orientation helpers ---------------------------------------------------
+  dirn(me: number): number { return me === 0 ? 1 : -1; }
+  ownFrontRow(g: Game, me: number, c: number): number { const k = g.stakes[c]; return me === 0 ? k - 1 : k; }
+  firstBeyondRow(g: Game, me: number, c: number): number { const k = g.stakes[c]; return me === 0 ? k : k - 1; }
+  stakeAtMax(g: Game, me: number, c: number): boolean {
+    const k = g.stakes[c]; return me === 0 ? k === g.C.STAKE_MAX : k === g.C.STAKE_MIN;
+  }
+  behind(g: Game, me: number): boolean {
+    const them = 1 - me;
+    const a = g.wagonsAlive(me), b = g.wagonsAlive(them);
+    if (a !== b) return a < b;
+    const ha = g.wagonHp(me), hb = g.wagonHp(them);
+    if (ha !== hb) return ha < hb;
+    return g.ownedRows(me) < g.ownedRows(them);
+  }
+  pushCols(g: Game, me: number): number[] {
+    const c = this.pickPushCenter(g, me);
+    return [c - 1, c, c + 1].filter(cc => cc >= 0 && cc < 8);
+  }
+
+  plan(g: Game, me: number): any {
+    const cfg = this.cfg;
+    let mode = cfg.mode;
+    let mine = 0, theirs = 0;
+    for (const u of g.onBoard(me)) mine += g.costs[u.arch] + u.hp;
+    for (const u of g.onBoard(1 - me)) theirs += g.costs[u.arch] + u.hp;
+    const convert = mine >= cfg.convert_mult * Math.max(1, theirs);
+    if (mode === 'sandbag' && g.round > cfg.sandbag_until) mode = 'push';
+    if ((mode === 'auto' || mode === 'hold') && g.round >= this.clock(g, 'desperation_round') && this.behind(g, me)) mode = 'push';
+    if ((mode === 'auto' || mode === 'hold') && g.round >= this.clock(g, 'force_push_round')) mode = 'push';
+    if (convert && mode !== 'runner') mode = 'push';
+    if (mode === 'auto') mode = mine >= cfg.push_margin * theirs ? 'push' : 'hold';
+    this._convert = convert;
+    const plan: any = { mode, convert, threats: this.threatenedCols(g, me) };
+    if (mode === 'push' || mode === 'runner') {
+      plan.push_cols = this.pushCols(g, me);
+      const live = g.wagons[1 - me].filter(w => w.hp > 0);
+      if (live.length) {
+        const center = plan.push_cols[Math.floor(plan.push_cols.length / 2)];
+        plan.wagon_target = argminTuple(live, w => [Math.abs(w.col - center), w.col]).col;
+      }
+    }
+    return plan;
+  }
+
+  orders(g: Game, me: number, _pulse: number): Record<number, any> {
+    const plan = this.plan(g, me);
+    const out: Record<number, any> = {};
+    const defenders = this._assignDefenders(g, me, plan);
+    const load: Record<string, number> = {};
+    for (const u of g.onBoard(me)) out[u.uid] = this._unitOrder(g, me, u, plan, defenders, load);
+    return out;
+  }
+
+  _assignDefenders(g: Game, me: number, plan: any): Record<number, number> {
+    const res: Record<number, number> = {};
+    const used = new Set<number>();
+    for (const c of plan.threats) {
+      let best: Unit | null = null, bestd: number | null = null;
+      for (const u of g.onBoard(me)) {
+        if (used.has(u.uid) || g.beyondOwn(u)) continue;
+        const d = Math.abs(u.pos![0] - c) + 0.1 * g.costs[u.arch];
+        if (bestd === null || d < bestd) { best = u; bestd = d; }
+      }
+      if (best !== null && bestd !== null && bestd <= 3.5) { res[best.uid] = c; used.add(best.uid); }
+    }
+    if (this.cfg.rearguard && plan.mode === 'push') {
+      let reserve = 0;
+      for (const e of g.onBoard(1 - me)) if (g.territoryOf(e.pos!) === 1 - me) reserve++;
+      const myWagons = [...new Set(g.wagons[me].filter(w => w.hp > 0).map(w => w.col))].sort((a, b) => a - b);
+      let want = Math.min(this.cfg.rearguard, Math.floor(reserve / 2), myWagons.length);
+      for (const c of myWagons) {
+        if (want <= 0) break;
+        if (Object.values(res).includes(c)) continue;
+        let best: Unit | null = null, bestd: number | null = null;
+        for (const u of g.onBoard(me)) {
+          if (used.has(u.uid) || g.beyondOwn(u)) continue;
+          const d = Math.abs(u.pos![0] - c) + 0.1 * g.costs[u.arch];
+          if (bestd === null || d < bestd) { best = u; bestd = d; }
+        }
+        if (best !== null) { res[best.uid] = c; used.add(best.uid); want--; }
+      }
+    }
+    return res;
+  }
+
+  _targetScore(g: Game, me: number, u: Unit, t: Unit, charge = false): number {
+    const est = g.attackDamage(u, t, charge, !charge);
+    const kill = est >= t.hp;
+    return (kill ? 10 : 0) + 2 * (COUNTERS[u.arch] === t.arch ? 1 : 0) + (6 - t.hp) * 0.5 + est
+      + (t.uid === (g.standard_bearer[1 - me] ?? -1) ? 3 : 0) + (t.arch === 'hero' ? 2 : 0)
+      + this.tb('tgt', u.uid, t.uid);
+  }
+
+  _attackAllowed(g: Game, me: number, t: Unit): boolean {
+    let scope = this.cfg.attack_scope;
+    if (this._convert) scope = 'any';
+    if (scope === 'any') return true;
+    const inMine = g.territoryOf(t.pos!) === me;
+    if (scope === 'own_half') return inMine;
+    if (scope === 'own_half_superior') {
+      if (!inMine) return false;
+      let mine = 0, theirs = 0;
+      for (const v of g.onBoard(me)) if (manh(v.pos!, t.pos!) <= 2) mine++;
+      for (const v of g.onBoard(1 - me)) if (manh(v.pos!, t.pos!) <= 2) theirs++;
+      return mine >= theirs + 1;
+    }
+    return true;
+  }
+
+  bfs(g: Game, u: Unit, maxSteps: number): Map<string, Pos[]> {
+    if (maxSteps <= 0) return new Map([[bkey(u.pos!), []]]);
+    const zoc = new Set<string>();
+    for (const v of g.onBoard(1 - u.owner)) for (const nb of neighbors(v.pos!)) zoc.add(bkey(nb));
+    const visited = new Map<string, Pos[]>([[bkey(u.pos!), []]]);
+    let frontier: [Pos, Pos[]][] = [[u.pos!, []]];
+    for (let i = 0; i < maxSteps; i++) {
+      const nxt: [Pos, Pos[]][] = [];
+      for (const [pos, path] of frontier) {
+        if (bkey(pos) !== bkey(u.pos!) && zoc.has(bkey(pos))) continue;
+        for (const nb of neighbors(pos)) {
+          if (visited.has(bkey(nb)) || g.occupied(nb)) continue;
+          const np = [...path, nb];
+          visited.set(bkey(nb), np); nxt.push([nb, np]);
+        }
+      }
+      frontier = nxt;
+    }
+    return visited;
+  }
+
+  _unitOrder(g: Game, me: number, u: Unit, plan: any, defenders: Record<number, number>, load: Record<string, number>): any {
+    const cfg = this.cfg;
+    const adjEnemies: Unit[] = [];
+    for (const nb of neighbors(u.pos!)) {
+      const uid = g.board.get(bkey(nb));
+      if (uid !== undefined && g.units.get(uid)!.owner !== me) adjEnemies.push(g.units.get(uid)!);
+    }
+    if (u.arch === 'siege') return this._siegeOrder(g, me, u, plan);
+    if (u.arch === 'archer') {
+      const shots = g.onBoard(1 - me).filter(t => manh(u.pos!, t.pos!) === 2 && this._attackAllowed(g, me, t));
+      if (shots.length) return ['SHOOT', ['U', argmax(shots, t => this._targetScore(g, me, u, t)).uid]];
+      if (adjEnemies.length) {
+        const t = argmax(adjEnemies, t => this._targetScore(g, me, u, t));
+        if (this._attackAllowed(g, me, t)) return ['MELEE', t.uid, []];
+      }
+      return this._moveOrder(g, me, u, plan, defenders, load, 2);
+    }
+    if (u.arch === 'cav' && !u.exhausted) {
+      const ch = this._findCharge(g, me, u);
+      if (ch !== null) return ch;
+    }
+    if (adjEnemies.length) {
+      const cands = adjEnemies.filter(t => this._attackAllowed(g, me, t));
+      if (cands.length) return ['MELEE', argmax(cands, t => this._targetScore(g, me, u, t)).uid, []];
+    }
+    const reach = this.bfs(g, u, u.mv);
+    let best: [number, Unit, Pos[]] | null = null;
+    for (const t of g.onBoard(1 - me)) {
+      if (!this._attackAllowed(g, me, t)) continue;
+      for (const land of neighbors(t.pos!)) {
+        if (bkey(land) === bkey(u.pos!)) continue;
+        const path = reach.get(bkey(land));
+        if (path !== undefined) {
+          let s = this._targetScore(g, me, u, t) - 0.3 * path.length;
+          if (t.arch === 'spear' && t.braced && u.arch === 'cav') s -= 6;
+          if (best === null || s > best[0]) best = [s, t, path];
+        }
+      }
+    }
+    if (best !== null && best[0] > 1.5) return ['MELEE', best[1].uid, best[2]];
+    if (u.arch === 'spear' && !u.exhausted) {
+      const near = g.onBoard(1 - me).some(t => manh(u.pos!, t.pos!) <= cfg.brace_radius);
+      const holding = plan.mode === 'hold' || !g.beyondOwn(u);
+      if (near && holding && !(u.uid in defenders)) return ['BRACE'];
+    }
+    return this._moveOrder(g, me, u, plan, defenders, load, 0, reach);
+  }
+
+  _findCharge(g: Game, me: number, u: Unit): any {
+    const reach = this.bfs(g, u, u.mv);
+    let best: [number, Unit, Pos[]] | null = null;
+    for (const t of g.onBoard(1 - me)) {
+      if (!this._attackAllowed(g, me, t)) continue;
+      if (t.arch === 'spear' && t.braced) continue;
+      if (g.terrain_on && g.ttype.get(bkey(t.pos!)) === 'woods') continue;
+      for (const land of neighbors(t.pos!)) {
+        const path = reach.get(bkey(land));
+        if (path === undefined || path.length < g.C.CHARGE_MOVE_MIN) continue;
+        const s = this._targetScore(g, me, u, t, true) - 0.2 * path.length;
+        if (best === null || s > best[0]) best = [s, t, path];
+      }
+    }
+    if (best !== null && best[0] > 2) return ['CHARGE', best[1].uid, best[2]];
+    return null;
+  }
+
+  _siegeOrder(g: Game, me: number, u: Unit, plan: any): any {
+    const cfg = this.cfg;
+    if (plan.mode === 'push') {
+      for (const c of plan.push_cols ?? []) {
+        if (g.palisades.get(c) === 1 - me) {
+          const k = g.stakes[c];
+          if (([[c, k - 1], [c, k]] as Pos[]).some(t => u.rmin <= manh(u.pos!, t) && manh(u.pos!, t) <= u.rmax))
+            return ['SHOOT', ['P', c]];
+        }
+      }
+    }
+    if ((cfg.wagon_hunt || plan.convert) && g.capRemaining(me) > 0) {
+      for (let i = 0; i < g.wagons[1 - me].length; i++) {
+        const w = g.wagons[1 - me][i];
+        if (w.hp <= 0) continue;
+        const wpos: Pos = [w.col, g.backRow(1 - me)];
+        if (u.rmin <= manh(u.pos!, wpos) && manh(u.pos!, wpos) <= u.rmax) return ['SHOOT', ['W', 1 - me, i]];
+      }
+    }
+    const shots = g.onBoard(1 - me).filter(t =>
+      u.rmin <= manh(u.pos!, t.pos!) && manh(u.pos!, t.pos!) <= u.rmax && this._attackAllowed(g, me, t));
+    if (shots.length) return ['SHOOT', ['U', argmax(shots, t => this._targetScore(g, me, u, t)).uid]];
+    return this._moveOrder(g, me, u, plan, {}, {}, 2);
+  }
+
+  _moveOrder(g: Game, me: number, u: Unit, plan: any, defenders: Record<number, number>, load: Record<string, number>, standoff = 0, reach?: Map<string, Pos[]>): any {
+    const cfg = this.cfg;
+    const goal = this._goalTile(g, me, u, plan, defenders, load);
+    if (goal === null) return ['HOLD'];
+    if (reach === undefined) reach = this.bfs(g, u, u.mv);
+    const enemies = g.onBoard(1 - me);
+    let best: [Pos, Pos[]] | null = null, bests: number | null = null;
+    for (const [k, path] of reach) {
+      const pos = k.split(',').map(Number) as Pos;
+      const d = manh(pos, goal);
+      let s = -d;
+      if (standoff && enemies.length) {
+        const nd = Math.min(...enemies.map(t => manh(pos, t.pos!)));
+        if (nd < standoff) s -= (standoff - nd) * 2;
+      }
+      if (cfg.avoid_lone && g.territoryOf(pos) !== me) {
+        const buddy = g.onBoard(me).some(v => v.uid !== u.uid && v.owner === me && manh(v.pos!, pos) <= g.C.LONE_RUNNER_RADIUS);
+        if (!buddy) s -= 4;
+      }
+      s += 0.1 * this.tb('mv', u.uid, pos);
+      if (bests === null || s > bests) { best = [pos, path]; bests = s; }
+    }
+    if (best === null || !best[1].length) return ['HOLD'];
+    return ['MOVE', best[1]];
+  }
+
+  _goalTile(g: Game, me: number, u: Unit, plan: any, defenders: Record<number, number>, load: Record<string, number>): Pos | null {
+    const cfg = this.cfg;
+    if (u.uid in defenders) { const c = defenders[u.uid]; return [c, this.ownFrontRow(g, me, c)]; }
+    const mode = plan.mode;
+    if (mode === 'sandbag') {
+      let keep = [...new Set(g.wagons[me].filter(w => w.hp > 0).map(w => w.col))].sort((a, b) => a - b);
+      if (!keep.length) keep = [3];
+      const c = argmin(keep, c => Math.abs(c - u.pos![0]));
+      return [c, this.ownFrontRow(g, me, c)];
+    }
+    if (mode === 'runner' && u.arch === 'cav') {
+      const c = argmin([...Array(8).keys()], c =>
+        g.onBoard(1 - me).filter(v => v.pos![0] === c).length + 0.1 * this.tb('run', u.uid, c));
+      return [c, g.backRow(1 - me)];
+    }
+    if (mode === 'push' || mode === 'runner') {
+      const cols = (plan.push_cols && plan.push_cols.length) ? plan.push_cols : [3, 4];
+      const c = argmin(cols, (c: number) => Math.abs(c - u.pos![0]) + 0.7 * (load[String(c)] ?? 0));
+      load[String(c)] = (load[String(c)] ?? 0) + 1;
+      if (plan.convert || g.round >= this.clock(g, 'breach_round') || this.stakeAtMax(g, me, c)) {
+        const wc = plan.wagon_target;
+        if (wc !== undefined && wc !== null) {
+          const n = load['breach'] ?? 0;
+          load['breach'] = n + 1;
+          const offs = [0, 1, -1, 0, 1, -1, 2, -2][n % 8];
+          const col = Math.max(0, Math.min(7, wc + offs));
+          const r = g.backRow(1 - me) - this.dirn(me);
+          return [col, r];
+        }
+        return [c, g.backRow(1 - me)];
+      }
+      const depth = cfg.depth;
+      let r = this.firstBeyondRow(g, me, c) + (depth - 1) * this.dirn(me);
+      r = Math.max(0, Math.min(7, r));
+      return [c, r];
+    }
+    const danger = this.dangerCols(g, me);
+    let hot = [...Array(8).keys()].filter(c => danger[c] > 0);
+    if (!hot.length) hot = [u.pos![0]];
+    const c = argmin(hot, (c: number) => Math.abs(c - u.pos![0]) + 0.7 * (load[String(c)] ?? 0));
+    load[String(c)] = (load[String(c)] ?? 0) + 1;
+    return [c, this.ownFrontRow(g, me, c)];
+  }
+
+  intervention(g: Game, me: number, wno: number): any {
+    const C = g.C, trib = g.res[me].tribute;
+    if (wno <= 2 && trib >= C.SHIELDBEARER_COST) {
+      const s = g.standardUnit(me);
+      if (s !== null && s.hp <= 4) {
+        let adjE = 0;
+        for (const nb of neighbors(s.pos!)) {
+          const uid = g.board.get(bkey(nb));
+          if (uid !== undefined && g.units.get(uid)!.owner !== me) adjE++;
+        }
+        const adjF = neighbors(s.pos!).some(nb => {
+          const uid = g.board.get(bkey(nb));
+          if (uid === undefined) return false;
+          const v = g.units.get(uid)!;
+          return v.owner === me && (v.arch === 'spear' || v.arch === 'sword');
+        });
+        if (adjE >= 2 && adjF && !g.wards.some(w => w.uid === s.uid && w.active)) return ['SHIELDBEARER', s.uid];
+      }
+    }
+    if (wno === 3 && trib >= C.SURGE_COST) {
+      for (const c of this.threatenedCols(g, me)) {
+        for (const u of g.onBoard(me)) {
+          if (!g.unbroken(u)) continue;
+          for (const nb of neighbors(u.pos!)) {
+            if (g.occupied(nb) || !inBounds(nb)) continue;
+            if (nb[0] === c && g.territoryOf(nb) === me) return ['SURGE', u.uid, nb];
+          }
+        }
+      }
+      for (let c = 0; c < 8; c++) {
+        const [p1c, p2c] = g.columnClaims(c);
+        const myclaim = me === 0 ? p1c : p2c;
+        if (myclaim) continue;
+        let clear = true;
+        for (const v of g.onBoard(1 - me))
+          if (v.pos![0] === c && g.territoryOf(v.pos!) === 1 - me && g.unbroken(v)) { clear = false; break; }
+        if (!clear) continue;
+        for (const u of g.onBoard(me)) {
+          if (u.exhausted || g.beyondOwn(u)) continue;
+          for (const nb of neighbors(u.pos!)) {
+            if (g.occupied(nb)) continue;
+            if (nb[0] === c && g.territoryOf(nb) !== me) {
+              const buddy = g.onBoard(me).some(v => v.uid !== u.uid && v.owner === me && manh(v.pos!, nb) <= g.C.LONE_RUNNER_RADIUS);
+              if (buddy) return ['SURGE', u.uid, nb];
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  trampleChoice(g: Game, _me: number, _pos: Pos, field: any): string {
+    if (this.cfg.trample === 'raid') return 'raid';
+    if (this.cfg.trample === 'annex') {
+      if (field.type === 'crop' && g.round >= g.C.EXHAUSTION_START_ROUND - 2) return 'raid';
+      return 'annex';
+    }
+    return 'raid';
+  }
+
+  lastStand(g: Game, _me: number): number {
+    if (g.reserve(_me).length >= 2) return 1;
+    if (this.cfg.mode === 'hold') return 3;
+    return 2;
+  }
+
+  entrenchCols(g: Game, me: number): number[] {
+    const danger = this.dangerCols(g, me);
+    return [...Array(8).keys()].filter(c => !g.palisades.has(c))
+      .sort((a, b) => tupleCmp([-danger[a], this.tb('ent', a)], [-danger[b], this.tb('ent', b)]));
+  }
+
+  promoT2(_g: Game, _me: number, unit: Unit): string {
+    return unit.arch === 'spear' || unit.arch === 'hero' ? 'guard' : 'atk';
+  }
+
+  routAllocate(g: Game, _me: number, victim: number, dmg: number): number[] {
+    const hp = new Map<number, number>();
+    g.wagons[victim].forEach((w, i) => { if (w.hp > 0) hp.set(i, w.hp); });
+    const picks: number[] = [];
+    for (let d = 0; d < dmg; d++) {
+      if (!hp.size) break;
+      const i = argminTuple([...hp.keys()], i => [hp.get(i)!, i]);
+      picks.push(i); hp.set(i, hp.get(i)! - 1); if (hp.get(i)! <= 0) hp.delete(i);
+    }
+    return picks;
+  }
 }
 
 export function makeBot(name: string): Policy { return new Policy(name); }
