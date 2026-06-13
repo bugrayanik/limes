@@ -128,7 +128,7 @@ export function makeConstants(overrides?: Partial<Constants>): Constants {
 // Phase 0 port: geometry, Unit, Game state + setup(), canonical snapshot.
 // Faithful to sim/engine.py. Parity target: web/parity/dump_golden.py hashes.
 // ──────────────────────────────────────────────────────────────────────────
-import { createHash } from 'node:crypto';
+import { sha1hex } from './sha1';
 import { Policy } from './bots';
 import { MT19937 } from './mt19937';
 
@@ -1204,7 +1204,7 @@ export class Game {
   }
 
   stateHash(): string {
-    return createHash('sha1').update(canonicalJSON(this.snapshot())).digest('hex').slice(0, 16);
+    return sha1hex(canonicalJSON(this.snapshot())).slice(0, 16);
   }
 }
 
