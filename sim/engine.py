@@ -91,6 +91,7 @@ CONSTANTS = {
     'GOLDEN_GOAL_ROUND': 16, 'HARD_STOP_ROUND': 20,
     'LASTSTAND_BOONS': 3, 'ENTRENCH_PALISADES': 2,
     'ENTRENCH_HOLD': 0,   # C-058b: rounds of holding to entrench forward ground; 0 = OFF
+    'FIRST_BLOOD_SUPPLY': 0,  # one-time Supply to the round-1 winner (first-mover edge); 0 = OFF
     # Timers (not consulted by the sim; kept so the dict mirrors the spec)
     'TIMER_MUSTER': 60, 'TIMER_COMMIT': 15,
     'TIMER_MUSTER_CASUAL': 90, 'TIMER_COMMIT_CASUAL': 30,
@@ -1525,6 +1526,10 @@ class Game:
                 # chip against a probe is "no clash", not a round-1 win
                 self.r1_winner = 0 if self.unit_dmg_round[0] > \
                     self.unit_dmg_round[1] else 1
+            # First Blood: a one-time Supply edge to the round-1 winner, so the
+            # opening confers a real (non-decisive) advantage (sim contract A).
+            if C.get('FIRST_BLOOD_SUPPLY') and self.r1_winner is not None:
+                self.res[self.r1_winner]['supply'] += C['FIRST_BLOOD_SUPPLY']
         self.lead_trace.append(self.lead_holder())
         # hard stop (C-071)
         if self.round >= C['HARD_STOP_ROUND']:

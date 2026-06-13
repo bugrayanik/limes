@@ -435,7 +435,7 @@ HUN_REPOSITIONS=2          # MODULE
 
 Run on the C++ resolver with policy bots, baseline rules (CORE only; Terrain module ON only for metric C's seeded set), BEFORE any UI:
 
-- **A.** Round-1 clash winner takes the match **55–65%**.
+- **A.** Round-1 clash winner takes the match **55–65%**. (Status 2026-06-13: rows-basis conversion is **0.53** — a 2pp near-miss; the opening confers a genuine but weak first-mover edge. A `FIRST_BLOOD_SUPPLY` reward CAN lift A into band (FB=3 → 0.56) but is **net-negative**: it breaks Contract E (E-twin 0.49→0.61) and over-strengthens aggressive openings (AGGRO-v-TURTLE 0.51→0.64, C band). The weak opening edge is load-bearing — left at FB=0 (OFF). A accepted as a near-miss.)
 - **B.** Lead changes after round 7 in **15–30%** of games. ✅ **PASS (0.19).** (Band widened 2026-06-13 from 25–35% to endorse *sticky positional leads* — the chess-like identity of v3 — after the metric was corrected to mirror the ladder win-rule C-071: wagons → wagon_hp → owned rows, residual tie = contested. The old metric broke ties by total army_hp, which flips on a single point of combat attrition and is NOT part of being "ahead"; that noise alone had inflated B from 0.19 to ~0.42 and made the game look "too swingy" when leads are in fact sticky.)
 - **C.** Aggressive-vs-turtle policy winrates within **45–55%** across the seeded terrain set (turtle-vs-turtle, turtle-vs-prober, all-in-vs-turtle). (Removed sandbagger-vs-honest from this passive-pairing band 2026-06-13 — that pairing measures baseline-bot quality, now tracked under E's note, not passive balance.)
 - **D.** Median game ends by Wagons/Rout in **rounds 11–14**; **<2%** reach the residual tie ladder (C-071).
