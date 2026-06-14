@@ -110,6 +110,14 @@ export class Controller {
     g.frontier();
     const [l0, l1] = g.rows_lost_round;
     if (l0 !== l1) g.komi = l0 > l1 ? 0 : 1;
+    // narrate what the frontier did, from the viewer's seat
+    const me = this.cfg.mode === 'bot' ? this.cfg.humanSeat : 0;
+    const them = 1 - me, parts: string[] = [];
+    if (g.rows_taken_round[me]) parts.push(`you pushed ${g.rows_taken_round[me]} row(s) forward`);
+    if (g.rows_lost_round[me]) parts.push(`you lost ${g.rows_lost_round[me]} row(s)`);
+    if (g.wagon_dmg_round[me]) parts.push(`💥 you breached an enemy wagon!`);
+    if (g.wagon_dmg_round[them]) parts.push(`⚠ the enemy breached your wagon!`);
+    this.log.push(`Round ${g.round} frontier: ${parts.length ? parts.join(', ') : 'the lines held — no ground changed.'}`);
     // golden goal
     if (g.round >= C.GOLDEN_GOAL_ROUND) {
       const t0 = g.rows_taken_round[0] > 0 || g.wagon_dmg_round[0] > 0;
@@ -303,6 +311,7 @@ export class Controller {
     const g = this.g;
     this.root.innerHTML = `
       <div class="topbar"><div class="phase-banner">${this.banner}</div>${guideButtonHTML()}</div>
+      <div class="phase-hint">${this.phaseHint()}</div>
       ${renderBoard(g, { p0tribe: this.cfg.p0tribe, p1tribe: this.cfg.p1tribe })}
       <div class="panel">${this.panelHTML()}</div>
       <div class="gamelog">${this.log.slice(-4).map(l => `<div>${l}</div>`).join('')}</div>`;
@@ -315,6 +324,17 @@ export class Controller {
 
   private seatName(p: number) {
     return this.cfg.mode === 'hotseat' ? `Player ${p + 1} (${cap(this.tribe(p))})` : `You (${cap(this.tribe(p))})`;
+  }
+
+  // plain-language explainer for the current phase, shown every game
+  private phaseHint(): string {
+    if (this.banner.includes('Muster'))
+      return `Spend 🛡 <b>Supply</b> to recruit units (deploy in your back rows), unlock new types, or build fields & palisades. 🌾 <b>Crop</b> feeds your army each round — keep it above your unit count or they get exhausted and fight worse.`;
+    if (this.banner.includes('Clash'))
+      return `Click a unit, then a 🟢 tile to <b>move</b> or a 🔴 enemy to <b>attack</b>. Get units past the enemy's gold stake line and hold there to push it back next phase. Two pulses per round.`;
+    if (this.banner.includes('Intervention'))
+      return `Optional: spend ◆ <b>Tribute</b> on a <b>Surge</b> (shove a unit one tile) or <b>Shieldbearer</b> (shield your Hero from a killing blow) — or just Skip.`;
+    return '';
   }
 
   private panelHTML(): string {

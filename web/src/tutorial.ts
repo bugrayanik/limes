@@ -15,14 +15,25 @@ interface Step {
 }
 
 const STEPS: Step[] = [
-  { text: `<b>Welcome to LIMES.</b> Your goal: smash the enemy's <b>3 Supply Wagons</b> (the ▣ on the top row) — or be ahead at the time limit. We'll play one turn together. Click <b>Next</b>.`, manual: true },
-  { text: `Each round starts with <b>Muster</b> — you spend resources. Let's recruit a unit: click the <b>Spearman</b> button below.`, hi: '[data-act="rec:spear"]', done: c => c.musterModeKind === 'recruit' },
-  { text: `The glowing tiles are your back rows, where new units deploy. <b>Click any glowing tile</b> to place your Spearman.`, board: true, done: c => c.stagedRecruitCount >= 1 },
-  { text: `Nice — your Spearman is staged (gold outline). You could also <b>build fields</b> (economy) or <b>unlock</b> Cavalry/Archers. For now, click <b>End Muster ▶</b>.`, hi: '[data-act="muster-done"]', done: c => c.phaseKind === 'clash' },
-  { text: `Now <b>Clash</b> — combat over two pulses. <b>Click one of your units</b> (your colour, bottom half) to select it.`, board: true, done: c => c.selectedUid !== null },
-  { text: `<span class="g-c g-move">Green</span> tiles are where it can move; <span class="g-c g-melee">red</span> would be an attack. <b>Click a green tile</b> to advance toward the gold frontier line.`, board: true, done: c => c.orderCount >= 1 },
-  { text: `An order badge appeared on the unit. Order more units the same way if you like — then click <b>Resolve pulse ▶</b>.`, hi: '[data-act="clash-done"]', done: c => c.bannerText.includes('pulse 2') || c.phaseKind !== 'clash' },
-  { text: `That's the heartbeat of LIMES: <b>Muster → Clash (×2 pulses) → the Frontier resolves</b> automatically (stakes shift, wagons get breached). Keep playing this game! Tap <b>❓ Guide</b> any time for the full rules.`, manual: true },
+  // — orientation —
+  { text: `<b>Welcome to LIMES</b> — a dice-free wargame of frontier lines. No luck: every result follows from the rules. We'll play one full round together, step by step. Click <b>Next ▶</b>.`, manual: true },
+  { text: `<b>The board is 8×8.</b> You command the <b>bottom</b> half; the enemy holds the top. The <span class="g-c g-move">gold line</span> across each column is the <b>frontier</b> — below it is your land, above it theirs.`, board: true, manual: true },
+  { text: `Those dashed squares on the <b>back rows</b> are <b>Supply Wagons</b> (▣) — 3 each. Destroy all <b>3 enemy wagons</b> (top) to win. If nobody does, whoever leads at the round-18 time limit wins. <b>Protect yours.</b>`, board: true, manual: true },
+  // — muster —
+  { text: `Every round opens with <b>Muster</b>: you spend resources. 🛡 <b>Supply</b> builds your army; 🌾 <b>Crop</b> feeds it each round. Let's recruit — click the <b>Spearman</b> button.`, hi: '[data-act="rec:spear"]', done: c => c.musterModeKind === 'recruit' },
+  { text: `The glowing tiles are your back rows — where new units deploy. <b>Click a glowing tile</b> to place your Spearman.`, board: true, done: c => c.stagedRecruitCount >= 1 },
+  { text: `Staged (gold outline). You can deploy a couple per turn. You could also <b>Build</b> a Crop field for more income, or <b>Unlock</b> Cavalry & Archers. Remember the triangle: <b>Spear ▸ Cavalry ▸ Archer ▸ Spear</b>.`, manual: true },
+  { text: `When you're happy with your Muster, click <b>End Muster ▶</b> to lock it in.`, hi: '[data-act="muster-done"]', done: c => c.phaseKind === 'clash' },
+  // — clash —
+  { text: `Now <b>Clash</b> — the combat phase, fought over <b>two pulses</b>. Your units move and fight. <b>Click one of your units</b> (bottom half) to select it.`, board: true, done: c => c.selectedUid !== null },
+  { text: `Highlights show its options: <span class="g-c g-move">green</span> = move, <span class="g-c g-melee">red</span> = attack, <span class="g-c g-shoot">orange</span> = shoot, <span class="g-c g-charge">purple</span> = charge. <b>Click a green tile</b> to advance toward the enemy line.`, board: true, done: c => c.orderCount >= 1 },
+  { text: `A badge marks the queued order. Early on the enemy is far away, so there are no red attack tiles yet — your job now is to <b>advance and form a line</b>. Order a few more units if you like.`, manual: true },
+  { text: `Reaching past the enemy's stake line (with a friend nearby) <b>carries</b> the column — that's how you push the frontier. When ready, click <b>Resolve pulse ▶</b>.`, hi: '[data-act="clash-done"]', done: c => c.bannerText.includes('pulse 2') || c.phaseKind !== 'clash' },
+  { text: `That was <b>pulse 1</b> — orders resolved simultaneously (no first-mover advantage). Now <b>pulse 2</b>: same again. Move up, then <b>Resolve pulse ▶</b> to finish the round.`, hi: '[data-act="clash-done"]', done: c => c.round >= 2 },
+  // — wrap-up —
+  { text: `<b>Round complete!</b> The <b>Frontier</b> resolved automatically — stakes shift where a side carried a column, and units in enemy back rows breach wagons. Check the <b>log line</b> under the board to see what changed.`, manual: true },
+  { text: `You're back at <b>Muster</b> for round 2 — the loop repeats: <b>Muster → Clash ×2 → Frontier → Pass</b>. That's the whole game. Build economy, win the match-ups, and march on their wagons.`, manual: true },
+  { text: `You've got it! Keep playing this match. Open <b>❓ Guide</b> any time for unit stats, combat math, and strategy tips. <b>Good luck, commander.</b>`, manual: true },
 ];
 
 export class Tutorial {
