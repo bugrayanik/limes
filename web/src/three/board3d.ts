@@ -83,10 +83,13 @@ export class Board3D {
     const s = 8; Object.assign(sun.shadow.camera, { left: -s, right: s, top: s, bottom: -s, near: 1, far: 40 });
     this.scene.add(sun);
 
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80),
-      new THREE.MeshStandardMaterial({ color: 0x2a2118, roughness: 1 }));
-    ground.rotation.x = -Math.PI / 2; ground.position.y = -0.2; ground.receiveShadow = true;
-    this.scene.add(ground);
+    // misty "sea" the diorama floats over
+    const sea = new THREE.Mesh(new THREE.PlaneGeometry(120, 120),
+      new THREE.MeshStandardMaterial({ color: 0x24303a, roughness: 0.85, metalness: 0.1 }));
+    sea.rotation.x = -Math.PI / 2; sea.position.y = -1.6; sea.receiveShadow = true;
+    this.scene.add(sea);
+
+    this.buildScenery();
 
     this.scene.add(this.props, this.unitG, this.hiGroup, this.fxG);
 
@@ -131,6 +134,62 @@ export class Board3D {
     if (c >= 0 && c < 8 && r >= 0 && r < 8) this.clickCb([c, r]);
   }
 
+  // ── static scenery (built once): earth pedestal + landscaped apron ──
+  private buildScenery() {
+    const span = 8 * STEP, apron = 2.0;
+    // grassy top lip the board + decoration sit on
+    const lip = new THREE.Mesh(new THREE.BoxGeometry(span + apron, 0.16, span + apron),
+      new THREE.MeshStandardMaterial({ color: 0x5f7a37, roughness: 1 }));
+    lip.position.y = -0.09; lip.receiveShadow = true; this.scene.add(lip);
+    // dirt body (the pedestal)
+    const body = new THREE.Mesh(new THREE.BoxGeometry(span + apron - 0.3, 1.5, span + apron - 0.3),
+      new THREE.MeshStandardMaterial({ color: 0x4a3522, roughness: 1 }));
+    body.position.y = -0.92; body.castShadow = true; body.receiveShadow = true; this.scene.add(body);
+    // a thin rocky stratum
+    const strat = new THREE.Mesh(new THREE.BoxGeometry(span + apron - 0.15, 0.25, span + apron - 0.15),
+      new THREE.MeshStandardMaterial({ color: 0x5b5048, roughness: 1, flatShading: true }));
+    strat.position.y = -0.34; this.scene.add(strat);
+
+    // scatter trees, rocks, grass in the apron ring (outside the play grid)
+    const inApron = () => {
+      // pick a point in the square ring between the grid edge and the lip edge
+      const edge = span / 2, outer = (span + apron) / 2 - 0.25;
+      const side = Math.floor(Math.random() * 4);
+      const along = (Math.random() * 2 - 1) * outer;
+      const off = edge + 0.1 + Math.random() * (outer - edge - 0.1);
+      const p: [number, number] = side === 0 ? [along, off] : side === 1 ? [along, -off] : side === 2 ? [off, along] : [-off, along];
+      return p;
+    };
+    for (let i = 0; i < 26; i++) { const t = this.makeTree(); const [x, z] = inApron(); t.position.set(x, -0.01, z); t.rotation.y = Math.random() * 6.28; const s = 0.8 + Math.random() * 0.6; t.scale.setScalar(s); this.scene.add(t); }
+    for (let i = 0; i < 34; i++) { const r = this.makeRock(); const [x, z] = inApron(); r.position.set(x, 0, z); this.scene.add(r); }
+    for (let i = 0; i < 40; i++) { const g = this.makeGrass(); const [x, z] = inApron(); g.position.set(x, 0, z); this.scene.add(g); }
+  }
+  private makeTree(): THREE.Group {
+    const g = new THREE.Group();
+    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.09, 0.4, 6), new THREE.MeshStandardMaterial({ color: 0x5a3f25, roughness: 1 }));
+    trunk.position.y = 0.2; trunk.castShadow = true; g.add(trunk);
+    const c1 = new THREE.Mesh(new THREE.ConeGeometry(0.32, 0.5, 7), new THREE.MeshStandardMaterial({ color: 0x3e6b34, roughness: 1, flatShading: true }));
+    c1.position.y = 0.58; c1.castShadow = true; g.add(c1);
+    const c2 = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.42, 7), new THREE.MeshStandardMaterial({ color: 0x4a7a3a, roughness: 1, flatShading: true }));
+    c2.position.y = 0.86; c2.castShadow = true; g.add(c2);
+    return g;
+  }
+  private makeRock(): THREE.Mesh {
+    const m = new THREE.Mesh(new THREE.IcosahedronGeometry(0.14 + Math.random() * 0.14, 0),
+      new THREE.MeshStandardMaterial({ color: 0x6b6660, roughness: 1, flatShading: true }));
+    m.position.y = 0.06; m.castShadow = true; m.receiveShadow = true; m.rotation.set(Math.random(), Math.random(), Math.random()); return m;
+  }
+  private makeGrass(): THREE.Group {
+    const g = new THREE.Group();
+    const mat = new THREE.MeshStandardMaterial({ color: 0x6f9442, roughness: 1, side: THREE.DoubleSide });
+    for (let i = 0; i < 4; i++) {
+      const blade = new THREE.Mesh(new THREE.ConeGeometry(0.03, 0.22, 3), mat);
+      blade.position.set((Math.random() - 0.5) * 0.18, 0.11, (Math.random() - 0.5) * 0.18);
+      blade.rotation.z = (Math.random() - 0.5) * 0.5; g.add(blade);
+    }
+    return g;
+  }
+
   // ── builders ──
   private standee(u: Unit): { group: THREE.Group; card: THREE.Mesh } {
     const tribe = this.tribeOf(u.owner), path = ROSTER[`${tribe}_${u.arch}`];
@@ -166,7 +225,10 @@ export class Board3D {
     const tileGeo = new THREE.BoxGeometry(TILE, 0.25, TILE);
     for (let c = 0; c < 8; c++) for (let r = 0; r < 8; r++) {
       const terr = r < g.stakes[c] ? 0 : 1;
-      const m = new THREE.Mesh(tileGeo, new THREE.MeshStandardMaterial({ color: terr === 0 ? 0x6f7d3a : 0x55633a, roughness: 0.95 }));
+      const base = new THREE.Color(terr === 0 ? 0x6f7d3a : 0x55633a);
+      const j = (((c * 7 + r * 13) % 6) - 2.5) * 0.012;   // deterministic jitter
+      base.offsetHSL(j * 0.3, 0, j);
+      const m = new THREE.Mesh(tileGeo, new THREE.MeshStandardMaterial({ color: base, roughness: 0.95 }));
       const [x, z] = tileWorld(c, r); m.position.set(x, 0, z); m.receiveShadow = true; this.props.add(m);
       if (r === g.stakes[c] - 1) {
         const edge = new THREE.Mesh(new THREE.BoxGeometry(TILE, 0.04, 0.08), new THREE.MeshStandardMaterial({ color: 0xdbc06a, emissive: 0x3a2f10, roughness: 0.5 }));
