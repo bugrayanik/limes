@@ -522,7 +522,7 @@ export class Controller {
     if (this.banner.includes('Clash'))
       return `Click a unit, then a 🟢 tile to <b>move</b> or a 🔴 enemy to <b>attack</b>. Get units past the enemy's gold stake line and hold there to push it back next phase. Two pulses per round.`;
     if (this.banner.includes('Intervention'))
-      return `Optional: spend ◆ <b>Tribute</b> on a <b>Surge</b> (shove a unit one tile) or <b>Shieldbearer</b> (shield your Hero from a killing blow) — or just Skip.`;
+      return `Optional: spend ◆ <b>Tribute</b> on a <b>Surge</b> (move one of <i>your</i> units one tile to an empty square) or <b>Shieldbearer</b> (shield your Hero from a killing blow) — or just Skip.`;
     return '';
   }
 

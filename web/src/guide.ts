@@ -54,7 +54,7 @@ Your 3 <b>Wagons</b> sit on your back row — guard them.</p>
 </ul>
 
 <h3>⑥ Tribute & interventions</h3>
-<p>Lose rows → gain <b>Tribute (◆)</b>. Spend it during Clash on <b>Surge</b> (shove a unit 1 tile) or
+<p>Lose rows → gain <b>Tribute (◆)</b>. Spend it during Clash on <b>Surge</b> (move one of your own units 1 tile to an empty square) or
 <b>Shieldbearer</b> (ward your Hero from a killing blow), or convert it to Supply in Muster.</p>
 
 <h3>⑦ Controls</h3>
