@@ -81,6 +81,7 @@ export class Tutorial {
     if (this.i >= STEPS.length) return this.finish();
     this.render();
   }
+  private back() { if (this.i > 0) { this.i--; this.render(); } }
   private boardEl() { return document.querySelector('#board3d') || document.querySelector('.board-grid'); }
   private clearSpot() {
     document.querySelectorAll('.coachmark').forEach(e => e.classList.remove('coachmark'));
@@ -99,11 +100,13 @@ export class Tutorial {
         <div class="coach-step">Tutorial · ${this.i + 1}/${STEPS.length}</div>
         <div class="coach-text">${step.text}</div>
         <div class="coach-btns">
+          ${this.i > 0 ? `<button class="pbtn" id="coach-back">◀ Back</button>` : ''}
           ${step.manual ? `<button class="pbtn confirm" id="coach-next">${this.i === STEPS.length - 1 ? 'Finish ✓' : 'Next ▶'}</button>` : `<span class="coach-hint">↳ do the highlighted action to continue</span>`}
           <button class="pbtn" id="coach-guide">❓ Guide</button>
           <button class="pbtn coach-skip" id="coach-skip">Skip</button>
         </div>
       </div>`;
+    this.box.querySelector('#coach-back')?.addEventListener('click', () => this.back());
     this.box.querySelector('#coach-next')?.addEventListener('click', () => this.i === STEPS.length - 1 ? this.finish() : this.advance());
     this.box.querySelector('#coach-guide')?.addEventListener('click', openGuide);
     this.box.querySelector('#coach-skip')?.addEventListener('click', () => this.finish());
