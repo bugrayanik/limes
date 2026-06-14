@@ -14,6 +14,8 @@ const BOT_DESC: Record<string, string> = {
 
 const root = document.getElementById('app')!;
 
+let demoBotA = 'AGGRO';   // demo-only: the two AIs you watch fight
+let demoBotB = 'HONEST';
 const state: GameConfig = {
   mode: 'bot', humanSeat: 0, botName: 'HONEST',
   p0tribe: 'roman', p1tribe: 'viking', seed: 12345,
@@ -59,8 +61,15 @@ function setupScreen() {
       <button class="pbtn confirm big" id="start">Begin campaign ▶</button>
       <div class="setup-links">
         <button class="pbtn" id="tut">🎓 Tutorial — learn by playing</button>
-        <button class="pbtn" id="demo">🤖 Watch a demo (AI vs AI)</button>
         <button class="pbtn" id="guide">📖 Read the rules</button>
+      </div>
+
+      <div class="demo-setup">
+        <span class="slabel">Watch AI</span>
+        <select id="demoA">${BOTS.map(b => `<option value="${b}"${b === demoBotA ? ' selected' : ''}>${b}</option>`).join('')}</select>
+        <span class="vs">vs</span>
+        <select id="demoB">${BOTS.map(b => `<option value="${b}"${b === demoBotB ? ' selected' : ''}>${b}</option>`).join('')}</select>
+        <button class="pbtn confirm" id="demo">🤖 Watch</button>
       </div>
       <p class="hint">New here? Start with the <b>Tutorial</b>. Pick an action, then click the board.
         Two pulses of Clash per round; first to wipe the enemy Supply Wagons — or lead at the time limit — wins.</p>
@@ -77,12 +86,14 @@ function setupScreen() {
     if (state.p0tribe === state.p1tribe) state.p1tribe = TRIBES.find(t => t !== state.p0tribe)!;
     new Controller(root).start({ ...state });
   };
+  (root.querySelector('#demoA') as HTMLSelectElement).onchange = e => demoBotA = (e.target as HTMLSelectElement).value;
+  (root.querySelector('#demoB') as HTMLSelectElement).onchange = e => demoBotB = (e.target as HTMLSelectElement).value;
   (root.querySelector('#demo') as HTMLElement).onclick = () => {
-    // each demo: two random distinct tribes + a fresh seed, so every watch differs
+    // demo: the two AIs you picked, on random distinct tribes + a fresh seed.
     const a = TRIBES[Math.floor(Math.random() * TRIBES.length)];
     let b = TRIBES[Math.floor(Math.random() * TRIBES.length)];
     while (b === a) b = TRIBES[Math.floor(Math.random() * TRIBES.length)];
-    new Controller(root).start({ ...state, p0tribe: a, p1tribe: b, seed: Math.floor(Math.random() * 1e6), demo: true });
+    new Controller(root).start({ ...state, p0tribe: a, p1tribe: b, botName: demoBotA, botB: demoBotB, seed: Math.floor(Math.random() * 1e6), demo: true });
   };
   (root.querySelector('#guide') as HTMLElement).onclick = openGuide;
   (root.querySelector('#tut') as HTMLElement).onclick = () => {

@@ -49,6 +49,8 @@ export class Board3D {
   private unitG = new THREE.Group();           // persistent animated units
   private fxG = new THREE.Group();             // damage numbers etc.
   private wagArtG = new THREE.Group();         // artifact labels floating over wagons
+  private wagonHp = new Map<string, number>(); // track wagon hp across updates for damage/destroy FX
+  private wagonDeaths: { grp: THREE.Group; t0: number }[] = []; // sinking destroyed-wagon ghosts
   private units = new Map<number, UnitView>();
   private dmg: { spr: THREE.Sprite; t0: number }[] = [];
   private raycaster = new THREE.Raycaster();
@@ -225,15 +227,52 @@ export class Board3D {
     base.position.y = 0.06; base.castShadow = true; base.receiveShadow = true; g.add(base);
     return { group: g, card };
   }
-  private wagon(): THREE.Group {
+  private wagon(tint = 0x6b4a25): THREE.Group {
     const g = new THREE.Group();
-    const crate = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.4, 0.7), new THREE.MeshStandardMaterial({ color: 0x6b4a25, roughness: 0.9 }));
+    const crate = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.4, 0.7), new THREE.MeshStandardMaterial({ color: tint, roughness: 0.9 }));
     crate.position.y = 0.3; crate.castShadow = true; g.add(crate);
     for (const sx of [-0.32, 0.32]) for (const sz of [-0.3, 0.3]) {
       const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.06, 14), new THREE.MeshStandardMaterial({ color: 0x2a1d10, roughness: 0.8 }));
       wheel.rotation.z = Math.PI / 2; wheel.position.set(sx, 0.16, sz); wheel.castShadow = true; g.add(wheel);
     }
     return g;
+  }
+
+  private wagonBar(hp: number, max: number): THREE.Sprite {
+    const cv = document.createElement('canvas'); cv.width = 168; cv.height = 46;
+    const ctx = cv.getContext('2d')!;
+    const pct = Math.max(0, hp / max);
+    const bx = 6, by = 24, bw = 156, bh = 18, rad = 6;
+    const rr = (x: number, y: number, w: number, h: number, r: number) => {
+      ctx.beginPath(); ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+    };
+    ctx.fillStyle = 'rgba(8,6,4,0.9)'; rr(bx, by, bw, bh, rad); ctx.fill();
+    ctx.fillStyle = pct > 0.5 ? '#5fbf4a' : pct > 0.25 ? '#d8b53a' : '#c8463a';
+    if (pct > 0) { rr(bx + 2, by + 2, (bw - 4) * pct, bh - 4, rad - 2); ctx.fill(); }
+    ctx.font = 'bold 18px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+    ctx.strokeText(`▣ ${hp}/${max}`, 84, 1); ctx.fillStyle = '#ffd24a'; ctx.fillText(`▣ ${hp}/${max}`, 84, 1);
+    const tex = new THREE.CanvasTexture(cv);
+    const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false }));
+    spr.renderOrder = 11; spr.scale.set(0.72, 0.2, 1); spr.position.set(0, 0.98, 0);
+    return spr;
+  }
+  private spawnWagonBreach(x: number, z: number, p: number) {
+    // floating "BREACH!" text (reuses the damage-number rise/fade)
+    const cv = document.createElement('canvas'); cv.width = 256; cv.height = 80;
+    const ctx = cv.getContext('2d')!;
+    ctx.font = 'bold 40px Cinzel, serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#1a1408'; ctx.fillText('💥 BREACH', 130, 42);
+    ctx.fillStyle = '#ff5a3a'; ctx.fillText('💥 BREACH', 128, 40);
+    const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), transparent: true, depthTest: false }));
+    spr.scale.set(1.7, 0.53, 1); spr.position.set(x, 1.5, z); this.fxG.add(spr);
+    this.dmg.push({ spr, t0: this.clock.elapsedTime });
+    // a sinking, fading ghost of the wagon so it doesn't just pop out
+    const tint = (TRIBE_HEX as any)[this.tribeOf(p)] ?? 0x6b4a25;
+    const ghost = this.wagon(tint); ghost.position.set(x, UNIT_Y, z); this.fxG.add(ghost);
+    this.wagonDeaths.push({ grp: ghost, t0: this.clock.elapsedTime });
   }
 
   private buildProps(g: Game) {
@@ -251,8 +290,20 @@ export class Board3D {
         edge.position.set(x, 0.15, z - STEP / 2); this.props.add(edge);
       }
     }
+    const maxHp = (g as any).C?.WAGON_HP ?? 3;
     for (let p = 0; p < 2; p++) for (const w of g.wagons[p]) {
-      if (w.hp <= 0) continue; const wg = this.wagon(); const [x, z] = tileWorld(w.col, w.row); wg.position.set(x, UNIT_Y, z); this.props.add(wg);
+      const key = `${p}:${w.col}:${w.row}`;
+      const [x, z] = tileWorld(w.col, w.row);
+      const prev = this.wagonHp.get(key);
+      if (prev !== undefined && w.hp < prev) {
+        this.spawnDamage(x, z, prev - w.hp);                       // floating -N over the wagon
+        if (w.hp <= 0 && prev > 0) this.spawnWagonBreach(x, z, p); // destruction: BREACH! + sinking ghost
+      }
+      this.wagonHp.set(key, w.hp);
+      if (w.hp <= 0) continue;
+      const tint = (TRIBE_HEX as any)[this.tribeOf(p)] ?? 0x6b4a25;
+      const wg = this.wagon(tint); wg.position.set(x, UNIT_Y, z); this.props.add(wg);
+      wg.add(this.wagonBar(w.hp, maxHp));                          // HP bar above the crate
     }
     for (const [k, f] of g.fields.entries()) {
       const [c, r] = k.split(',').map(Number);
@@ -418,8 +469,9 @@ export class Board3D {
     // units: tween, idle bob, flash decay, death
     for (const [uid, v] of [...this.units]) {
       if (v.dying) {
-        const p = (t - v.dying.t0) / 0.5;
-        v.group.position.y = UNIT_Y - p * 0.6;
+        const p = (t - v.dying.t0) / 0.6;
+        v.group.position.y = UNIT_Y - p * 0.5;
+        v.group.rotation.z = p * 1.3;                 // topple over as it falls
         v.group.scale.setScalar(Math.max(0.01, 1 - p));
         v.group.traverse(o => { const mm = (o as any).material; if (mm) { mm.transparent = true; mm.opacity = Math.max(0, 1 - p); } });
         if (p >= 1) { this.unitG.remove(v.group); this.units.delete(uid); }
@@ -452,6 +504,15 @@ export class Board3D {
       const p = (t - d.t0) / 1.0; d.spr.position.y = 1.2 + p * 0.8;
       (d.spr.material as THREE.SpriteMaterial).opacity = 1 - p;
       if (p >= 1) { this.fxG.remove(d.spr); this.dmg.splice(this.dmg.indexOf(d), 1); }
+    }
+    // destroyed wagons: sink, shrink, fade (so they don't just pop out)
+    for (const d of [...this.wagonDeaths]) {
+      const p = (t - d.t0) / 0.8;
+      d.grp.position.y = UNIT_Y - p * 0.5;
+      d.grp.rotation.z = p * 0.5;
+      d.grp.scale.setScalar(Math.max(0.01, 1 - p));
+      d.grp.traverse(o => { const mm = (o as any).material; if (mm) { mm.transparent = true; mm.opacity = Math.max(0, 1 - p); } });
+      if (p >= 1) { this.fxG.remove(d.grp); this.wagonDeaths.splice(this.wagonDeaths.indexOf(d), 1); }
     }
     this.renderer.render(this.scene, this.camera);
   };

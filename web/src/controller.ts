@@ -16,7 +16,8 @@ import { Board3D } from './three/board3d';
 export interface GameConfig {
   mode: 'bot' | 'hotseat';
   humanSeat: number;        // which seat the human takes in 'bot' mode
-  botName: string;          // opponent policy in 'bot' mode
+  botName: string;          // opponent policy in 'bot' mode (seat 0 in demo)
+  botB?: string;            // second bot for demo mode (seat 1); defaults to botName
   p0tribe: string; p1tribe: string;
   seed: number;
   view?: '2d' | '3d';       // board renderer (default 3d)
@@ -98,7 +99,7 @@ export class Controller {
   // Deterministic seek: rebuild a fresh game from the seed and fast-forward to
   // any round. Returns a GameOver if the target is past the game's end.
   private demoGoTo(target: number): GameOver | null {
-    const pol = [0, 1].map(p => makeBot(this.cfg.botName));
+    const pol = [0, 1].map(p => makeBot(p === 1 && this.cfg.botB ? this.cfg.botB : this.cfg.botName));
     pol.forEach((b, p) => b.reset(this.cfg.seed, p));
     const g = new Game(pol, this.cfg.seed, V3_CONFIG);
     g.setup();
@@ -136,7 +137,8 @@ export class Controller {
   }
   private demoPanel(): string {
     const sp = (s: number, lbl: string) => `<button class="pbtn${this.demoSpeed === s ? ' on' : ''}" data-act="demo:${s}">${lbl}</button>`;
-    return `<div class="prow"><span class="plabel">🤖 Watch AI</span>
+    const matchup = `${cap(this.tribe(0))} <i>${this.cfg.botName}</i> vs ${cap(this.tribe(1))} <i>${this.cfg.botB ?? this.cfg.botName}</i>`;
+    return `<div class="prow"><span class="plabel">🤖 ${matchup}</span>
       <button class="pbtn" data-act="demo:restart" title="Back to round 1">⏮</button>
       <button class="pbtn" data-act="demo:back" title="Back one round">◀ Round</button>
       <button class="pbtn confirm" data-act="demo:pause">${this.demoPaused ? '▶ Play' : '⏸ Pause'}</button>
@@ -210,7 +212,7 @@ export class Controller {
     this.cfg = cfg;
     this.policies = [0, 1].map(p =>
       this.isHuman(p) ? new HumanPolicy(cfg.mode === 'hotseat' ? `Player ${p + 1}` : 'You')
-        : makeBot(cfg.botName));
+        : makeBot(p === 1 && cfg.botB ? cfg.botB : cfg.botName));
     this.policies.forEach((b, p) => b.reset(cfg.seed, p));
     this.g = new Game(this.policies, cfg.seed, V3_CONFIG);   // shipping = validated V3 balance (18 rounds / golden goal 14)
   }
