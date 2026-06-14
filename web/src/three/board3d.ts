@@ -282,7 +282,11 @@ export class Board3D {
     v.barKey = key;
     const ctx = v.barCtx, w = 192, h = 56;
     ctx.clearRect(0, 0, w, h);
-    if (badges) { ctx.font = 'bold 20px sans-serif'; ctx.fillStyle = '#ffd86a'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText(badges, w / 2, 0); }
+    if (badges) {
+      ctx.font = 'bold 28px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(0,0,0,0.9)'; ctx.strokeText(badges, w / 2, -1);
+      ctx.fillStyle = '#ffd24a'; ctx.fillText(badges, w / 2, -1);          // bright gold ★, outlined so it pops
+    }
     const pct = Math.max(0, Math.min(1, u.hp / u.max_hp));
     const bx = 8, by = 27, bw = w - 16, bh = 22, rd = 7;
     const rr = (x: number, y: number, ww: number, hh: number, r: number) => {

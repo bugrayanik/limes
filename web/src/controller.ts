@@ -3,7 +3,7 @@
 // musterPlayer / interventionWindow / runPulse / frontier / caravan the engine
 // uses (so play is identical to the parity-verified sim), staging each human
 // decision into a HumanPolicy just before the engine reads it.
-import { Game, GameOver, ClashEnd } from './engine';
+import { Game, GameOver, ClashEnd, V3_CONFIG } from './engine';
 import type { Pos, Unit } from './engine';
 import { makeBot } from './bots';
 import type { Policy, ReinforcePlan, BuildAct } from './bots';
@@ -44,7 +44,7 @@ export class Controller {
 
   // 3D board view (default) — a persistent canvas the controller drives
   private board3d?: Board3D;
-  private shell?: { banner: HTMLElement; hint: HTMLElement; panel: HTMLElement; log: HTMLElement };
+  private shell?: { banner: HTMLElement; phasebar: HTMLElement; hint: HTMLElement; panel: HTMLElement; log: HTMLElement };
   private get use3d() { return this.cfg.view !== '2d'; }
 
   constructor(private root: HTMLElement) {}
@@ -83,7 +83,7 @@ export class Controller {
       this.isHuman(p) ? new HumanPolicy(cfg.mode === 'hotseat' ? `Player ${p + 1}` : 'You')
         : makeBot(cfg.botName));
     this.policies.forEach((b, p) => b.reset(cfg.seed, p));
-    this.g = new Game(this.policies, cfg.seed);
+    this.g = new Game(this.policies, cfg.seed, V3_CONFIG);   // shipping = validated V3 balance (18 rounds / golden goal 14)
   }
 
   private begin() {
@@ -123,14 +123,23 @@ export class Controller {
     this.root.addEventListener('mouseleave', () => { if (this.tip) this.tip.style.display = 'none'; });
   }
   private unitTooltip(u: Unit): string {
+    const C = this.g.C;
     const beats = ({ spear: 'Cavalry', cav: 'Archers', archer: 'Spearmen' } as Record<string, string>)[u.arch];
     const rng = u.rmin === u.rmax ? `${u.rmax}` : `${u.rmin}–${u.rmax}`;
-    const states = [u.exhausted ? '∅ exhausted' : '', u.braced ? '⛨ braced' : '',
-      u.tier2 ? '★★ veteran' : u.tier1 ? '★ promoted' : ''].filter(Boolean).join(' · ');
-    return `<b>${ARCH_LABEL[u.arch]}</b>
-      <span class="utg">Atk ${u.base_atk}${u.base_guard ? ` · Guard ${u.base_guard}` : ''} · HP ${u.hp}/${u.max_hp} · Move ${u.mv} · Range ${rng}</span>
-      ${beats ? `<span class="utb">Beats ${beats}</span>` : ''}
-      ${u.xp ? `<span class="utg">XP ${u.xp}</span>` : ''}
+    const rank = u.tier2 ? ' <span class="utr">★★</span>' : u.tier1 ? ' <span class="utr">★</span>' : '';
+    const states = [u.exhausted ? '∅ exhausted — fights weaker' : '', u.braced ? '⛨ braced — stops a charge' : ''].filter(Boolean).join(' · ');
+    const next = u.tier2 ? '★★ max rank'
+      : `XP ${u.xp}/${u.tier1 ? C.XP_TIER2 : C.XP_TIER1} → ${u.tier1 ? '★★' : '★'} (wound enemies to rank up)`;
+    return `<b>${ARCH_LABEL[u.arch]}</b>${rank}
+      <div class="utstats">
+        <span class="utstat atk">⚔ Atk <b>${u.base_atk}</b></span>
+        <span class="utstat">🛡 Guard <b>${u.base_guard}</b></span>
+        <span class="utstat">❤️ HP <b>${u.hp}/${u.max_hp}</b></span>
+        <span class="utstat">👟 Move <b>${u.mv}</b></span>
+        <span class="utstat">🎯 Range <b>${rng}</b></span>
+      </div>
+      ${beats ? `<span class="utb">Beats ${beats} — +1 dmg into them</span>` : ''}
+      <span class="utg">${next}</span>
       ${states ? `<span class="uts">${states}</span>` : ''}`;
   }
 
@@ -371,6 +380,7 @@ export class Controller {
     const g = this.g;
     this.root.innerHTML = `
       <div class="topbar"><div class="phase-banner">${this.banner}</div>${guideButtonHTML()}</div>
+      <div class="phasebar">${this.phaseStepper()}</div>
       <div class="phase-hint">${this.phaseHint()}</div>
       ${renderBoard(g, { p0tribe: this.cfg.p0tribe, p1tribe: this.cfg.p1tribe })}
       <div class="panel">${this.panelHTML()}</div>
@@ -386,12 +396,14 @@ export class Controller {
   private mountShell() {
     this.root.innerHTML = `
       <div class="topbar"><div class="phase-banner"></div>${guideButtonHTML()}</div>
+      <div class="phasebar"></div>
       <div class="phase-hint"></div>
       <div id="board3d" class="board3d-wrap"></div>
       <div class="panel"></div>
       <div class="gamelog"></div>`;
     this.shell = {
       banner: this.root.querySelector('.phase-banner')!,
+      phasebar: this.root.querySelector('.phasebar')!,
       hint: this.root.querySelector('.phase-hint')!,
       panel: this.root.querySelector('.panel')!,
       log: this.root.querySelector('.gamelog')!,
@@ -415,6 +427,7 @@ export class Controller {
     if (!this.board3d) this.mountShell();
     const s = this.shell!;
     s.banner.innerHTML = this.banner;
+    s.phasebar.innerHTML = this.phaseStepper();
     s.hint.innerHTML = this.phaseHint();
     s.panel.innerHTML = this.panelHTML();
     s.log.innerHTML = this.log.slice(-4).map(l => `<div>${l}</div>`).join('');
@@ -460,6 +473,49 @@ export class Controller {
   }
 
   // plain-language explainer for the current phase, shown every game
+  // Top progression: a TFT-style round track (where you are in the match) +
+  // the 5-phase "you are here" stepper (where you are in this round).
+  private phaseStepper(): string {
+    return `<div class="rtrack">${this.roundTrack()}</div><div class="psteps">${this.phaseChips()}</div>`;
+  }
+  private roundTrack(): string {
+    const C = this.g.C, cur = this.round, max = C.HARD_STOP_ROUND;
+    const cara = [C.CARAVAN_ROUND_1, C.CARAVAN_ROUND_2];
+    let dots = '';
+    for (let r = 1; r <= max; r++) {
+      const isCara = cara.includes(r), isGold = r === C.GOLDEN_GOAL_ROUND, isStop = r === max;
+      const state = r === cur ? 'cur' : r < cur ? 'past' : 'future';
+      const icon = isCara ? '◆' : isStop ? '🏁' : isGold ? '⚡' : String(r);
+      const tip = isCara ? `Round ${r}: Caravan — draft an Artifact (free boost)`
+        : isStop ? `Round ${r}: final round — the leader wins`
+        : isGold ? `Round ${r}+: golden goal — one uncontested push can win outright`
+        : `Round ${r}`;
+      dots += `<span class="rdot ${state}${isCara ? ' cara' : ''}${isGold ? ' gold' : ''}${isStop ? ' stop' : ''}" title="${tip}">${icon}</span>`;
+    }
+    const next = cara.find(r => r >= cur);
+    const note = next ? (next === cur ? `<span class="rnote">◆ Caravan now — draft an Artifact!</span>`
+      : `<span class="rnote">◆ next Artifact in ${next - cur} round${next - cur > 1 ? 's' : ''}</span>`) : '';
+    return `<span class="rlbl">Round ${cur}/${max}</span>${dots}${note}`;
+  }
+  private phaseChips(): string {
+    const b = this.banner;
+    let cur = 0, pulse = 0;
+    if (b.includes('Muster')) cur = 0;
+    else if (b.includes('Clash') || b.includes('Intervention')) {
+      cur = 2; const m = b.match(/pulse (\d)/); pulse = m ? +m[1] : 0;
+    }
+    const phases = [
+      { k: 'Muster', i: '🏰', auto: false }, { k: 'Reveal', i: '👁', auto: true },
+      { k: 'Clash', i: '⚔', auto: false }, { k: 'Frontier', i: '🚩', auto: true },
+      { k: 'Tribute', i: '◆', auto: true },
+    ];
+    return phases.map((ph, idx) => {
+      const state = idx === cur ? 'active' : idx < cur ? 'done' : 'soon';
+      const pulseTag = idx === 2 && pulse ? ` <i>${pulse}/2</i>` : '';
+      return `<span class="pchip ${state}${ph.auto ? ' auto' : ''}"><b>${ph.i}</b> ${ph.k}${pulseTag}</span>`;
+    }).join('<span class="parr">›</span>');
+  }
+
   private phaseHint(): string {
     if (this.banner.includes('Muster'))
       return `Spend 🛡 <b>Supply</b> to recruit units (deploy in your back rows), unlock new types, or build fields & palisades. 🌾 <b>Crop</b> feeds your army each round — keep it above your unit count or they get exhausted and fight worse.`;
@@ -482,7 +538,16 @@ export class Controller {
     const unlocked = [...g.unlocked[p]];
     const recruitable = ['spear', 'sword', 'archer', 'cav', 'siege'].filter(a => unlocked.includes(a));
     const lockable = ['archer', 'cav', 'siege'].filter(a => !unlocked.includes(a));
-    const btn = (on: boolean, id: string, txt: string) => `<button class="pbtn${on ? ' on' : ''}" data-act="${id}">${txt}</button>`;
+    const tips: Record<string, string> = {
+      'fld:supply': 'Build a Supply field on your land — yields 🛡 Supply every Muster. Economy for building & recruiting.',
+      'fld:crop': 'Build a Crop field on your land — yields 🌾 Crop every Muster. Crop feeds your army (1 per unit); under-fed units get exhausted.',
+      'pal': 'Palisade — a wooden wall on one of your columns. Blocks enemy movement & charges through that column; Siege can smash it. Good for sealing a flank.',
+      'rep': 'Reposition — move one unit you already have to another tile in your territory before the clash. Rearrange your line; no Supply cost.',
+    };
+    const recTip = (a: string) => `Recruit a ${ARCH_LABEL[a]} — deploys face-down in your back rows, flips up next Reveal. Costs 🛡 Supply.`;
+    const unlTip = (a: string) => `Unlock ${ARCH_LABEL[a]} so you can recruit them now and in future Musters (one-time 🛡 cost).`;
+    const tipFor = (id: string) => tips[id] || (id.startsWith('rec:') ? recTip(id.slice(4)) : id.startsWith('unl:') ? unlTip(id.slice(4)) : '');
+    const btn = (on: boolean, id: string, txt: string) => `<button class="pbtn${on ? ' on' : ''}" data-act="${id}" title="${tipFor(id)}">${txt}</button>`;
     return `
       <div class="budget">Budget after harvest — 🛡 <b>${b.supply}</b> supply · 🌾 <b>${b.crop}</b> crop ·
         deploy ${this.mPlan.recruits.length}/${C.DEPLOY_MAX + g.extra_deploy[p]} · build ${this.mBuild.length}/${C.BUILD_ACTIONS}</div>

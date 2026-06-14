@@ -95,7 +95,29 @@ Your 3 <b>Wagons</b> sit on your back row — guard them.</p>
   <li><b>The clock.</b> From round 14 a single uncontested push can end it (golden goal); at round 18 the leader wins. Don't stall if you're behind.</li>
 </ul>
 
-<h3>⑪ Glossary</h3>
+<h3>⑪ Artifacts — the Caravan (rounds 4 &amp; 8)</h3>
+<p>Twice a match a <b>Caravan</b> arrives and each side <b>drafts one Artifact</b> — a free, one-time boost. The side that's <b>behind picks first</b>, so losing ground has a silver lining. The 8 in the pool:</p>
+<table class="g-table">
+  <tr><th>Artifact</th><th>Effect</th><th>Take it when…</th></tr>
+  <tr><td>🛡 Supply Cache</td><td>+4 Supply now</td><td>You want a big build/recruit this Muster</td></tr>
+  <tr><td>🌾 Granary</td><td>+4 Crop now</td><td>Your army is outgrowing its food</td></tr>
+  <tr><td>🛡 Hero's Aegis</td><td>+1 Guard to your Hero (permanent)</td><td>Your Hero leads the push / rout risk</td></tr>
+  <tr><td>⭐ Veteran's Mark</td><td>+2 XP to your strongest unit</td><td>A unit is one step from ★ or ★★</td></tr>
+  <tr><td>🪵 Palisade</td><td>Free wall on a key column</td><td>Sealing a flank you can't hold</td></tr>
+  <tr><td>◆ War Chest</td><td>+2 Tribute</td><td>You want clutch Surge / Shieldbearer plays</td></tr>
+  <tr><td>🏷 Levy</td><td>Next recruits cost less</td><td>You're about to mass units</td></tr>
+  <tr><td>🌱 Homestead</td><td>Auto-builds a crop/supply field</td><td>Safe, always-useful economy pick</td></tr>
+</table>
+<p><b>Drafting tips:</b></p>
+<ul>
+  <li><b>Pick to your plan, not the flashiest.</b> Attacking next round? Take Supply or Levy for more troops. Grinding it out? Granary or Homestead compounds every round after.</li>
+  <li><b>Veteran's Mark snowballs</b> — a unit at XP 1 (→★ at 2) or XP 3 (→★★ at 4) promotes <i>instantly</i>. Best on an Archer/Siege that wounds from range without taking hits.</li>
+  <li><b>Hero's Aegis</b> if your Hero spearheads — +1 Guard softens every hit it takes and lowers rout risk.</li>
+  <li><b>Behind on the board? You choose first</b> — grab the single best piece before the leader can.</li>
+  <li><b>Round 8 &gt; round 4 for tempo</b> — the match is later, so favour immediate impact (Supply / XP / Aegis) over slow economy.</li>
+</ul>
+
+<h3>⑫ Glossary</h3>
 <ul>
   <li><b>Stake / frontier:</b> a column's border row. Carry a column uncontested to step it toward the enemy.</li>
   <li><b>Carry vs contest:</b> a unit past the line with a nearby friend "carries" (pushes); an enemy unit there "contests" (cancels the push).</li>
