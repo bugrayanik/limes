@@ -3,6 +3,8 @@ import { Controller } from './controller';
 import type { GameConfig } from './controller';
 import { TRIBES } from './assets';
 import { cap } from './render';
+import { openGuide } from './guide';
+import { Tutorial } from './tutorial';
 
 const BOTS = ['HONEST', 'AGGRO', 'TURTLE', 'PROBER', 'SANDBAGGER', 'RUNNER'];
 const BOT_DESC: Record<string, string> = {
@@ -55,8 +57,12 @@ function setupScreen() {
         <button class="pbtn" id="rnd">⟳</button></div>
 
       <button class="pbtn confirm big" id="start">Begin campaign ▶</button>
-      <p class="hint">Pick an action, then click the board. Two pulses of Clash per round;
-        first to wipe the enemy Supply Wagons — or lead on the ladder at the time limit — wins.</p>
+      <div class="setup-links">
+        <button class="pbtn" id="tut">🎓 Tutorial — learn by playing</button>
+        <button class="pbtn" id="guide">📖 Read the rules</button>
+      </div>
+      <p class="hint">New here? Start with the <b>Tutorial</b>. Pick an action, then click the board.
+        Two pulses of Clash per round; first to wipe the enemy Supply Wagons — or lead at the time limit — wins.</p>
     </div>`;
 
   root.querySelectorAll<HTMLElement>('[data-mode]').forEach(b => b.onclick = () => { state.mode = b.dataset.mode as any; setupScreen(); });
@@ -69,6 +75,14 @@ function setupScreen() {
   (root.querySelector('#start') as HTMLElement).onclick = () => {
     if (state.p0tribe === state.p1tribe) state.p1tribe = TRIBES.find(t => t !== state.p0tribe)!;
     new Controller(root).start({ ...state });
+  };
+  (root.querySelector('#guide') as HTMLElement).onclick = openGuide;
+  (root.querySelector('#tut') as HTMLElement).onclick = () => {
+    // a gentle, guided first game vs TURTLE on a fixed seed
+    new Tutorial(new Controller(root)).start({
+      mode: 'bot', humanSeat: 0, botName: 'TURTLE', p0tribe: state.p0tribe,
+      p1tribe: state.p1tribe === state.p0tribe ? TRIBES.find(t => t !== state.p0tribe)! : state.p1tribe, seed: 4242,
+    });
   };
 }
 

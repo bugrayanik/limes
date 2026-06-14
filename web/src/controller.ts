@@ -10,6 +10,7 @@ import type { Policy, ReinforcePlan, BuildAct } from './bots';
 import { HumanPolicy, legalActions } from './human';
 import type { Order } from './human';
 import { renderBoard, ARCH_LABEL, TRIBE_COLOR } from './render';
+import { guideButtonHTML, wireGuideButton } from './guide';
 
 export interface GameConfig {
   mode: 'bot' | 'hotseat';
@@ -37,7 +38,24 @@ export class Controller {
   private cOrders = new Map<number, Order>();
   private cSel: number | null = null;
 
+  onChange: (() => void) | null = null;   // tutorial coach hook, fired after each render
+
   constructor(private root: HTMLElement) {}
+
+  // — read-only state for the tutorial coach —
+  get phaseKind(): 'muster' | 'clash' | 'iv' | 'other' {
+    if (this.banner.includes('Muster')) return 'muster';
+    if (this.banner.includes('Clash')) return 'clash';
+    if (this.banner.includes('Intervention')) return 'iv';
+    return 'other';
+  }
+  get round() { return this.g.round; }
+  get bannerText() { return this.banner; }
+  get musterModeKind() { return this.mMode.kind; }
+  get stagedRecruitCount() { return this.mPlan?.recruits.length ?? 0; }
+  get stagedBuildCount() { return this.mBuild?.length ?? 0; }
+  get selectedUid() { return this.cSel; }
+  get orderCount() { return this.cOrders.size; }
 
   isHuman(p: number): boolean {
     return this.cfg.mode === 'hotseat' || p === this.cfg.humanSeat;
@@ -284,13 +302,15 @@ export class Controller {
   render() {
     const g = this.g;
     this.root.innerHTML = `
-      <div class="phase-banner">${this.banner}</div>
+      <div class="topbar"><div class="phase-banner">${this.banner}</div>${guideButtonHTML()}</div>
       ${renderBoard(g, { p0tribe: this.cfg.p0tribe, p1tribe: this.cfg.p1tribe })}
       <div class="panel">${this.panelHTML()}</div>
       <div class="gamelog">${this.log.slice(-4).map(l => `<div>${l}</div>`).join('')}</div>`;
     this.wireCells();
     this.wirePanel();
+    wireGuideButton(this.root);
     this.paintOverlays();
+    this.onChange?.();
   }
 
   private seatName(p: number) {
