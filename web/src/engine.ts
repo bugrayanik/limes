@@ -388,6 +388,11 @@ export class Game {
       for (const aid of w.artifacts) {
         if (aid === 1) res.supply += 2;
         else if (aid === 2) res.crop += 2;
+        else if (aid === 4) {
+          const cands = this.onBoard(p).sort((a, b) =>
+            (b.xp - a.xp) || (this.costs[b.arch] - this.costs[a.arch]) || ntc(a.pos!, b.pos!));
+          if (cands.length) this.gainXp(cands[0], 1);
+        }
         else if (aid === 6) res.tribute += 1;
         else if (aid === 8) {
           if (res.crop < res.supply) res.crop += 1;

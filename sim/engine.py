@@ -747,6 +747,11 @@ class Game:
                     res['crop'] += 2
                 elif aid == 6:
                     res['tribute'] += 1
+                elif aid == 4:
+                    cands = self.on_board(p)
+                    if cands:
+                        cands.sort(key=lambda u: (-u.xp, -self.costs[u.arch], u.pos))
+                        self.gain_xp(cands[0], 1)
                 elif aid == 8:
                     if res['crop'] < res['supply']:
                         res['crop'] += 1
