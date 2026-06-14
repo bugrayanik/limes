@@ -106,6 +106,10 @@ export class Controller {
     this.tip = document.createElement('div');
     this.tip.className = 'utip'; this.tip.style.display = 'none';
     document.body.appendChild(this.tip);
+    // 2D board: tooltip driven by hovering the .cell DOM nodes. In 3D those
+    // don't exist — the board3d onHover callback drives this.tip instead, so
+    // skip this handler there (it would hide the tip on every mouse move).
+    if (this.use3d) return;
     this.root.addEventListener('mousemove', e => {
       const cell = (e.target as HTMLElement).closest?.('.cell[data-uid]') as HTMLElement | null;
       if (!cell) { this.tip!.style.display = 'none'; return; }
