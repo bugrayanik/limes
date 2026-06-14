@@ -1534,6 +1534,13 @@ class Game:
         self._checkpoint('clash')
         # Phase 4: Frontier
         self.frontier()
+        # A4: a destroyed wagon (hp <= 0) drops its artifacts so stale aids
+        # don't linger in the snapshot. Sweep both players at one fixed point
+        # after all wagon damage for the round is resolved.
+        for p in (0, 1):
+            for w in self.wagons[p]:
+                if w['hp'] <= 0:
+                    w['artifacts'] = []
         # komi update (C-005: at the end of the Frontier step)
         l0, l1 = self.rows_lost_round
         if l0 != l1:

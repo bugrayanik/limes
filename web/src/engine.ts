@@ -1147,6 +1147,10 @@ export class Game {
     for (const u of this.units.values()) u.face_down = false;
     this.clash();
     this.frontier();
+    // A4: a destroyed wagon (hp <= 0) drops its artifacts so stale aids don't
+    // linger in the snapshot. Sweep both players at one fixed point after all
+    // wagon damage for the round is resolved.
+    for (let p = 0; p < 2; p++) for (const w of this.wagons[p]) if (w.hp <= 0) w.artifacts = [];
     const [l0, l1] = this.rows_lost_round;
     if (l0 !== l1) this.komi = l0 > l1 ? 0 : 1;
     // golden goal (C-070)
@@ -1206,6 +1210,8 @@ export class Game {
     out.push(['clash', this.stateHash()]);
     // Phase 4: Frontier + komi update (C-005)
     this.frontier();
+    // A4: destroyed wagons drop their artifacts (mirror of playRound)
+    for (let p = 0; p < 2; p++) for (const w of this.wagons[p]) if (w.hp <= 0) w.artifacts = [];
     const [l0, l1] = this.rows_lost_round;
     if (l0 !== l1) this.komi = l0 > l1 ? 0 : 1;
     out.push(['frontier', this.stateHash()]);
