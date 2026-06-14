@@ -752,6 +752,10 @@ class Game:
                     if cands:
                         cands.sort(key=lambda u: (-u.xp, -self.costs[u.arch], u.pos))
                         self.gain_xp(cands[0], 1)
+                elif aid == 5:
+                    col = w['col']
+                    if 0 <= col < 8 and col not in self.palisades:
+                        self.palisades[col] = p
                 elif aid == 7:
                     self.recruit_discount[p] += C['ARTIFACT_DISCOUNT']
                 elif aid == 8:
