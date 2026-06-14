@@ -78,8 +78,11 @@ function setupScreen() {
     new Controller(root).start({ ...state });
   };
   (root.querySelector('#demo') as HTMLElement).onclick = () => {
-    const p1 = state.p1tribe === state.p0tribe ? TRIBES.find(t => t !== state.p0tribe)! : state.p1tribe;
-    new Controller(root).start({ ...state, p1tribe: p1, demo: true });
+    // each demo: two random distinct tribes + a fresh seed, so every watch differs
+    const a = TRIBES[Math.floor(Math.random() * TRIBES.length)];
+    let b = TRIBES[Math.floor(Math.random() * TRIBES.length)];
+    while (b === a) b = TRIBES[Math.floor(Math.random() * TRIBES.length)];
+    new Controller(root).start({ ...state, p0tribe: a, p1tribe: b, seed: Math.floor(Math.random() * 1e6), demo: true });
   };
   (root.querySelector('#guide') as HTMLElement).onclick = openGuide;
   (root.querySelector('#tut') as HTMLElement).onclick = () => {
