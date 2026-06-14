@@ -395,6 +395,15 @@ export class Controller {
     this.board3d = new Board3D(this.root.querySelector('#board3d')!,
       { p0tribe: this.cfg.p0tribe, p1tribe: this.cfg.p1tribe });
     this.board3d.onClick(pos => this.onBoardClick(pos));
+    this.board3d.onHover((pos, ev) => {
+      const uid = pos ? this.g.board.get(bkey(pos)) : undefined;
+      const u = uid !== undefined ? this.g.units.get(uid) : undefined;
+      if (!u || !this.tip) { if (this.tip) this.tip.style.display = 'none'; return; }
+      this.tip.innerHTML = this.unitTooltip(u);
+      this.tip.style.display = 'block';
+      this.tip.style.left = Math.min(ev.clientX + 14, window.innerWidth - 210) + 'px';
+      this.tip.style.top = (ev.clientY + 14) + 'px';
+    });
     wireGuideButton(this.root);
   }
 

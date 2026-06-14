@@ -26,6 +26,10 @@ interface UnitView {
   hp: number; max: number;
   tile: Pos;
   bob: number;                 // idle phase
+  bar?: THREE.Sprite;          // floating HP bar + badges
+  barTex?: THREE.CanvasTexture;
+  barCtx?: CanvasRenderingContext2D;
+  barKey?: string;             // redraw only when stats change
   tween?: { fx: number; fz: number; tx: number; tz: number; t0: number; dur: number };
   dying?: { t0: number };
 }
@@ -49,6 +53,7 @@ export class Board3D {
   private raycaster = new THREE.Raycaster();
   private pickPlane!: THREE.Mesh;
   private clickCb?: (pos: Pos) => void;
+  private hoverCb?: (pos: Pos | null, ev: PointerEvent) => void;
   private clock = new THREE.Clock();
   private downXY = { x: 0, y: 0 };
 
@@ -105,12 +110,27 @@ export class Board3D {
     el.addEventListener('pointerup', e => {
       if (Math.hypot(e.clientX - this.downXY.x, e.clientY - this.downXY.y) < 5) this.handleClick(e);
     });
+    el.addEventListener('pointermove', e => this.handleHover(e));
+    el.addEventListener('pointerleave', e => this.hoverCb?.(null, e));
 
     window.addEventListener('resize', () => this.onResize());
     this.animate();
   }
 
   onClick(cb: (pos: Pos) => void) { this.clickCb = cb; }
+  onHover(cb: (pos: Pos | null, ev: PointerEvent) => void) { this.hoverCb = cb; }
+
+  private pointerTile(e: PointerEvent): Pos | null {
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    const ndc = new THREE.Vector2(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+    this.raycaster.setFromCamera(ndc, this.camera);
+    const hit = this.raycaster.intersectObject(this.pickPlane)[0];
+    if (!hit) return null;
+    const c = Math.round((hit.point.x + HALF - STEP / 2) / STEP);
+    const r = 7 - Math.round((hit.point.z + HALF - STEP / 2) / STEP);
+    return (c >= 0 && c < 8 && r >= 0 && r < 8) ? [c, r] : null;
+  }
+  private handleHover(e: PointerEvent) { this.hoverCb?.(this.pointerTile(e), e); }
 
   private onResize() {
     const w = this.container.clientWidth, h = this.container.clientHeight;
@@ -125,14 +145,8 @@ export class Board3D {
   private tribeOf(p: number) { return p === 0 ? this.opts.p0tribe : this.opts.p1tribe; }
   private handleClick(e: PointerEvent) {
     if (!this.clickCb) return;
-    const rect = this.renderer.domElement.getBoundingClientRect();
-    const ndc = new THREE.Vector2(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
-    this.raycaster.setFromCamera(ndc, this.camera);
-    const hit = this.raycaster.intersectObject(this.pickPlane)[0];
-    if (!hit) return;
-    const c = Math.round((hit.point.x + HALF - STEP / 2) / STEP);
-    const r = 7 - Math.round((hit.point.z + HALF - STEP / 2) / STEP);
-    if (c >= 0 && c < 8 && r >= 0 && r < 8) this.clickCb([c, r]);
+    const t = this.pointerTile(e);
+    if (t) this.clickCb(t);
   }
 
   // ── static scenery (built once): earth pedestal + landscaped apron ──
@@ -251,6 +265,39 @@ export class Board3D {
     }
   }
 
+  // ── floating HP bar + status badges (billboard above each unit) ──
+  private makeBar(): { spr: THREE.Sprite; tex: THREE.CanvasTexture; ctx: CanvasRenderingContext2D } {
+    const cv = document.createElement('canvas'); cv.width = 192; cv.height = 56;
+    const ctx = cv.getContext('2d')!;
+    const tex = new THREE.CanvasTexture(cv);
+    const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false }));
+    spr.scale.set(0.8, 0.235, 1); spr.renderOrder = 10;
+    return { spr, tex, ctx };
+  }
+  private syncBar(v: UnitView, u: Unit) {
+    if (!v.bar || !v.barCtx || !v.barTex) return;
+    const badges = [u.tier2 ? '★★' : u.tier1 ? '★' : '', u.braced ? '⛨' : '', u.exhausted ? '∅' : ''].filter(Boolean).join(' ');
+    const key = `${u.hp}/${u.max_hp}|${badges}`;
+    if (key === v.barKey) return;            // redraw only when something changed
+    v.barKey = key;
+    const ctx = v.barCtx, w = 192, h = 56;
+    ctx.clearRect(0, 0, w, h);
+    if (badges) { ctx.font = 'bold 20px sans-serif'; ctx.fillStyle = '#ffd86a'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText(badges, w / 2, 0); }
+    const pct = Math.max(0, Math.min(1, u.hp / u.max_hp));
+    const bx = 8, by = 27, bw = w - 16, bh = 22, rd = 7;
+    const rr = (x: number, y: number, ww: number, hh: number, r: number) => {
+      ctx.beginPath(); ctx.moveTo(x + r, y);
+      ctx.arcTo(x + ww, y, x + ww, y + hh, r); ctx.arcTo(x + ww, y + hh, x, y + hh, r);
+      ctx.arcTo(x, y + hh, x, y, r); ctx.arcTo(x, y, x + ww, y, r); ctx.closePath();
+    };
+    ctx.fillStyle = 'rgba(8,6,4,0.9)'; rr(bx, by, bw, bh, rd); ctx.fill();
+    ctx.fillStyle = pct > 0.5 ? '#5fbf4a' : pct > 0.25 ? '#d8b53a' : '#c8463a';
+    if (pct > 0) { rr(bx + 3, by + 3, Math.max(2, (bw - 6) * pct), bh - 6, rd - 3); ctx.fill(); }
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(`${u.hp}/${u.max_hp}`, w / 2, by + bh / 2 + 1);
+    v.barTex.needsUpdate = true;
+  }
+
   // ── diff the game state and animate the changes ──
   update(g: Game) {
     this.buildProps(g);
@@ -265,6 +312,8 @@ export class Board3D {
         group.position.set(x, UNIT_Y, z);
         this.unitG.add(group);
         v = { group, card, hp: u.hp, max: u.max_hp, tile: [u.pos[0], u.pos[1]], bob: Math.random() * 6.28 };
+        const b = this.makeBar(); b.spr.position.set(0, 1.22, 0); group.add(b.spr);
+        v.bar = b.spr; v.barTex = b.tex; v.barCtx = b.ctx;
         this.units.set(u.uid, v);
       } else {
         if (v.tile[0] !== u.pos[0] || v.tile[1] !== u.pos[1]) {
@@ -274,6 +323,7 @@ export class Board3D {
         if (u.hp < v.hp) { this.spawnDamage(x, z, v.hp - u.hp); this.flash(v); }
         v.hp = u.hp;
       }
+      this.syncBar(v, u);
     }
     // units gone from the board → death FX
     for (const [uid, v] of [...this.units]) {

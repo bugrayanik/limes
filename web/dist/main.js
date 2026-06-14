@@ -32566,6 +32566,8 @@ var Board3D = class {
     el.addEventListener("pointerup", (e) => {
       if (Math.hypot(e.clientX - this.downXY.x, e.clientY - this.downXY.y) < 5) this.handleClick(e);
     });
+    el.addEventListener("pointermove", (e) => this.handleHover(e));
+    el.addEventListener("pointerleave", (e) => this.hoverCb?.(null, e));
     window.addEventListener("resize", () => this.onResize());
     this.animate();
   }
@@ -32592,10 +32594,27 @@ var Board3D = class {
   raycaster = new Raycaster();
   pickPlane;
   clickCb;
+  hoverCb;
   clock = new Clock();
   downXY = { x: 0, y: 0 };
   onClick(cb) {
     this.clickCb = cb;
+  }
+  onHover(cb) {
+    this.hoverCb = cb;
+  }
+  pointerTile(e) {
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    const ndc = new Vector2((e.clientX - rect.left) / rect.width * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+    this.raycaster.setFromCamera(ndc, this.camera);
+    const hit = this.raycaster.intersectObject(this.pickPlane)[0];
+    if (!hit) return null;
+    const c = Math.round((hit.point.x + HALF - STEP / 2) / STEP);
+    const r = 7 - Math.round((hit.point.z + HALF - STEP / 2) / STEP);
+    return c >= 0 && c < 8 && r >= 0 && r < 8 ? [c, r] : null;
+  }
+  handleHover(e) {
+    this.hoverCb?.(this.pointerTile(e), e);
   }
   onResize() {
     const w = this.container.clientWidth, h = this.container.clientHeight;
@@ -32619,14 +32638,8 @@ var Board3D = class {
   }
   handleClick(e) {
     if (!this.clickCb) return;
-    const rect = this.renderer.domElement.getBoundingClientRect();
-    const ndc = new Vector2((e.clientX - rect.left) / rect.width * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
-    this.raycaster.setFromCamera(ndc, this.camera);
-    const hit = this.raycaster.intersectObject(this.pickPlane)[0];
-    if (!hit) return;
-    const c = Math.round((hit.point.x + HALF - STEP / 2) / STEP);
-    const r = 7 - Math.round((hit.point.z + HALF - STEP / 2) / STEP);
-    if (c >= 0 && c < 8 && r >= 0 && r < 8) this.clickCb([c, r]);
+    const t = this.pointerTile(e);
+    if (t) this.clickCb(t);
   }
   // ── static scenery (built once): earth pedestal + landscaped apron ──
   buildScenery() {
@@ -32811,6 +32824,59 @@ var Board3D = class {
       this.props.add(wall);
     }
   }
+  // ── floating HP bar + status badges (billboard above each unit) ──
+  makeBar() {
+    const cv = document.createElement("canvas");
+    cv.width = 192;
+    cv.height = 56;
+    const ctx = cv.getContext("2d");
+    const tex = new CanvasTexture(cv);
+    const spr = new Sprite(new SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false }));
+    spr.scale.set(0.8, 0.235, 1);
+    spr.renderOrder = 10;
+    return { spr, tex, ctx };
+  }
+  syncBar(v, u) {
+    if (!v.bar || !v.barCtx || !v.barTex) return;
+    const badges = [u.tier2 ? "\u2605\u2605" : u.tier1 ? "\u2605" : "", u.braced ? "\u26E8" : "", u.exhausted ? "\u2205" : ""].filter(Boolean).join(" ");
+    const key2 = `${u.hp}/${u.max_hp}|${badges}`;
+    if (key2 === v.barKey) return;
+    v.barKey = key2;
+    const ctx = v.barCtx, w = 192, h = 56;
+    ctx.clearRect(0, 0, w, h);
+    if (badges) {
+      ctx.font = "bold 20px sans-serif";
+      ctx.fillStyle = "#ffd86a";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillText(badges, w / 2, 0);
+    }
+    const pct = Math.max(0, Math.min(1, u.hp / u.max_hp));
+    const bx = 8, by = 27, bw = w - 16, bh = 22, rd = 7;
+    const rr = (x, y, ww, hh, r) => {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + ww, y, x + ww, y + hh, r);
+      ctx.arcTo(x + ww, y + hh, x, y + hh, r);
+      ctx.arcTo(x, y + hh, x, y, r);
+      ctx.arcTo(x, y, x + ww, y, r);
+      ctx.closePath();
+    };
+    ctx.fillStyle = "rgba(8,6,4,0.9)";
+    rr(bx, by, bw, bh, rd);
+    ctx.fill();
+    ctx.fillStyle = pct > 0.5 ? "#5fbf4a" : pct > 0.25 ? "#d8b53a" : "#c8463a";
+    if (pct > 0) {
+      rr(bx + 3, by + 3, Math.max(2, (bw - 6) * pct), bh - 6, rd - 3);
+      ctx.fill();
+    }
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 16px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(`${u.hp}/${u.max_hp}`, w / 2, by + bh / 2 + 1);
+    v.barTex.needsUpdate = true;
+  }
   // ── diff the game state and animate the changes ──
   update(g) {
     this.buildProps(g);
@@ -32825,6 +32891,12 @@ var Board3D = class {
         group.position.set(x, UNIT_Y, z);
         this.unitG.add(group);
         v = { group, card, hp: u.hp, max: u.max_hp, tile: [u.pos[0], u.pos[1]], bob: Math.random() * 6.28 };
+        const b = this.makeBar();
+        b.spr.position.set(0, 1.22, 0);
+        group.add(b.spr);
+        v.bar = b.spr;
+        v.barTex = b.tex;
+        v.barCtx = b.ctx;
         this.units.set(u.uid, v);
       } else {
         if (v.tile[0] !== u.pos[0] || v.tile[1] !== u.pos[1]) {
@@ -32837,6 +32909,7 @@ var Board3D = class {
         }
         v.hp = u.hp;
       }
+      this.syncBar(v, u);
     }
     for (const [uid, v] of [...this.units]) {
       if (!seen.has(uid) && !v.dying) {
@@ -33396,6 +33469,18 @@ var Controller = class {
       { p0tribe: this.cfg.p0tribe, p1tribe: this.cfg.p1tribe }
     );
     this.board3d.onClick((pos) => this.onBoardClick(pos));
+    this.board3d.onHover((pos, ev) => {
+      const uid = pos ? this.g.board.get(bkey3(pos)) : void 0;
+      const u = uid !== void 0 ? this.g.units.get(uid) : void 0;
+      if (!u || !this.tip) {
+        if (this.tip) this.tip.style.display = "none";
+        return;
+      }
+      this.tip.innerHTML = this.unitTooltip(u);
+      this.tip.style.display = "block";
+      this.tip.style.left = Math.min(ev.clientX + 14, window.innerWidth - 210) + "px";
+      this.tip.style.top = ev.clientY + 14 + "px";
+    });
     wireGuideButton(this.root);
   }
   render3d() {
