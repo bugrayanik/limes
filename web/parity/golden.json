@@ -11,17 +11,17 @@
    "a20a652dff2561b7",
    "658e9b41730a3042",
    "d78fa62ac788f620",
-   "99e6fd3bce2d5e3c",
-   "bd689b20dbb3ed58",
-   "7f8ddc7ebd302e66",
-   "408be23ce4975847",
-   "5cd360b327e6a16f",
-   "ef1f208fccce38fd",
-   "d3c1b4b90777a046",
-   "d94d3396563b46b2",
-   "17cf737212c0f8ff",
-   "df8a402f1f611ef2",
-   "f85226247a7f0009"
+   "d321e7501c5d677f",
+   "2d9a95c3c352ea92",
+   "bb9356618f096d14",
+   "99e93749b122d6d7",
+   "378fc3bb0dee5b4c",
+   "e06babcbadc32d9d",
+   "b98f1f92ce8c5db5",
+   "2462341bd1bd9f9e",
+   "ba1d3e8ff4565083",
+   "6a477c89d86aed36",
+   "83ef40307ab59865"
   ],
   "phase_hashes_r1": [
    [
@@ -46,7 +46,7 @@
    ]
   ],
   "result": {
-   "winner": 1,
+   "winner": 0,
    "win_type": "golden-goal",
    "rounds": 16
   }
@@ -63,21 +63,14 @@
    "b3bdc65d724452a5",
    "49ee1691e32aa4b3",
    "85ad8dbbb29b7935",
-   "8f7de09c377c1e08",
-   "ea6804205f8e0aed",
-   "1afd77e562be8c71",
-   "ab5d13a09ada5df0",
-   "3f56078977343187",
-   "26aca3cd5231c13e",
-   "793193c7522c3f36",
-   "e9deba23f28bf962",
-   "3201d47c2a0c5851",
-   "31772fda093e6d1a",
-   "d536b5d35b0aad23",
-   "c5582792af10937f",
-   "1c4eef87478f6677",
-   "b260605eeb6e8d03",
-   "c593e78187bb51a4"
+   "1658d96c3b46761b",
+   "a8f1247196137c64",
+   "5b6f4f4127b12545",
+   "fe008c7dea312cc9",
+   "33a59687387402f9",
+   "997531a4c2146186",
+   "61177f28fb1d5eb0",
+   "5d4d6b30499fb503"
   ],
   "phase_hashes_r1": [
    [
@@ -103,8 +96,8 @@
   ],
   "result": {
    "winner": 1,
-   "win_type": "ladder",
-   "rounds": 20
+   "win_type": "wagons",
+   "rounds": 13
   }
  },
  {
@@ -119,18 +112,17 @@
    "f40550bb426d9026",
    "04481efab52f1a27",
    "4f5ae37d31b6135f",
-   "a410313291556eec",
-   "2ad07c01a7ce2809",
-   "ee3c1afe86d24de7",
-   "14b6150e93fc556e",
-   "44dbc2d3706df510",
-   "98733dd6b8d0d1d4",
-   "6644ccc02137888b",
-   "ce56ffbe8dfd2ebd",
-   "0f60fa3dfea4bd0d",
-   "236412cbbff9562f",
-   "36b671f8b8539bf3",
-   "b6fa6d540515d673"
+   "b007234e2cfd8fb6",
+   "f53ffe04f3840e57",
+   "b9a833441669ec83",
+   "491468f5b53cea46",
+   "4976e114ee72a7c8",
+   "1a186d37f3c93c2b",
+   "e38725411bde634a",
+   "132f1c1c75818045",
+   "7e8bf018500ef13b",
+   "8d051b5dc496579d",
+   "8f91fee65bfd3536"
   ],
   "phase_hashes_r1": [
    [
@@ -157,7 +149,7 @@
   "result": {
    "winner": 0,
    "win_type": "golden-goal",
-   "rounds": 17
+   "rounds": 16
   }
  },
  {
@@ -172,17 +164,21 @@
    "25e4f6a5769cb946",
    "d55aaac006a56d42",
    "4132149a16bae182",
-   "12587a9780538ec2",
-   "9af8da8fe63b7a36",
-   "42b9cb67f82f5bef",
-   "a4d3a33d50c646e1",
-   "ba5f5c8c91bf53a8",
-   "a9891d8f4d334c17",
-   "f394927be723c264",
-   "45203eccc77cc3ce",
-   "c93d6f7498e85807",
-   "021243a620448359",
-   "2a06958fb33c5a85"
+   "3f73119528095b4c",
+   "96a05b8539002af0",
+   "c20461d5d12415d3",
+   "328a167e20f08cfc",
+   "8895d36d2a4374a5",
+   "bd5290658305dc34",
+   "a404a2c1af24983c",
+   "05b5b2226bc71733",
+   "d9984a78dfec92fd",
+   "81b688796a22949a",
+   "22bd9131f5dab14c",
+   "8765afe7208e667f",
+   "772477386d316848",
+   "b925fcc083ad76f8",
+   "fed34ebc0d2b927f"
   ],
   "phase_hashes_r1": [
    [
@@ -207,9 +203,9 @@
    ]
   ],
   "result": {
-   "winner": 0,
-   "win_type": "golden-goal",
-   "rounds": 16
+   "winner": 1,
+   "win_type": "ladder",
+   "rounds": 20
   }
  },
  {
@@ -224,17 +220,21 @@
    "e772b8b7b9adaa14",
    "b7b2d7e650ba217b",
    "0eeaadb7731a3297",
-   "9c223a849103d914",
-   "266c623ba10cda41",
-   "05b8b8041f16432f",
-   "71fc381fae60f02f",
-   "9e189b5e2b5709f1",
-   "02cb555934e61133",
-   "fff7d149c1731877",
-   "f5a51b90888cb3b1",
-   "08063e278a66abb1",
-   "1bfa90bc913e0249",
-   "a8cec342c76d9cc3"
+   "4c512efe600ae2bb",
+   "06ff25e9f5fee2ae",
+   "2ca5d56b67027529",
+   "e3be483250884409",
+   "da7f0420d94415bd",
+   "5153c68f2e511a7c",
+   "e1abd0354647ce18",
+   "ab0b39a07377f116",
+   "6e401297071e3cc8",
+   "6ca841c64230f36a",
+   "5e6847e19918eb4c",
+   "c8e7665978d0b7ef",
+   "7cbe9bbbd2c0b3f8",
+   "48268888d9d09f0c",
+   "e84efad035c7a0ce"
   ],
   "phase_hashes_r1": [
    [
@@ -260,8 +260,8 @@
   ],
   "result": {
    "winner": 1,
-   "win_type": "golden-goal",
-   "rounds": 16
+   "win_type": "ladder",
+   "rounds": 20
   }
  },
  {
@@ -276,9 +276,19 @@
    "ef2b6b6c0db7d127",
    "d4fed84843baaaae",
    "b1a840369bb1571e",
-   "d006cf00a81e26d8",
-   "196cc4c256c16e80",
-   "64852730d3df55d3"
+   "f212dba75b9e59e3",
+   "c733e0633f136adc",
+   "1370c8d26f364660",
+   "88736714919484bf",
+   "02f866e6332ab6b2",
+   "5d26013b68f9352f",
+   "b03a0ecad44f87f2",
+   "6dbd2d260e63cb19",
+   "dd1b10510b53e5c3",
+   "2557f47358ca50e4",
+   "9f29a95750c5564a",
+   "4f6e07a3d64d3bc2",
+   "2c516a4a5b757ebd"
   ],
   "phase_hashes_r1": [
    [
@@ -303,9 +313,9 @@
    ]
   ],
   "result": {
-   "winner": 1,
-   "win_type": "wagons",
-   "rounds": 8
+   "winner": 0,
+   "win_type": "golden-goal",
+   "rounds": 18
   }
  },
  {
@@ -320,17 +330,14 @@
    "4f1d868735d5eef6",
    "28ff49c7602aa6b4",
    "6f0e4dbe734616ee",
-   "427de15639ca9576",
-   "56098fa31c9fb651",
-   "6f40084cde085c77",
-   "83ca0b5ef826cb71",
-   "82b59ffb17ea6895",
-   "57642ac6261c2f42",
-   "306d0fafeb520dcf",
-   "62c15c204c26e4c1",
-   "8ed4b4075c3a5680",
-   "90836298f96c2d10",
-   "60b9f55748d89e96"
+   "1bc6305d458d6d81",
+   "e2cfd59273eb80a3",
+   "27317fbf5e6e8fa7",
+   "be112ff000dc3a9b",
+   "668d5608f72e5c00",
+   "a456470a70af6f19",
+   "e1f5a11889bc5416",
+   "2d3f11890ae13e54"
   ],
   "phase_hashes_r1": [
    [
@@ -355,9 +362,9 @@
    ]
   ],
   "result": {
-   "winner": 1,
-   "win_type": "rout",
-   "rounds": 16
+   "winner": 0,
+   "win_type": "wagons",
+   "rounds": 13
   }
  },
  {
@@ -372,12 +379,17 @@
    "565ae25efd8d595a",
    "35302a517d7492a1",
    "d3feee963ad73664",
-   "a1939645645e1356",
-   "eb1166a2f8c7a5be",
-   "75c5ab6fd9eea096",
-   "eb500ee7eacf3d70",
-   "af773c7322ac949c",
-   "07b11a880b79c177"
+   "b739035597470b33",
+   "0bf094f30117964c",
+   "820ad196a295f752",
+   "83baecda5595903f",
+   "adab2520ce87a0b7",
+   "f7510e2ae5a842b9",
+   "5479b9c4ed61bec2",
+   "444dfc4294ed7d34",
+   "f3873a76211b795e",
+   "279cdccca8f91f72",
+   "c828e82bcaddbd12"
   ],
   "phase_hashes_r1": [
    [
@@ -402,9 +414,9 @@
    ]
   ],
   "result": {
-   "winner": 0,
-   "win_type": "wagons",
-   "rounds": 11
+   "winner": 1,
+   "win_type": "golden-goal",
+   "rounds": 16
   }
  },
  {
@@ -423,13 +435,13 @@
    "ab00b76c51d1e0d3",
    "8759fbf755a669fc",
    "e86c9c76f859d808",
-   "583c33f62623ee50",
-   "46008e003f5f0cef",
-   "2687229b6bfecb94",
-   "8540e5eb3eb445fd",
-   "fb6a1d3bfaa891e8",
-   "cb7ae083f52d51a5",
-   "9cc8529e964600d8"
+   "01678ce63e697581",
+   "c9dec7f3175fcea8",
+   "4e2613ac00092cc8",
+   "aa843344e01ac480",
+   "5ebfe0ba3e859b57",
+   "3660ec2fbe2d3232",
+   "9cbd48ad47ed4f29"
   ],
   "phase_hashes_r1": [
    [
@@ -454,7 +466,7 @@
    ]
   ],
   "result": {
-   "winner": 0,
+   "winner": 1,
    "win_type": "golden-goal",
    "rounds": 16
   }
@@ -471,19 +483,17 @@
    "dd0ab7617fddc9dd",
    "93849442a984b5c3",
    "9b941a0f281215b7",
-   "f4a48f3993426fa3",
-   "a14d4b6a0db71179",
-   "49ef2c34308beca7",
-   "b6fce61f5c8da509",
-   "51d3fe449c95922a",
-   "84b9fd46e6a064f6",
-   "71d3dd2a6a871ec1",
-   "1f7ba3315bdd1fb6",
-   "87a330af6e057bdb",
-   "2727b5a85a6c3525",
-   "f9add5b8f41e818d",
-   "3a53f6635c9080df",
-   "7482d4220db54e8d"
+   "3c1b440ce07543ba",
+   "1faf0f04ab074694",
+   "57e64a54febb4978",
+   "20807aca5837d2cd",
+   "1bf58a86473c3cfa",
+   "160d347834178fc1",
+   "5754b66feb560487",
+   "0e5694dfce51a160",
+   "a76d44c0ec0b559f",
+   "0c57a638d94761e7",
+   "bd51e512846e73a6"
   ],
   "phase_hashes_r1": [
    [
@@ -510,7 +520,7 @@
   "result": {
    "winner": 1,
    "win_type": "golden-goal",
-   "rounds": 18
+   "rounds": 16
   }
  },
  {
@@ -525,13 +535,14 @@
    "c1edc0066a672543",
    "b1584d976b2c9cc7",
    "d3140db0f8cd8f70",
-   "c1d2e944cddf7669",
-   "e0d8c3781405aab0",
-   "319e20089a9368c2",
-   "b298bd77d670540d",
-   "e8dd5105106703d3",
-   "f833403f6d7a10b4",
-   "3f37d9dce97aafb6"
+   "9e79004629403af5",
+   "011c8a801f8c9fab",
+   "539bce1385ccf8f2",
+   "344ad33dbe8d3f7f",
+   "f8cc19fe96357bb6",
+   "678d8d4c0800513a",
+   "709a8187e2f26bd6",
+   "b6b69ba9987858f5"
   ],
   "phase_hashes_r1": [
    [
@@ -558,7 +569,7 @@
   "result": {
    "winner": 1,
    "win_type": "wagons",
-   "rounds": 12
+   "rounds": 13
   }
  },
  {
@@ -573,10 +584,9 @@
    "f70832aed94e032f",
    "cc10eee93a1d0a02",
    "a62da43f367a0701",
-   "50c07e46f678e98f",
-   "1d63d10bb59b637f",
-   "b66abe6c04a1d95d",
-   "c12562388f90eaf2"
+   "b7eb907c47813ed8",
+   "06fd686d79c7a090",
+   "5da3fd0fbd2e8ed4"
   ],
   "phase_hashes_r1": [
    [
@@ -603,7 +613,7 @@
   "result": {
    "winner": 1,
    "win_type": "wagons",
-   "rounds": 9
+   "rounds": 8
   }
  },
  {
@@ -618,21 +628,17 @@
    "084cee5141d55d07",
    "f7d1dec59e780666",
    "f7215bf2d5f10bb6",
-   "afc5afcdb06f6fa1",
-   "ddca97421dc681ad",
-   "a4746b80e130050a",
-   "b3939008ec7b8e71",
-   "20726ac40f0e6b6c",
-   "58382974da0072f7",
-   "240b4237ff920744",
-   "2f8baeec2755b13a",
-   "88660c965fa205e5",
-   "b7cead9faf75a83e",
-   "755215e15054e3c2",
-   "e1c87f0fc80a5022",
-   "c8f15147ae493f16",
-   "7fe2304ece680ce7",
-   "543933c14007a58e"
+   "d02162ccdf258ad6",
+   "37478ca73c3cc205",
+   "ca6ae3fe6c299c5d",
+   "3a2621650b3110cf",
+   "e5cc0e07320beecf",
+   "4613aded923129ee",
+   "4a321d743f2aefad",
+   "57a3f343e34f6c76",
+   "b3a9db954203a58d",
+   "c52604a754b10958",
+   "d04e680e3cf05d15"
   ],
   "phase_hashes_r1": [
    [
@@ -658,8 +664,8 @@
   ],
   "result": {
    "winner": 1,
-   "win_type": "ladder",
-   "rounds": 20
+   "win_type": "golden-goal",
+   "rounds": 16
   }
  },
  {
@@ -674,15 +680,17 @@
    "a6ee82c626fd7c3d",
    "90e7af7851933d11",
    "9cf5e7d4f0028e59",
-   "864d78274b467b1e",
-   "840cc46f984d31a4",
-   "a98cd07815fe14c9",
-   "94aa3c447b53f358",
-   "83a194107883864f",
-   "2661850a57304675",
-   "5aca0b8e44624395",
-   "2a054b01db383962",
-   "9c05b44c950667c4"
+   "9c19b627c431167b",
+   "716222c8b02f9289",
+   "7a40ab09378b6d27",
+   "4825800eebd07a4e",
+   "f634f9fbd1ead56e",
+   "25d13ed242f9d0bd",
+   "0f37603636a6174d",
+   "9856a6bb1e1421e4",
+   "0cc2e24b50261dcf",
+   "0695711588e3d3e8",
+   "e3a5f9468b281106"
   ],
   "phase_hashes_r1": [
    [
@@ -708,8 +716,8 @@
   ],
   "result": {
    "winner": 1,
-   "win_type": "wagons",
-   "rounds": 14
+   "win_type": "golden-goal",
+   "rounds": 16
   }
  },
  {
@@ -724,21 +732,18 @@
    "418718c0230a2d42",
    "1ab861633a77eaaa",
    "19f5b307b5274d44",
-   "80908d668852e0a1",
-   "29da8db1cc70a5d5",
-   "a80a8f2926332bec",
-   "48c93fec6f808c67",
-   "f7694e99c169b29f",
-   "ab7604cdb4e8a05c",
-   "3310a5dd80cbe6c7",
-   "0853c67bfb667b01",
-   "653fcab37ddcb6ed",
-   "51c67b3b063f8006",
-   "db7da65883d7405a",
-   "2475f70df1c86080",
-   "fab00f0e4ee42c85",
-   "5527e301770344d1",
-   "d9deb45610c5a281"
+   "00871ca3fc06c983",
+   "697d5df74ff3cd20",
+   "081b37052cec46ca",
+   "6554728a07ea227b",
+   "5921381c189d4d98",
+   "4d8d9dd1759588d9",
+   "f565a88d9b83dcc9",
+   "ffb9a3c8326e2267",
+   "4e690088b70d23d3",
+   "7451da34594375c0",
+   "5ac4217e1e6bccfd",
+   "67713a872066c011"
   ],
   "phase_hashes_r1": [
    [
@@ -763,9 +768,9 @@
    ]
   ],
   "result": {
-   "winner": 1,
-   "win_type": "ladder",
-   "rounds": 20
+   "winner": 0,
+   "win_type": "golden-goal",
+   "rounds": 17
   }
  },
  {
@@ -780,17 +785,17 @@
    "1c1e71b83c832d80",
    "e0ff28bb1809515a",
    "162612c2b2a1f18f",
-   "b8a0de949e717cf6",
-   "67d0b734d217e1b4",
-   "2362b4917e89f045",
-   "36f45378bd3209a3",
-   "bba843c27250b000",
-   "93ce50e06f8db96c",
-   "14c498a8dea5b1ed",
-   "e65f8a9431da9747",
-   "2a197c46209726c7",
-   "39c3b79329910a3e",
-   "0c36d520b10951d6"
+   "522406e818e23e6b",
+   "4a15b2ae6e770b4d",
+   "1eaf3409f798cfcd",
+   "e112ae7593b79ef5",
+   "7c7c323eadc27bf3",
+   "0e8205a6ed220b76",
+   "09211cd293606517",
+   "1a1c62667bcd66e5",
+   "5bc8972a752c9fa4",
+   "530da9d96aa3e5d8",
+   "aa22150c01a3e4c0"
   ],
   "phase_hashes_r1": [
    [
@@ -832,19 +837,17 @@
    "b6b02785a94ce7ba",
    "7c5681beff88bcbc",
    "838d5ff8015eeadf",
-   "1b6022fb9396893b",
-   "4028a1515becf97f",
-   "a387f231ba6087e3",
-   "653605ce89a37dfc",
-   "637dd016d3ee44bf",
-   "b24c6011e7fdd98f",
-   "3ecd078d411d526c",
-   "795254a4a246cd7e",
-   "3628eb1918d869c8",
-   "3ef1c290cd8836e8",
-   "3cc7e649276e2a58",
-   "06c5a87044d96a06",
-   "3144804a7e1e7595"
+   "cadec19be0542184",
+   "0ba5135a072c6d28",
+   "16d0ac222395b559",
+   "35f9d10977bcb7f5",
+   "50564ddeb0a973d1",
+   "01d32d4d3b3e2b38",
+   "4ade35bf519411a9",
+   "82d96e856f2eaa8c",
+   "ce18f891a20d7113",
+   "5f9949ee14d748aa",
+   "f12d8a7a06f3a305"
   ],
   "phase_hashes_r1": [
    [
@@ -871,7 +874,7 @@
   "result": {
    "winner": 1,
    "win_type": "golden-goal",
-   "rounds": 18
+   "rounds": 16
   }
  },
  {
@@ -886,18 +889,17 @@
    "e549f110caf42e19",
    "76f8dd29a4c54b4f",
    "f6826f5e0b9e6ac7",
-   "b66f9733bb495054",
-   "d0772d685d3e9275",
-   "177ea018ff4873e6",
-   "c9cfa4c39a83b845",
-   "bf6cff738cf861e5",
-   "c39fe0a49a813b94",
-   "17acb778f2535374",
-   "599adb7d9a53a880",
-   "e45d3f0eb88609fe",
-   "771aa45de2003d3a",
-   "bbafaa54104f7176",
-   "6921bede6f0c58ad"
+   "af17379caed1679d",
+   "9c7cbe713fdd6013",
+   "f18d8e19c0e02aad",
+   "c2cbfed1664fe4eb",
+   "1ea43c49a696d4e4",
+   "6d4381221f985609",
+   "934627630da595a1",
+   "508d09fb33d7474d",
+   "98cf72539f0d8a99",
+   "ab1b78ec881fb4a0",
+   "2becfaacc0aa18aa"
   ],
   "phase_hashes_r1": [
    [
@@ -924,7 +926,7 @@
   "result": {
    "winner": 0,
    "win_type": "golden-goal",
-   "rounds": 17
+   "rounds": 16
   }
  },
  {
@@ -939,17 +941,17 @@
    "6d87f758c44f3d69",
    "e0dadc5d0a2b4245",
    "900d1cfcadd53ee3",
-   "590430c86dc4fb80",
-   "6a6e4a1ca0b28bce",
-   "437db1c945eb4e8c",
-   "aea720cb953915f8",
-   "a1aa80e5d1114578",
-   "8432412935555b49",
-   "0eb2b3cb9c0e75e4",
-   "55c46192f82e9a61",
-   "a3e3740de83ace2e",
-   "c87d35092f221ce6",
-   "15012c2ba37e149f"
+   "bbc22801b7a419e6",
+   "1b8ccf8ed4e9b819",
+   "b8fc573ff0a3961f",
+   "a857bc5544989090",
+   "1e98bb030433e89d",
+   "e1bd0a474a93e6d0",
+   "285088811dbd956d",
+   "7f98d70d521c4ed4",
+   "bad5f42d52245184",
+   "28367a720dc4d0fb",
+   "517658fe90871ce2"
   ],
   "phase_hashes_r1": [
    [
@@ -991,17 +993,16 @@
    "7a77134e27031766",
    "de52e701bf2dfe68",
    "eecf536ec9ad1f83",
-   "1d2c525d36f2fb13",
-   "33e98eef36b5b7bf",
-   "ab975ba09638e1fb",
-   "b87bd749d7ad42cf",
-   "86adc75c75e1900b",
-   "7e537970df53b1e4",
-   "23665568c4b1b18a",
-   "102bb74bf78c21ac",
-   "0e7b941020a47d53",
-   "00c934e7f60d52d1",
-   "d5eeddeb8cb3baa3"
+   "405bfce6074e80ec",
+   "aafb023c9e41c84b",
+   "bc8faae3c94c2c5c",
+   "fe1b4898782e53e7",
+   "0426e35e8a0662e5",
+   "2300e729580f2276",
+   "59de5a44eb5c43bd",
+   "0f1d3fc46b998bac",
+   "81f3b80c1d87c605",
+   "f5f39ed347451f44"
   ],
   "phase_hashes_r1": [
    [
@@ -1026,9 +1027,9 @@
    ]
   ],
   "result": {
-   "winner": 1,
-   "win_type": "golden-goal",
-   "rounds": 16
+   "winner": 0,
+   "win_type": "rout",
+   "rounds": 15
   }
  },
  {
@@ -1043,19 +1044,17 @@
    "5757cfaa5fdaf3f4",
    "cb06decba1539787",
    "8c65482a341f6a28",
-   "7fba5185329b15a3",
-   "7276fb255dd0c43e",
-   "d8a23505fde62b34",
-   "9b27f4fe5aa8300a",
-   "d654255715a47cbf",
-   "1ef95806b36cc409",
-   "464c9af46b934ae9",
-   "0eb9bc6d5cc3e7ab",
-   "d0996ae9001f419d",
-   "221b5f25428883c9",
-   "121174297cba6568",
-   "1af87010947bf323",
-   "a576493dfb91cad7"
+   "82d00935f6e51696",
+   "956df6cc8076f808",
+   "038327df0a5ca58a",
+   "1e757d6c9029bd3e",
+   "c0d89ff7af4218e4",
+   "2cd9e687578c4bdf",
+   "443b4ed3de938e46",
+   "788e13711193a597",
+   "87859edd8fd6316d",
+   "fed5a3f64506b116",
+   "814bb71b665137ab"
   ],
   "phase_hashes_r1": [
    [
@@ -1082,7 +1081,7 @@
   "result": {
    "winner": 0,
    "win_type": "golden-goal",
-   "rounds": 18
+   "rounds": 16
   }
  },
  {
@@ -1097,17 +1096,17 @@
    "ecf8eacb4dceb264",
    "757a26983af97e50",
    "c7da4d5e803dfbea",
-   "2ffc2ace3c1ba8b1",
-   "564fffdc15183829",
-   "f096b0070245bc3a",
-   "498ad81c9abd562f",
-   "403ba9b0237f4c71",
-   "429c12f12f140e1d",
-   "a305f915b60ad8df",
-   "8966e38ffb066e58",
-   "46edc99c9bbab74d",
-   "582fb5b6f0632aa3",
-   "025f125eb98cf362"
+   "99a5c5a5135b4fc3",
+   "bc373e5112c80f47",
+   "70088ea76b300d0e",
+   "cedbfbfa613f0b0e",
+   "0ca3a83c56ff0f17",
+   "f9bf0e86c37c2669",
+   "957d13b43c48149d",
+   "ba5f505bc7272c6c",
+   "b6e79dcc2f93e4b0",
+   "60cf52fd1cd4bce5",
+   "3bc04d955e551da9"
   ],
   "phase_hashes_r1": [
    [
@@ -1132,7 +1131,7 @@
    ]
   ],
   "result": {
-   "winner": 0,
+   "winner": 1,
    "win_type": "golden-goal",
    "rounds": 16
   }
@@ -1149,19 +1148,17 @@
    "13288dee22639961",
    "2b50d9b8eb1eae79",
    "ebdc7e9749626303",
-   "210b829d21617c63",
-   "8d5db5e94eb9adf7",
-   "6137c36ef68a20b1",
-   "8ae1f85afb300f35",
-   "11a815f77508a932",
-   "accd32415f7f91ec",
-   "3bef74e3625d2d85",
-   "6b5554059bca47b9",
-   "97d109961d9f50ca",
-   "48918efd591ab52f",
-   "49bcbed951f72e29",
-   "c0b9e8be1131d601",
-   "f1c7333b7641360b"
+   "1f7be7e528ed754f",
+   "7dd86d2b8dcca932",
+   "d4e033c8153d136a",
+   "10726265e767b3d5",
+   "fa17683a8db9ed9c",
+   "9d33c5ce0264b5c8",
+   "a950fc98e10c082f",
+   "158559cd1363872a",
+   "a9cad9ebbc4a253d",
+   "3037dddd6c980ec2",
+   "d016856fbae67263"
   ],
   "phase_hashes_r1": [
    [
@@ -1186,9 +1183,9 @@
    ]
   ],
   "result": {
-   "winner": 0,
+   "winner": 1,
    "win_type": "golden-goal",
-   "rounds": 18
+   "rounds": 16
   }
  },
  {
@@ -1207,14 +1204,13 @@
    "d2e23fc1f84df315",
    "9c18a29146799c33",
    "a2bdf22e8a1f7e21",
-   "0e87d23e7a2bd234",
-   "5d8c42ac5210c1c0",
-   "3972985539eab199",
-   "a98e9bc3a79f2a6a",
-   "1a6efb06a170b4d0",
-   "c5eea3d2a959f8f3",
-   "e0a6c2280daaa755",
-   "410731654f9c7455"
+   "acb416722be3530a",
+   "201dd60a43c920fe",
+   "d492f4e06eec9132",
+   "a4f7453261db1c8a",
+   "2c80a2317aa28f7f",
+   "3e701724f3b59d5a",
+   "0bd55374c37732ca"
   ],
   "phase_hashes_r1": [
    [
@@ -1239,9 +1235,9 @@
    ]
   ],
   "result": {
-   "winner": 1,
+   "winner": 0,
    "win_type": "golden-goal",
-   "rounds": 17
+   "rounds": 16
   }
  },
  {
@@ -1256,17 +1252,18 @@
    "deb312c76fb5f88a",
    "241c6955e62afb96",
    "4bee40b2e304bc64",
-   "100f5f3c3415db45",
-   "711210f2544b571d",
-   "fe16a9f94bca127c",
-   "33ce1e4ee931ef08",
-   "5d932a4e78ea0d97",
-   "f87b0a5c87dbeca9",
-   "b691a94846a96bd7",
-   "ea2f693d59c3f111",
-   "fc9feec38b5739c9",
-   "0f7ffac13b50691a",
-   "9e25be8878ef8d5e"
+   "46a56e03552bd8c6",
+   "ca2a8975917e745f",
+   "1238abaf538a9190",
+   "e596f0c0f4cb27ce",
+   "04dade0b0197bca4",
+   "d867bcf68b344ead",
+   "c1f270fcbb8e837c",
+   "0e7bccd130f7e1fa",
+   "31653480cdadcf1c",
+   "a3dfe81433e1aaab",
+   "eac51671c3b65d53",
+   "8c8b1b4f75d1c83f"
   ],
   "phase_hashes_r1": [
    [
@@ -1291,9 +1288,9 @@
    ]
   ],
   "result": {
-   "winner": 0,
+   "winner": 1,
    "win_type": "golden-goal",
-   "rounds": 16
+   "rounds": 17
   }
  },
  {
@@ -1308,15 +1305,15 @@
    "4498b3caa239f657",
    "403518cd1a89e238",
    "73954e3f0757bbd8",
-   "3e07e837d9fcfea5",
-   "35f092ff0e706e75",
-   "6f133aad126f924c",
-   "e6cbd393a8e5bbc5",
-   "5a8493a2c46e9e0c",
-   "08a85fb43c048d96",
-   "a55058bd8b551d03",
-   "9733ae4c1abdbd3e",
-   "979b0f6c02f47f26"
+   "61bb5eb4c1729f4f",
+   "7250b166689e3d4b",
+   "a24ff187bccdf75f",
+   "21ac95e89bec18c9",
+   "453e46a46a3e5bf6",
+   "21c61ae53ab2daec",
+   "beae9aa007c892c6",
+   "ef2304fb016ce4fc",
+   "189b1abbf9e10a09"
   ],
   "phase_hashes_r1": [
    [
@@ -1358,17 +1355,17 @@
    "0b0b071fc22a5730",
    "6df712708abfcde0",
    "c6c27831a4c2925b",
-   "707654882b6f3ddf",
-   "40784b453b5c542e",
-   "be695f11febc8b61",
-   "855644b28d4c5c12",
-   "c639fdf0d94222c1",
-   "23fc70e571660026",
-   "9b8bff8686713a22",
-   "342e8284ddcb144b",
-   "d41a0d293557e91f",
-   "53c6b1fe8cf29026",
-   "2bced6e66f2ec411"
+   "4db8186ad5a322ad",
+   "74293de3865e731b",
+   "75d08e1420b6d6e1",
+   "3a0f2e97ebee458f",
+   "cb6be26562334de1",
+   "76d827c581c4a5f6",
+   "5724b201c7a6681d",
+   "3ae9aac2a1b5f8a0",
+   "2aed467190baef77",
+   "062719af648a140f",
+   "f193e363c0353bac"
   ],
   "phase_hashes_r1": [
    [
@@ -1410,17 +1407,17 @@
    "a8623f2e426b7adc",
    "45620c3ffd21ba70",
    "20c753c4ae44bea9",
-   "da8b2fa2a1489593",
-   "8f82f2f5d3a599eb",
-   "32991ad4dea52acd",
-   "3c4239e41a3febce",
-   "05ac32c3d9012465",
-   "1d758909a3bc5d4d",
-   "fe72544ad13a9b8c",
-   "4b38ef7b1bbc4603",
-   "2c43d5a2f7e490d6",
-   "68c87031b5472a92",
-   "840e8f6c6c77b22f"
+   "4e944eda0d9c6ba7",
+   "28821f7e33520052",
+   "2cc1eb01f9212e38",
+   "c7f1c7e383e6a7b1",
+   "a7040396fee2af88",
+   "3d368328beadbfaa",
+   "eec87bc20f12395b",
+   "48441d2a270dff53",
+   "676181811cc78076",
+   "73e6dc61d2fe8a2f",
+   "0d64d7b54f4973a8"
   ],
   "phase_hashes_r1": [
    [
@@ -1462,17 +1459,21 @@
    "fc3661430403ae54",
    "ed5e05a9f28babf7",
    "1cf6aa3ab1b3c67b",
-   "ed82ce51a1367e9a",
-   "d0dd7035dbf68dcf",
-   "8e99651b55af201a",
-   "2069bf015399949d",
-   "cb3929dcba3919b0",
-   "1ab4432eb72aa729",
-   "3712030dae6b03f2",
-   "90d8e8238d1b5fe7",
-   "e5c886bb6fd52804",
-   "9c35d11b1079deff",
-   "0228ae6756208b3e"
+   "99d4bd6c58cbeab3",
+   "a3a2cc0b31076c7b",
+   "0bf2f4e814eed886",
+   "0f9af453fa85cbd1",
+   "9b6c733a1c15ca58",
+   "c0d3733d79f6d142",
+   "6edae3286025ee4c",
+   "e8aed2ee80a04743",
+   "9e22c75be55ba314",
+   "781484256367182b",
+   "697f393669f33fcc",
+   "093f65c500092936",
+   "55e65a9b715cf4c3",
+   "9fef50553849d3b9",
+   "064cca3ca94b771d"
   ],
   "phase_hashes_r1": [
    [
@@ -1497,9 +1498,9 @@
    ]
   ],
   "result": {
-   "winner": 1,
-   "win_type": "golden-goal",
-   "rounds": 16
+   "winner": 0,
+   "win_type": "ladder",
+   "rounds": 20
   }
  },
  {
@@ -1514,17 +1515,17 @@
    "a1c0a9817a128f4c",
    "1942c1da967ce6d2",
    "f6173ca77bddc27d",
-   "76eb106d9e711b9d",
-   "b3d415ff9abc1c3f",
-   "9992f2d1b02f8c6e",
-   "eee035092524c603",
-   "552010c604ff8bdb",
-   "adc0d4622e3bcb2e",
-   "ff9544265e3a2622",
-   "0544ed30c05c5640",
-   "8d2f342b473902c9",
-   "e045af6346495a9c",
-   "0c504157417fd072"
+   "5b2eeb937bf8a512",
+   "e66f7e5a0285565e",
+   "684a2fc5016057f4",
+   "5a69da406d9fd435",
+   "169a84fd103e8335",
+   "dfb36ef43a4e3c82",
+   "992e335e2bce9762",
+   "d403fb91d4ed5543",
+   "99fb611c102d9577",
+   "37321a915ba06bc7",
+   "c60ef78c3ee8ff55"
   ],
   "phase_hashes_r1": [
    [
@@ -1550,7 +1551,7 @@
   ],
   "result": {
    "winner": 0,
-   "win_type": "golden-goal",
+   "win_type": "wagons",
    "rounds": 16
   }
  },
@@ -1566,18 +1567,21 @@
    "00f97bb0069322f5",
    "718baaf1d041abee",
    "8ac03476bba5882d",
-   "ac3b28b447137bbd",
-   "5889e0366864b66d",
-   "a1c13dc666f5b2f3",
-   "bcd64602a50c6547",
-   "5f4b0a4422c4cea2",
-   "bb2b421791422dea",
-   "8ec05c1ed212670e",
-   "5863c1454b7ebc0f",
-   "8d7144d8f6312e40",
-   "5a16e7942d427c60",
-   "97b30d7c7614c2d7",
-   "6787b26b37f24398"
+   "ec864e6193a83809",
+   "b995dfa964b035ed",
+   "f6ee983186306393",
+   "432cfdf922c013f3",
+   "0687f2a2984b7eb5",
+   "c110afa5201e2d6a",
+   "3dc088fcc427ca14",
+   "d740f7f4faa38ecb",
+   "397663ba203f43b2",
+   "8766f9eccf0307a7",
+   "def1fd491b8fc7ea",
+   "e3116049649ffd61",
+   "d43d91199e67e5d8",
+   "9cb2ad6dda24c5bf",
+   "b0ebef6695cfd136"
   ],
   "phase_hashes_r1": [
    [
@@ -1602,9 +1606,9 @@
    ]
   ],
   "result": {
-   "winner": 0,
+   "winner": 1,
    "win_type": "golden-goal",
-   "rounds": 17
+   "rounds": 20
   }
  },
  {
@@ -1619,18 +1623,21 @@
    "712b3113dcfa9bca",
    "82a29dbd60562c1b",
    "90d8435ddf12ebae",
-   "1720ebb4ca613ae5",
-   "5c672fc7f6b0963c",
-   "f4b75d722c247e9b",
-   "e595d995a8089c56",
-   "3a1268ee099a4057",
-   "5498eb76b73cab89",
-   "2472700b1b6a47b6",
-   "fbf836ee93d306e5",
-   "765598a520f030d5",
-   "3fd848c77a8f5786",
-   "5d5328aaf2235357",
-   "838ebbfc047c9229"
+   "88fbb40eed2a441b",
+   "f4096040475d8103",
+   "263985fb28920f24",
+   "f735ed9a53a92876",
+   "67b083b91c34cfa1",
+   "2fc3ddac31861e2f",
+   "c31dce56ff9da9bb",
+   "8a14885a404e54c5",
+   "763ee01a0900ddfd",
+   "98c8432bd43bbc5c",
+   "bae68b61df04894e",
+   "098d35dd4c18c3ed",
+   "3074d6d65f5551fc",
+   "78567fc83c94774b",
+   "3bafadf6d7138c2e"
   ],
   "phase_hashes_r1": [
    [
@@ -1657,7 +1664,7 @@
   "result": {
    "winner": 0,
    "win_type": "golden-goal",
-   "rounds": 17
+   "rounds": 20
   }
  },
  {
@@ -1672,18 +1679,17 @@
    "c7e82a3956a3751b",
    "2105f2c606071216",
    "53dbe4d5cc36cc13",
-   "3e244d31dfe3b03b",
-   "0034a19c1c1c8d7a",
-   "2b909dc986c2a5b9",
-   "1ff67a40f3d381c7",
-   "070676b3b039baff",
-   "757986e78abec90c",
-   "3f11206954198f8a",
-   "5f0cd198af36d661",
-   "a57665b5d1f2b277",
-   "62f3d10cf1664b26",
-   "6218c8e6ff1d2fc9",
-   "5b8ed6ad09e4f66a"
+   "352aa6be27f2315b",
+   "0af4bbe6c6ac5e9f",
+   "5ea5180531383e8b",
+   "e9ce9bdce5545ae4",
+   "3b2e9e58e127a762",
+   "e326a4999b15d7fd",
+   "d63aeae28ea704b4",
+   "1d1e9ebdd77e050b",
+   "d824ae04d26cf798",
+   "361edf27db667a73",
+   "6cb77de40d6b485d"
   ],
   "phase_hashes_r1": [
    [
@@ -1710,7 +1716,7 @@
   "result": {
    "winner": 1,
    "win_type": "golden-goal",
-   "rounds": 17
+   "rounds": 16
   }
  },
  {
@@ -1725,17 +1731,17 @@
    "a03e55db70eaca4e",
    "4d2b6b63a0004dc9",
    "16f5c82a80795b92",
-   "b2f567cc1ae41330",
-   "454c6c739949f1af",
-   "de371c483024eefe",
-   "6012df5ae669a351",
-   "f187cfc88ce0a137",
-   "4271b0fb2f1e764e",
-   "a867a757f72159e3",
-   "c6f9873e96ed7dce",
-   "7f65c1787cabc9fb",
-   "4336812ce6112edf",
-   "709961b9c75baa9f"
+   "094a4f96111ae67e",
+   "faa93aabccc9f424",
+   "cfe6736d7ba31daa",
+   "18c2fa6ccf7526bd",
+   "31a1b8205590d7d2",
+   "e2700b7d6e50f9ac",
+   "59091dd553735283",
+   "a7fce626192f7a3c",
+   "3a7f267941f4ade4",
+   "48dbb7b86e70b92e",
+   "1655147666b6bff1"
   ],
   "phase_hashes_r1": [
    [
@@ -1760,7 +1766,7 @@
    ]
   ],
   "result": {
-   "winner": 0,
+   "winner": 1,
    "win_type": "golden-goal",
    "rounds": 16
   }
@@ -1777,19 +1783,17 @@
    "7b9878b35c5363be",
    "83bdf18344a520bb",
    "c1f4804f63946198",
-   "e144776cea25f366",
-   "acef21665e7742d0",
-   "2b22da8008c7f721",
-   "634f54685196cdb4",
-   "94b02a8abee42bee",
-   "5ef20e10a8b3f007",
-   "51e7bb00c53b6697",
-   "6f0d5a758bbb839c",
-   "62f24b9f8d59f158",
-   "61e2fa4138d6aefc",
-   "eb82fcafc6c2be01",
-   "e15010dd194e4a17",
-   "20b5f2e94844b314"
+   "7dfc874a48df13a2",
+   "8748710c2c7ba4f4",
+   "8a0a870943c71c0b",
+   "fbcca15c6b138339",
+   "a60e915f247329af",
+   "419e17aae1740536",
+   "e1dc88b0ad219d72",
+   "00c94fef33d8ed6e",
+   "f49683a0e3d0ea4a",
+   "0173b558e8148af3",
+   "55a07af9a72e899f"
   ],
   "phase_hashes_r1": [
    [
@@ -1816,7 +1820,7 @@
   "result": {
    "winner": 1,
    "win_type": "golden-goal",
-   "rounds": 18
+   "rounds": 16
   }
  },
  {
@@ -1831,10 +1835,10 @@
    "b1e91c0b6dc7d730",
    "a7c2ca2acc3b2b22",
    "52f46288dc091893",
-   "504634eabe18bbcb",
-   "7fca638be3f1fafc",
-   "39c4ddaf34001e28",
-   "4313af2b5472cc80"
+   "cc7e83d1f26f3a0f",
+   "b9b9757daa9828ee",
+   "885d15bc34a43f5f",
+   "660a292e5f1bc0b6"
   ],
   "phase_hashes_r1": [
    [

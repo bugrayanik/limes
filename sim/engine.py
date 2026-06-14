@@ -736,6 +736,22 @@ class Game:
         sup, crop = self.compute_harvest(p)
         res['supply'] += sup
         res['crop'] += crop
+        # (a2) Per-round economy buffs from artifacts on living wagons
+        for w in self.wagons[p]:
+            if w['hp'] <= 0:
+                continue
+            for aid in w['artifacts']:
+                if aid == 1:
+                    res['supply'] += 2
+                elif aid == 2:
+                    res['crop'] += 2
+                elif aid == 6:
+                    res['tribute'] += 1
+                elif aid == 8:
+                    if res['crop'] < res['supply']:
+                        res['crop'] += 1
+                    else:
+                        res['supply'] += 1
         # (b) Upkeep
         mine = self.on_board(p)
         # validate + dedupe the bot's feed list: each unit is charged upkeep

@@ -382,6 +382,19 @@ export class Game {
     // (a) Harvest
     const [hs, hc] = this.computeHarvest(p);
     res.supply += hs; res.crop += hc;
+    // (a2) Per-round economy buffs from artifacts on living wagons
+    for (const w of this.wagons[p]) {
+      if (w.hp <= 0) continue;
+      for (const aid of w.artifacts) {
+        if (aid === 1) res.supply += 2;
+        else if (aid === 2) res.crop += 2;
+        else if (aid === 6) res.tribute += 1;
+        else if (aid === 8) {
+          if (res.crop < res.supply) res.crop += 1;
+          else res.supply += 1;
+        }
+      }
+    }
     // (b) Upkeep — dedupe the bot's feed list; charge each unit once (C-023)
     const mine = this.onBoard(p);
     const order: number[] = [], fed = new Set<number>();
