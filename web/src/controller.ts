@@ -94,13 +94,15 @@ export class Controller {
       await this.pause(90); waited += 90;
     } while (this.demoPaused || waited < total);
   }
-  // Deterministic rewind: rebuild a fresh game from the seed and fast-forward.
-  private demoGoTo(target: number) {
+  // Deterministic seek: rebuild a fresh game from the seed and fast-forward to
+  // any round. Returns a GameOver if the target is past the game's end.
+  private demoGoTo(target: number): GameOver | null {
     const pol = [0, 1].map(p => makeBot(this.cfg.botName));
     pol.forEach((b, p) => b.reset(this.cfg.seed, p));
     const g = new Game(pol, this.cfg.seed, V3_CONFIG);
     g.setup();
     const draft: { p: number; aid: number; round: number }[] = [];
+    let over: GameOver | null = null;
     try {
       while (g.round < target) {
         const r = g.round;
@@ -108,9 +110,10 @@ export class Controller {
         if (r === g.C.CARAVAN_ROUND_1 || r === g.C.CARAVAN_ROUND_2)
           for (const x of g.last_artifacts) draft.push({ ...x, round: r });
       }
-    } catch (e) { if (!(e instanceof GameOver)) throw e; }
+    } catch (e) { if (e instanceof GameOver) over = e; else throw e; }
     this.policies = pol; this.g = g; this.caravanCard = ''; this.artifactDraft = draft;
     this.log = [`Round ${g.round} — ${cap(this.tribe(0))} vs ${cap(this.tribe(1))}.`];
+    return over;
   }
   private async demoLoop() {
     for (;;) {
@@ -120,7 +123,9 @@ export class Controller {
         if (e instanceof GameOver) { this.winScreen(e.winner, e.wtype); return; }
         if (e instanceof DemoRewind) {
           const t = this.demoSeek ?? 1; this.demoSeek = null;
-          this.demoGoTo(Math.max(1, t)); this.demoPaused = true; this.render(); continue;
+          const over = this.demoGoTo(Math.max(1, t));
+          if (over) { this.winScreen(over.winner, over.wtype); return; }
+          this.demoPaused = true; this.render(); continue;
         }
         throw e;
       }
@@ -130,6 +135,7 @@ export class Controller {
     if (cmd === 'exit') { location.reload(); return; }
     if (cmd === 'restart') { this.demoSeek = 1; return; }
     if (cmd === 'back') { this.demoSeek = Math.max(1, this.g.round - 1); return; }
+    if (cmd === 'fwd') { this.demoSeek = this.g.round + 1; return; }
     if (cmd === 'pause') { this.demoPaused = !this.demoPaused; this.render(); return; }
     const n = Number(cmd); if (n) { this.demoSpeed = n; this.render(); }
   }
@@ -137,11 +143,12 @@ export class Controller {
     const sp = (s: number) => `<button class="pbtn${this.demoSpeed === s ? ' on' : ''}" data-act="demo:${s}">${s}×</button>`;
     return `<div class="prow"><span class="plabel">🤖 Watch AI</span>
       <button class="pbtn" data-act="demo:restart" title="Back to round 1">⏮</button>
-      <button class="pbtn" data-act="demo:back" title="Back one round">◀</button>
+      <button class="pbtn" data-act="demo:back" title="Back one round">◀ Round</button>
       <button class="pbtn confirm" data-act="demo:pause">${this.demoPaused ? '▶ Play' : '⏸ Pause'}</button>
+      <button class="pbtn" data-act="demo:fwd" title="Forward one round">Round ▶</button>
       ${sp(1)}${sp(2)}${sp(4)}
       <button class="pbtn" data-act="demo:exit" title="Exit to menu">⨯ Menu</button></div>
-      ${this.log.length ? `<div class="prow staged">${this.log.slice(-1)[0]}</div>` : ''}`;
+      <div class="prow demolog">${this.log.slice(-4).map(l => `<div>${l}</div>`).join('') || '…'}</div>`;
   }
 
   // ── Caravan artifact card (shown when artifacts are drafted) ──
@@ -281,7 +288,18 @@ export class Controller {
       if (this.isHuman(p)) await this.humanMuster(p);
       g.musterPlayer(p);
     }
-    if (this.cfg.demo) await this.demoStep(1.1);   // show what both sides mustered
+    if (this.cfg.demo) {
+      // narrate each side's picks (recruits are face-down until Reveal)
+      const sum = (p: number) => {
+        const by: Record<string, number> = {};
+        for (const u of g.units.values()) if (u.owner === p && u.face_down) by[u.arch] = (by[u.arch] || 0) + 1;
+        const parts = Object.entries(by).map(([a, n]) => `${n}×${ARCH_LABEL[a]}`);
+        return parts.length ? parts.join(' ') : 'held';
+      };
+      this.log.push(`⚒ Muster — ${cap(this.tribe(0))}: ${sum(0)} · ${cap(this.tribe(1))}: ${sum(1)}`);
+      this.banner = '🤖 Demo — Muster';
+      await this.demoStep(1.3);   // show what both sides mustered
+    }
     // Phase 2 — Reveal
     for (const u of g.units.values()) u.face_down = false;
     // Phase 3 — Clash
