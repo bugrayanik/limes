@@ -11,6 +11,7 @@ import { HumanPolicy, legalActions } from './human';
 import type { Order } from './human';
 import { renderBoard, ARCH_LABEL, TRIBE_COLOR } from './render';
 import { guideButtonHTML, wireGuideButton } from './guide';
+import { Board3D } from './three/board3d';
 
 export interface GameConfig {
   mode: 'bot' | 'hotseat';
@@ -18,6 +19,7 @@ export interface GameConfig {
   botName: string;          // opponent policy in 'bot' mode
   p0tribe: string; p1tribe: string;
   seed: number;
+  view?: '2d' | '3d';       // board renderer (default 3d)
 }
 
 const bkey = (p: Pos) => `${p[0]},${p[1]}`;
@@ -39,6 +41,11 @@ export class Controller {
   private cSel: number | null = null;
 
   onChange: (() => void) | null = null;   // tutorial coach hook, fired after each render
+
+  // 3D board view (default) — a persistent canvas the controller drives
+  private board3d?: Board3D;
+  private shell?: { banner: HTMLElement; hint: HTMLElement; panel: HTMLElement; log: HTMLElement };
+  private get use3d() { return this.cfg.view !== '2d'; }
 
   constructor(private root: HTMLElement) {}
 
@@ -356,6 +363,7 @@ export class Controller {
 
   // ── rendering ──────────────────────────────────────────────────────────
   render() {
+    if (this.use3d) return this.render3d();
     const g = this.g;
     this.root.innerHTML = `
       <div class="topbar"><div class="phase-banner">${this.banner}</div>${guideButtonHTML()}</div>
@@ -368,6 +376,70 @@ export class Controller {
     wireGuideButton(this.root);
     this.paintOverlays();
     this.onChange?.();
+  }
+
+  // ── 3D render path: persistent canvas + DOM panels updated in place ──
+  private mountShell() {
+    this.root.innerHTML = `
+      <div class="topbar"><div class="phase-banner"></div>${guideButtonHTML()}</div>
+      <div class="phase-hint"></div>
+      <div id="board3d" class="board3d-wrap"></div>
+      <div class="panel"></div>
+      <div class="gamelog"></div>`;
+    this.shell = {
+      banner: this.root.querySelector('.phase-banner')!,
+      hint: this.root.querySelector('.phase-hint')!,
+      panel: this.root.querySelector('.panel')!,
+      log: this.root.querySelector('.gamelog')!,
+    };
+    this.board3d = new Board3D(this.root.querySelector('#board3d')!,
+      { p0tribe: this.cfg.p0tribe, p1tribe: this.cfg.p1tribe });
+    this.board3d.onClick(pos => this.onBoardClick(pos));
+    wireGuideButton(this.root);
+  }
+
+  private render3d() {
+    if (!this.board3d) this.mountShell();
+    const s = this.shell!;
+    s.banner.innerHTML = this.banner;
+    s.hint.innerHTML = this.phaseHint();
+    s.panel.innerHTML = this.panelHTML();
+    s.log.innerHTML = this.log.slice(-4).map(l => `<div>${l}</div>`).join('');
+    this.wirePanel();
+    this.board3d!.update(this.g);
+    this.board3d!.setHighlights(this.computeHighlights());
+    this.onChange?.();
+  }
+
+  private onBoardClick(pos: Pos) {
+    const uid = this.g.board.get(bkey(pos));
+    if (this.banner.includes('Intervention')) this.ivCell(pos, uid);
+    else this.onCell(pos, uid);
+  }
+
+  // same highlight logic as paintOverlays, but as data for the 3D board
+  private computeHighlights() {
+    const g = this.g, hl: any = {};
+    if (this.banner.includes('Clash') && this.cSel !== null) {
+      const u = g.units.get(this.cSel)!;
+      hl.selected = u.pos;
+      const la = legalActions(g, u);
+      hl.move = [...la.moves.keys()].map(k => k.split(',').map(Number) as Pos);
+      hl.melee = la.meleeTargets.map(t => g.units.get(t.uid)!.pos as Pos);
+      hl.shoot = la.shootTargets.map(uid => g.units.get(uid)!.pos as Pos);
+      hl.charge = la.chargeTargets.map(t => g.units.get(t.uid)!.pos as Pos);
+    }
+    if (this.banner.includes('Muster')) {
+      const p = this.musterPlayer;
+      hl.stage = [...this.mPlan.recruits.map(r => r[1]),
+        ...this.mBuild.filter(a => a[0] === 'field').map(a => a[1] as Pos),
+        ...this.mPlan.repositions.map(r => r[1])];
+      const m = this.mMode, valid: Pos[] = [];
+      if (m.kind === 'recruit') for (let c = 0; c < 8; c++) for (const r of g.heartlandRows(p)) { const pos: Pos = [c, r]; if (!g.occupied(pos) && !this.staged(pos)) valid.push(pos); }
+      if (m.kind === 'field') for (let c = 0; c < 8; c++) for (let r = 0; r < 8; r++) { const pos: Pos = [c, r]; if (g.territoryOf(pos) === p && !g.fields.has(bkey(pos)) && !g.wagon_at.has(bkey(pos)) && !this.staged(pos)) valid.push(pos); }
+      hl.valid = valid;
+    }
+    return hl;
   }
 
   private seatName(p: number) {
@@ -565,12 +637,17 @@ export class Controller {
   private winScreen(winner: number, wtype: string) {
     const me = this.cfg.mode === 'bot' ? this.cfg.humanSeat : null;
     const head = me === null ? `Player ${winner + 1} wins` : (winner === me ? 'Victory' : 'Defeat');
-    this.root.innerHTML = `
-      ${renderBoard(this.g, { p0tribe: this.cfg.p0tribe, p1tribe: this.cfg.p1tribe })}
-      <div class="winscreen">
+    const panel = `<div class="winscreen">
         <h2>${head}</h2>
         <p>${cap(this.tribe(winner))} (P${winner + 1}) — <b>${wtype}</b> after ${this.g.round} rounds.</p>
         <button class="pbtn confirm" onclick="location.reload()">New game</button>
       </div>`;
+    if (this.use3d && this.board3d) {
+      this.board3d.update(this.g); this.board3d.setHighlights({});
+      const ov = document.createElement('div'); ov.className = 'overlay'; ov.innerHTML = `<div class="modal">${panel}</div>`;
+      document.body.appendChild(ov);
+    } else {
+      this.root.innerHTML = renderBoard(this.g, { p0tribe: this.cfg.p0tribe, p1tribe: this.cfg.p1tribe }) + panel;
+    }
   }
 }

@@ -77,15 +77,16 @@ export class Tutorial {
     if (this.i >= STEPS.length) return this.finish();
     this.render();
   }
+  private boardEl() { return document.querySelector('#board3d') || document.querySelector('.board-grid'); }
   private clearSpot() {
     document.querySelectorAll('.coachmark').forEach(e => e.classList.remove('coachmark'));
-    document.querySelector('.board-grid')?.classList.remove('coach-board');
+    this.boardEl()?.classList.remove('coach-board');
   }
   private spotlight() {
     this.clearSpot();
     const step = STEPS[this.i];
     if (step.hi) document.querySelector(step.hi)?.classList.add('coachmark');
-    if (step.board) document.querySelector('.board-grid')?.classList.add('coach-board');
+    if (step.board) this.boardEl()?.classList.add('coach-board');
   }
   private render() {
     const step = STEPS[this.i];

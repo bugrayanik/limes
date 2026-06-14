@@ -30,7 +30,11 @@ export class Board3D {
   private texLoader = new THREE.TextureLoader();
   private texCache = new Map<string, THREE.Texture>();
   private dynamic = new THREE.Group();   // units/wagons/fields cleared & rebuilt each update
+  private hiGroup = new THREE.Group();   // interaction highlights, set independently
   private sun: THREE.DirectionalLight;
+  private raycaster = new THREE.Raycaster();
+  private pickPlane!: THREE.Mesh;
+  private clickCb?: (pos: Pos) => void;
 
   constructor(private container: HTMLElement, private opts: Board3DOpts) {
     const w = container.clientWidth || 640, h = container.clientHeight || 560;
@@ -65,8 +69,67 @@ export class Board3D {
 
     this.buildGround();
     this.scene.add(this.dynamic);
+    this.scene.add(this.hiGroup);
+
+    // invisible pick plane across the board, for click → tile raycasting
+    this.pickPlane = new THREE.Mesh(new THREE.PlaneGeometry(8 * STEP, 8 * STEP),
+      new THREE.MeshBasicMaterial({ visible: false }));
+    this.pickPlane.rotation.x = -Math.PI / 2; this.pickPlane.position.y = 0.14;
+    this.scene.add(this.pickPlane);
+    this.renderer.domElement.addEventListener('click', e => this.handleClick(e));
+    this.renderer.domElement.style.cursor = 'pointer';
+
     window.addEventListener('resize', () => this.onResize());
     this.animate();
+  }
+
+  onClick(cb: (pos: Pos) => void) { this.clickCb = cb; }
+
+  private handleClick(e: MouseEvent) {
+    if (!this.clickCb) return;
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    const ndc = new THREE.Vector2(
+      ((e.clientX - rect.left) / rect.width) * 2 - 1,
+      -((e.clientY - rect.top) / rect.height) * 2 + 1);
+    this.raycaster.setFromCamera(ndc, this.camera);
+    const hit = this.raycaster.intersectObject(this.pickPlane)[0];
+    if (!hit) return;
+    const c = Math.round((hit.point.x + HALF - STEP / 2) / STEP);
+    const r = 7 - Math.round((hit.point.z + HALF - STEP / 2) / STEP);
+    if (c >= 0 && c < 8 && r >= 0 && r < 8) this.clickCb([c, r]);
+  }
+
+  // interaction highlights — flat coloured toppers / rings per tile
+  setHighlights(hl: { move?: Pos[]; melee?: Pos[]; shoot?: Pos[]; charge?: Pos[]; stage?: Pos[]; valid?: Pos[]; selected?: Pos | null }) {
+    this.hiGroup.clear();
+    const fill = (list: Pos[] | undefined, color: number, op: number) => {
+      for (const p of list ?? []) {
+        const m = new THREE.Mesh(new THREE.PlaneGeometry(TILE * 0.92, TILE * 0.92),
+          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: op, depthWrite: false }));
+        m.rotation.x = -Math.PI / 2; const [x, z] = tileWorld(p[0], p[1]); m.position.set(x, 0.145, z);
+        this.hiGroup.add(m);
+      }
+    };
+    const ring = (list: Pos[] | undefined, color: number) => {
+      for (const p of list ?? []) {
+        const m = new THREE.Mesh(new THREE.RingGeometry(TILE * 0.42, TILE * 0.5, 24),
+          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.95, depthWrite: false, side: THREE.DoubleSide }));
+        m.rotation.x = -Math.PI / 2; const [x, z] = tileWorld(p[0], p[1]); m.position.set(x, 0.16, z);
+        this.hiGroup.add(m);
+      }
+    };
+    fill(hl.valid, 0xc9a227, 0.18);
+    fill(hl.move, 0x6f9f4a, 0.5);
+    fill(hl.stage, 0xc9a227, 0.55);
+    ring(hl.melee, 0xc0504a);
+    ring(hl.shoot, 0xd98f3a);
+    ring(hl.charge, 0x9a6cc0);
+    if (hl.selected) {
+      const m = new THREE.Mesh(new THREE.RingGeometry(TILE * 0.5, TILE * 0.6, 28),
+        new THREE.MeshBasicMaterial({ color: 0xdbc06a, transparent: true, opacity: 1, depthWrite: false, side: THREE.DoubleSide }));
+      m.rotation.x = -Math.PI / 2; const [x, z] = tileWorld(hl.selected[0], hl.selected[1]); m.position.set(x, 0.17, z);
+      this.hiGroup.add(m);
+    }
   }
 
   private onResize() {
