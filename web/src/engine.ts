@@ -393,6 +393,7 @@ export class Game {
             (b.xp - a.xp) || (this.costs[b.arch] - this.costs[a.arch]) || ntc(a.pos!, b.pos!));
           if (cands.length) this.gainXp(cands[0], 1);
         }
+        else if (aid === 7) this.recruit_discount[p] += C.ARTIFACT_DISCOUNT;
         else if (aid === 6) res.tribute += 1;
         else if (aid === 8) {
           if (res.crop < res.supply) res.crop += 1;
