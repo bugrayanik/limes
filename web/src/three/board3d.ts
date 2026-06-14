@@ -48,6 +48,7 @@ export class Board3D {
   private pulseTiles: THREE.Mesh[] = [];       // valid muster tiles → pulse/glow
   private unitG = new THREE.Group();           // persistent animated units
   private fxG = new THREE.Group();             // damage numbers etc.
+  private wagArtG = new THREE.Group();         // artifact labels floating over wagons
   private units = new Map<number, UnitView>();
   private dmg: { spr: THREE.Sprite; t0: number }[] = [];
   private raycaster = new THREE.Raycaster();
@@ -97,7 +98,7 @@ export class Board3D {
 
     this.buildScenery();
 
-    this.scene.add(this.props, this.unitG, this.hiGroup, this.fxG);
+    this.scene.add(this.props, this.unitG, this.hiGroup, this.fxG, this.wagArtG);
 
     this.pickPlane = new THREE.Mesh(new THREE.PlaneGeometry(8 * STEP, 8 * STEP),
       new THREE.MeshBasicMaterial({ visible: false }));
@@ -332,6 +333,32 @@ export class Board3D {
     // units gone from the board → death FX
     for (const [uid, v] of [...this.units]) {
       if (!seen.has(uid) && !v.dying) { v.dying = { t0: this.clock.elapsedTime }; }
+    }
+  }
+
+  // Float artifact name labels over the wagons that hold them.
+  setWagonArtifacts(items: { col: number; row: number; lines: string[] }[]) {
+    this.wagArtG.clear();
+    for (const it of items) {
+      if (!it.lines.length) continue;
+      const W = 320, LH = 34, pad = 12, H = pad * 2 + it.lines.length * LH;
+      const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+      const ctx = cv.getContext('2d')!;
+      ctx.fillStyle = 'rgba(18,12,5,0.86)';
+      ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 3;
+      const r = 12; ctx.beginPath();
+      ctx.moveTo(r, 1); ctx.arcTo(W - 1, 1, W - 1, H - 1, r); ctx.arcTo(W - 1, H - 1, 1, H - 1, r);
+      ctx.arcTo(1, H - 1, 1, 1, r); ctx.arcTo(1, 1, W - 1, 1, r); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.font = 'bold 24px Cinzel, serif'; ctx.fillStyle = '#dbc06a'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      it.lines.forEach((l, i) => ctx.fillText(l, W / 2, pad + i * LH + LH / 2));
+      const tex = new THREE.CanvasTexture(cv);
+      const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false }));
+      spr.renderOrder = 12;
+      const wh = 0.16 * it.lines.length + 0.12;
+      spr.scale.set(wh * (W / H), wh, 1);
+      const [x, z] = tileWorld(it.col, it.row);
+      spr.position.set(x, 1.15 + wh / 2, z);
+      this.wagArtG.add(spr);
     }
   }
 

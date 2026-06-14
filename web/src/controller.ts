@@ -88,7 +88,7 @@ export class Controller {
   private async demoStep(weight = 1) {
     if (!this.cfg.demo) return;
     this.render();
-    let waited = 0; const total = (820 * weight) / this.demoSpeed;
+    let waited = 0; const total = (1500 * weight) / this.demoSpeed;   // 1× is a slow, watchable pace
     do {
       if (this.demoSeek !== null) throw new DemoRewind();   // back/restart requested
       await this.pause(90); waited += 90;
@@ -108,7 +108,10 @@ export class Controller {
         const r = g.round;
         g.playRound();
         if (r === g.C.CARAVAN_ROUND_1 || r === g.C.CARAVAN_ROUND_2)
-          for (const x of g.last_artifacts) draft.push({ ...x, round: r });
+          for (const x of g.last_artifacts) {
+            const n = draft.filter(a => a.p === x.p).length;
+            draft.push({ ...x, round: r, wagon: n % 3 });
+          }
       }
     } catch (e) { if (e instanceof GameOver) over = e; else throw e; }
     this.policies = pol; this.g = g; this.caravanCard = ''; this.artifactDraft = draft;
@@ -140,13 +143,13 @@ export class Controller {
     const n = Number(cmd); if (n) { this.demoSpeed = n; this.render(); }
   }
   private demoPanel(): string {
-    const sp = (s: number) => `<button class="pbtn${this.demoSpeed === s ? ' on' : ''}" data-act="demo:${s}">${s}×</button>`;
+    const sp = (s: number, lbl: string) => `<button class="pbtn${this.demoSpeed === s ? ' on' : ''}" data-act="demo:${s}">${lbl}</button>`;
     return `<div class="prow"><span class="plabel">🤖 Watch AI</span>
       <button class="pbtn" data-act="demo:restart" title="Back to round 1">⏮</button>
       <button class="pbtn" data-act="demo:back" title="Back one round">◀ Round</button>
       <button class="pbtn confirm" data-act="demo:pause">${this.demoPaused ? '▶ Play' : '⏸ Pause'}</button>
       <button class="pbtn" data-act="demo:fwd" title="Forward one round">Round ▶</button>
-      ${sp(1)}${sp(2)}${sp(4)}
+      ${sp(0.5, '½×')}${sp(1, '1×')}${sp(2, '2×')}${sp(4, '4×')}
       <button class="pbtn" data-act="demo:exit" title="Exit to menu">⨯ Menu</button></div>
       <div class="prow demolog">${this.log.slice(-4).map(l => `<div>${l}</div>`).join('') || '…'}</div>`;
   }
@@ -154,7 +157,21 @@ export class Controller {
   // ── Caravan artifact card (shown when artifacts are drafted) ──
   private caravanCard = '';
   private caravanOv?: HTMLElement;
-  private artifactDraft: { p: number; aid: number; round: number }[] = [];
+  private artifactDraft: { p: number; aid: number; round: number; wagon: number }[] = [];
+  // labels to float over each living wagon, from the drafted artifacts
+  private wagonArtifactItems() {
+    const g = this.g;
+    const groups = new Map<string, { col: number; row: number; lines: string[] }>();
+    for (const a of this.artifactDraft) {
+      const w = g.wagons[a.p]?.[a.wagon];
+      if (!w || w.hp <= 0) continue;
+      const k = `${a.p},${a.wagon}`;
+      if (!groups.has(k)) groups.set(k, { col: w.col, row: w.row, lines: [] });
+      const art = ARTIFACTS[a.aid];
+      if (art) groups.get(k)!.lines.push(`${art.icon} ${art.name}`);
+    }
+    return [...groups.values()];
+  }
   private artifactStrip(): string {
     if (!this.artifactDraft.length) return '';
     const side = (p: number) => {
@@ -343,8 +360,12 @@ export class Controller {
     for (let p = 0; p < 2; p++) g.res[p].tribute += C.TRIBUTE_PER_ROW * g.rows_lost_round[p];
     if (g.round === C.CARAVAN_ROUND_1 || g.round === C.CARAVAN_ROUND_2) {
       g.caravan(g.round === C.CARAVAN_ROUND_1 ? 1 : 2);
-      // remember them persistently + show prominently (with effects)
-      for (const x of g.last_artifacts) this.artifactDraft.push({ ...x, round: g.round });
+      // remember them persistently + show prominently (with effects).
+      // place each on a wagon (round-robin across this side's 3 wagons).
+      for (const x of g.last_artifacts) {
+        const n = this.artifactDraft.filter(a => a.p === x.p).length;
+        this.artifactDraft.push({ ...x, round: g.round, wagon: n % 3 });
+      }
       this.caravanCard = this.renderCaravan(g.last_artifacts, g.round);
       const names = (p: number) => g.last_artifacts.filter(x => x.p === p).map(x => ARTIFACTS[x.aid]?.name).join(', ') || '—';
       this.log.push(`◆ Caravan! ${cap(this.tribe(0))}: ${names(0)} · ${cap(this.tribe(1))}: ${names(1)}.`);
@@ -584,6 +605,7 @@ export class Controller {
     s.log.innerHTML = this.log.slice(-4).map(l => `<div>${l}</div>`).join('');
     this.wirePanel();
     this.board3d!.update(this.g);
+    this.board3d!.setWagonArtifacts(this.wagonArtifactItems());
     this.board3d!.setHighlights(this.computeHighlights());
     this.onChange?.();
   }
