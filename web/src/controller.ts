@@ -101,20 +101,11 @@ export class Controller {
     pol.forEach((b, p) => b.reset(this.cfg.seed, p));
     const g = new Game(pol, this.cfg.seed, V3_CONFIG);
     g.setup();
-    const draft: { p: number; aid: number; round: number }[] = [];
     let over: GameOver | null = null;
     try {
-      while (g.round < target) {
-        const r = g.round;
-        g.playRound();
-        if (r === g.C.CARAVAN_ROUND_1 || r === g.C.CARAVAN_ROUND_2)
-          for (const x of g.last_artifacts) {
-            const n = draft.filter(a => a.p === x.p).length;
-            draft.push({ ...x, round: r, wagon: n % 3 });
-          }
-      }
+      while (g.round < target) g.playRound();
     } catch (e) { if (e instanceof GameOver) over = e; else throw e; }
-    this.policies = pol; this.g = g; this.caravanCard = ''; this.artifactDraft = draft;
+    this.policies = pol; this.g = g; this.caravanCard = '';
     this.log = [`Round ${g.round} — ${cap(this.tribe(0))} vs ${cap(this.tribe(1))}.`];
     return over;
   }
@@ -157,31 +148,29 @@ export class Controller {
   // ── Caravan artifact card (shown when artifacts are drafted) ──
   private caravanCard = '';
   private caravanOv?: HTMLElement;
-  private artifactDraft: { p: number; aid: number; round: number; wagon: number }[] = [];
-  // labels to float over each living wagon, from the drafted artifacts
+  // labels to float over each living wagon, read from the engine's wagon placement
   private wagonArtifactItems() {
-    const g = this.g;
-    const groups = new Map<string, { col: number; row: number; lines: string[] }>();
-    for (const a of this.artifactDraft) {
-      const w = g.wagons[a.p]?.[a.wagon];
-      if (!w || w.hp <= 0) continue;
-      const k = `${a.p},${a.wagon}`;
-      if (!groups.has(k)) groups.set(k, { col: w.col, row: w.row, lines: [] });
-      const art = ARTIFACTS[a.aid];
-      if (art) groups.get(k)!.lines.push(`${art.icon} ${art.name}`);
+    const g = this.g, out: { col: number; row: number; lines: string[] }[] = [];
+    for (let p = 0; p < 2; p++) for (const w of g.wagons[p]) {
+      if (w.hp <= 0 || !w.artifacts.length) continue;
+      const lines = w.artifacts.map((aid: number) => { const a = ARTIFACTS[aid]; return a ? `${a.icon} ${a.name}` : ''; }).filter(Boolean);
+      if (lines.length) out.push({ col: w.col, row: w.row, lines });
     }
-    return [...groups.values()];
+    return out;
   }
   private artifactStrip(): string {
-    if (!this.artifactDraft.length) return '';
+    const g = this.g;
     const side = (p: number) => {
-      const mine = this.artifactDraft.filter(x => x.p === p);
-      if (!mine.length) return '';
-      return `<span class="art-side" style="--c:${TRIBE_COLOR[this.tribe(p)] || '#c9a227'}"><b>${cap(this.tribe(p))}</b>${mine.map(x => {
-        const a = ARTIFACTS[x.aid]; return a ? `<span class="art-chip" title="${a.name} — ${a.desc} (round ${x.round})">${a.icon} ${a.name} <i>${a.desc}</i></span>` : '';
+      const aids: number[] = [];
+      for (const w of g.wagons[p]) if (w.hp > 0) aids.push(...w.artifacts);
+      if (!aids.length) return '';
+      return `<span class="art-side" style="--c:${TRIBE_COLOR[this.tribe(p)] || '#c9a227'}"><b>${cap(this.tribe(p))}</b>${aids.map(aid => {
+        const a = ARTIFACTS[aid]; return a ? `<span class="art-chip" title="${a.name} — ${a.desc}">${a.icon} ${a.name} <i>${a.desc}</i></span>` : '';
       }).join('')}</span>`;
     };
-    return `<div class="artbar"><span class="art-lbl">◆ Artifacts</span>${side(0)}${side(1)}</div>`;
+    const s0 = side(0), s1 = side(1);
+    if (!s0 && !s1) return '';
+    return `<div class="artbar"><span class="art-lbl">◆ Artifacts</span>${s0}${s1}</div>`;
   }
   private renderCaravan(picks: { p: number; aid: number }[], round: number): string {
     const side = (p: number) => {
@@ -360,12 +349,7 @@ export class Controller {
     for (let p = 0; p < 2; p++) g.res[p].tribute += C.TRIBUTE_PER_ROW * g.rows_lost_round[p];
     if (g.round === C.CARAVAN_ROUND_1 || g.round === C.CARAVAN_ROUND_2) {
       g.caravan(g.round === C.CARAVAN_ROUND_1 ? 1 : 2);
-      // remember them persistently + show prominently (with effects).
-      // place each on a wagon (round-robin across this side's 3 wagons).
-      for (const x of g.last_artifacts) {
-        const n = this.artifactDraft.filter(a => a.p === x.p).length;
-        this.artifactDraft.push({ ...x, round: g.round, wagon: n % 3 });
-      }
+      // show the draft prominently (engine has placed them on wagons).
       this.caravanCard = this.renderCaravan(g.last_artifacts, g.round);
       const names = (p: number) => g.last_artifacts.filter(x => x.p === p).map(x => ARTIFACTS[x.aid]?.name).join(', ') || '—';
       this.log.push(`◆ Caravan! ${cap(this.tribe(0))}: ${names(0)} · ${cap(this.tribe(1))}: ${names(1)}.`);
