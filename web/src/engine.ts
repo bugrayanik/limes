@@ -1054,18 +1054,21 @@ export class Game {
   }
 
   // ── Phase 5: Pass & Tribute — caravans (C-078) ────────────────────────────
+  last_artifacts: { p: number; aid: number }[] = [];   // for UI narration (not hashed)
   caravan(which: number) {
     const C = this.C, n = C.CARAVAN_ARTIFACTS;
     const start = which === 1 ? 0 : n;
     let options = this.artifact_order.slice(start, start + n);
     const rank = (p: number) => [this.wagonsAlive(p), this.ownedRows(p), p === this.komi ? 0 : 1];
     const trailing = ntc(rank(0), rank(1)) <= 0 ? 0 : 1;   // min((0,1),key=rank): first wins ties
+    this.last_artifacts = [];
     for (const p of [trailing, 1 - trailing, trailing]) {
       if (!options.length) break;
       let pick = this.bots[p].artifactPick(this, p, options.slice());
       if (!options.includes(pick)) pick = options[0];
       options = options.filter(x => x !== pick);
       this.applyArtifact(p, pick);
+      this.last_artifacts.push({ p, aid: pick });
     }
     // 4th discarded
   }

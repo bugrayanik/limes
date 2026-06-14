@@ -26,6 +26,18 @@ export interface GameConfig {
 const bkey = (p: Pos) => `${p[0]},${p[1]}`;
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 class DemoRewind extends Error {}   // control-flow signal to rewind the demo
+
+// The 8 Caravan artifacts (matches engine applyArtifact aids + the Guide gallery).
+const ARTIFACTS: Record<number, { icon: string; name: string; desc: string }> = {
+  1: { icon: '🛡', name: 'Supply Cache', desc: '+4 Supply now' },
+  2: { icon: '🌾', name: 'Granary', desc: '+4 Crop now' },
+  3: { icon: '⚜', name: "Hero's Aegis", desc: '+1 Guard to your Hero (permanent)' },
+  4: { icon: '⭐', name: "Veteran's Mark", desc: '+2 XP to your strongest unit' },
+  5: { icon: '🪵', name: 'Palisade', desc: 'Free wall on a key column' },
+  6: { icon: '◆', name: 'War Chest', desc: '+2 Tribute' },
+  7: { icon: '🏷', name: 'Levy', desc: 'Next recruits cost less' },
+  8: { icon: '🌱', name: 'Homestead', desc: 'Auto-builds a crop/supply field' },
+};
 const UNLOCK_COST = (n: number, C: any) => ({ 2: C.UNLOCK_3RD, 3: C.UNLOCK_4TH, 4: C.UNLOCK_5TH } as any)[n];
 
 export class Controller {
@@ -88,8 +100,17 @@ export class Controller {
     pol.forEach((b, p) => b.reset(this.cfg.seed, p));
     const g = new Game(pol, this.cfg.seed, V3_CONFIG);
     g.setup();
-    try { while (g.round < target) g.playRound(); } catch (e) { if (!(e instanceof GameOver)) throw e; }
-    this.policies = pol; this.g = g; this.log = [`Round ${g.round} — ${cap(this.tribe(0))} vs ${cap(this.tribe(1))}.`];
+    const draft: { p: number; aid: number; round: number }[] = [];
+    try {
+      while (g.round < target) {
+        const r = g.round;
+        g.playRound();
+        if (r === g.C.CARAVAN_ROUND_1 || r === g.C.CARAVAN_ROUND_2)
+          for (const x of g.last_artifacts) draft.push({ ...x, round: r });
+      }
+    } catch (e) { if (!(e instanceof GameOver)) throw e; }
+    this.policies = pol; this.g = g; this.caravanCard = ''; this.artifactDraft = draft;
+    this.log = [`Round ${g.round} — ${cap(this.tribe(0))} vs ${cap(this.tribe(1))}.`];
   }
   private async demoLoop() {
     for (;;) {
@@ -121,6 +142,45 @@ export class Controller {
       ${sp(1)}${sp(2)}${sp(4)}
       <button class="pbtn" data-act="demo:exit" title="Exit to menu">⨯ Menu</button></div>
       ${this.log.length ? `<div class="prow staged">${this.log.slice(-1)[0]}</div>` : ''}`;
+  }
+
+  // ── Caravan artifact card (shown when artifacts are drafted) ──
+  private caravanCard = '';
+  private caravanOv?: HTMLElement;
+  private artifactDraft: { p: number; aid: number; round: number }[] = [];
+  private artifactStrip(): string {
+    if (!this.artifactDraft.length) return '';
+    const side = (p: number) => {
+      const mine = this.artifactDraft.filter(x => x.p === p);
+      if (!mine.length) return '';
+      return `<span class="art-side" style="--c:${TRIBE_COLOR[this.tribe(p)] || '#c9a227'}"><b>${cap(this.tribe(p))}</b>${mine.map(x => {
+        const a = ARTIFACTS[x.aid]; return a ? `<span class="art-chip" title="${a.name} — ${a.desc} (round ${x.round})">${a.icon} ${a.name} <i>${a.desc}</i></span>` : '';
+      }).join('')}</span>`;
+    };
+    return `<div class="artbar"><span class="art-lbl">◆ Artifacts</span>${side(0)}${side(1)}</div>`;
+  }
+  private renderCaravan(picks: { p: number; aid: number }[], round: number): string {
+    const side = (p: number) => {
+      const mine = picks.filter(x => x.p === p);
+      if (!mine.length) return '';
+      return `<div class="cv-side" style="--c:${TRIBE_COLOR[this.tribe(p)] || '#c9a227'}">
+        <div class="cv-who">${cap(this.tribe(p))}</div>
+        ${mine.map(x => { const a = ARTIFACTS[x.aid]; return a ? `<div class="cv-art" title="${a.name} — ${a.desc}">
+          <span class="cv-ic">${a.icon}</span><span class="cv-nm">${a.name}</span><span class="cv-ds">${a.desc}</span></div>` : ''; }).join('')}
+      </div>`;
+    };
+    return `<div class="cv-card"><div class="cv-title">◆ Caravan — Round ${round}</div>
+      <div class="cv-sides">${side(0)}${side(1)}</div>
+      <div class="cv-foot">Artifacts drafted (trailing side picks first) · hover for the effect</div></div>`;
+  }
+  private syncCaravan() {
+    if (!this.caravanOv) {
+      this.caravanOv = document.createElement('div');
+      this.caravanOv.className = 'caravan-ov';
+      document.body.appendChild(this.caravanOv);
+    }
+    this.caravanOv.innerHTML = this.caravanCard;
+    this.caravanOv.style.display = this.caravanCard ? 'flex' : 'none';
   }
   tribe(p: number): string { return p === 0 ? this.cfg.p0tribe : this.cfg.p1tribe; }
   human(p: number): HumanPolicy { return this.policies[p] as HumanPolicy; }
@@ -264,20 +324,15 @@ export class Controller {
     // Phase 5 — Pass & Tribute
     for (let p = 0; p < 2; p++) g.res[p].tribute += C.TRIBUTE_PER_ROW * g.rows_lost_round[p];
     if (g.round === C.CARAVAN_ROUND_1 || g.round === C.CARAVAN_ROUND_2) {
-      const snap = [0, 1].map(p => ({ ...g.res[p] }));
       g.caravan(g.round === C.CARAVAN_ROUND_1 ? 1 : 2);
-      if (this.cfg.demo) {
-        const delta = (p: number) => {
-          const r = g.res[p], s = snap[p], a: string[] = [];
-          if (r.supply > s.supply) a.push(`+${r.supply - s.supply}🛡`);
-          if (r.crop > s.crop) a.push(`+${r.crop - s.crop}🌾`);
-          if (r.tribute > s.tribute) a.push(`+${r.tribute - s.tribute}◆`);
-          return a.length ? a.join(' ') : 'a battlefield boost';
-        };
-        this.log.push(`◆ Caravan! ${cap(this.tribe(0))} drafted ${delta(0)} · ${cap(this.tribe(1))} drafted ${delta(1)}.`);
-        this.banner = '🤖 Demo — ◆ Caravan';
-        await this.demoStep(2.2);
-      }
+      // remember them persistently + show prominently (with effects)
+      for (const x of g.last_artifacts) this.artifactDraft.push({ ...x, round: g.round });
+      this.caravanCard = this.renderCaravan(g.last_artifacts, g.round);
+      const names = (p: number) => g.last_artifacts.filter(x => x.p === p).map(x => ARTIFACTS[x.aid]?.name).join(', ') || '—';
+      this.log.push(`◆ Caravan! ${cap(this.tribe(0))}: ${names(0)} · ${cap(this.tribe(1))}: ${names(1)}.`);
+      if (this.cfg.demo) { this.banner = '🤖 Demo — ◆ Caravan'; await this.demoStep(3.0); }
+      else { this.render(); await this.pause(3200); }
+      this.caravanCard = ''; this.render();
     }
     if (g.round === 1) {
       const [r0, r1] = g.rows_taken_round;
@@ -450,6 +505,7 @@ export class Controller {
 
   // ── rendering ──────────────────────────────────────────────────────────
   render() {
+    this.syncCaravan();
     if (this.use3d) return this.render3d();
     const g = this.g;
     this.root.innerHTML = `
@@ -604,7 +660,11 @@ export class Controller {
       return `Click a unit, then a 🟢 tile to <b>move</b> or a 🔴 enemy to <b>attack</b>. Get units past the enemy's gold stake line and hold there to push it back next phase. Two pulses per round.`;
     if (this.banner.includes('Intervention'))
       return `Optional: spend ◆ <b>Tribute</b> on a <b>Surge</b> (move one of <i>your</i> units one tile to an empty square) or <b>Shieldbearer</b> (shield your Hero from a killing blow) — or just Skip.`;
-    return '';
+    if (this.banner.includes('Caravan'))
+      return `◆ <b>Caravan!</b> Both sides draft a free <b>Artifact</b>. The side that's behind picks first. See what each grabbed below.`;
+    if (this.banner.includes('Frontier'))
+      return `🚩 <b>Frontier resolves:</b> stake lines step where a side carries a column uncontested, trampled fields are raided/annexed, and units in enemy back rows breach a wagon.`;
+    return `🤖 <b>Watching the AI play.</b> Use the controls below to pause, rewind, or change speed.`;
   }
 
   // Persistent resource HUD for the 3D view (the 2D board draws its own).
@@ -625,7 +685,7 @@ export class Controller {
         <span class="hud-stat" title="Supply Wagons still standing">▣ ${g.wagonsAlive(p)}</span>
       </div>`;
     };
-    return side(0) + `<span class="hud-vs">vs</span>` + side(1);
+    return `<div class="hud-row">${side(0)}<span class="hud-vs">vs</span>${side(1)}</div>` + this.artifactStrip();
   }
 
   private panelHTML(): string {
