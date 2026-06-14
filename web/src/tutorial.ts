@@ -1,39 +1,55 @@
-// Interactive tutorial coach. Runs a REAL game (vs a gentle bot) and walks the
-// player through one full turn, step by step. It observes the controller via
-// its onChange hook and read-only getters, advancing when the player does the
-// thing each step asks. No scripting of the engine — the player really plays.
+// Interactive tutorial — teaches the WHOLE game from zero. Runs a real game on
+// a hand-built "practice skirmish" scenario that places your troops already in
+// contact, so every mechanic (recruit, economy, move, melee, charge, shoot,
+// brace) is reachable and explained. The player really plays; the coach watches
+// the controller and advances when each step is done.
 import { Controller } from './controller';
 import type { GameConfig } from './controller';
+import type { Game } from './engine';
 import { openGuide } from './guide';
 
 interface Step {
   text: string;
-  hi?: string;                       // selector to spotlight
-  manual?: boolean;                  // show a Next button instead of auto-advancing
-  done?: (c: Controller) => boolean; // auto-advance predicate
+  hi?: string;                       // selector to spotlight (pulsing)
+  manual?: boolean;                  // show Next instead of auto-advancing
+  done?: (c: Controller) => boolean;
   board?: boolean;                   // spotlight the whole board
 }
 
+// Place a forward practice force so attack/charge/shoot are all available turn 1.
+function buildScenario(g: Game) {
+  const mk = (owner: number, arch: string, pos: [number, number]) => { const u = g.newUnit(owner, arch); g.place(u, pos); };
+  g.unlocked[0].add('archer'); g.unlocked[0].add('cav');   // so Muster shows more options
+  mk(0, 'sword', [1, 3]); mk(1, 'archer', [1, 4]);          // melee: adjacent enemy
+  mk(0, 'cav', [3, 2]); mk(1, 'archer', [3, 5]);            // charge: 2-tile run lands next to enemy
+  mk(0, 'archer', [5, 3]); mk(1, 'spear', [5, 5]);          // shoot: enemy at range 2
+}
+
 const STEPS: Step[] = [
-  // — orientation —
-  { text: `<b>Welcome to LIMES</b> — a dice-free wargame of frontier lines. No luck: every result follows from the rules. We'll play one full round together, step by step. Click <b>Next ▶</b>.`, manual: true },
-  { text: `<b>The board is 8×8.</b> You command the <b>bottom</b> half; the enemy holds the top. The <span class="g-c g-move">gold line</span> across each column is the <b>frontier</b> — below it is your land, above it theirs.`, board: true, manual: true },
-  { text: `Those dashed squares on the <b>back rows</b> are <b>Supply Wagons</b> (▣) — 3 each. Destroy all <b>3 enemy wagons</b> (top) to win. If nobody does, whoever leads at the round-18 time limit wins. <b>Protect yours.</b>`, board: true, manual: true },
-  // — muster —
-  { text: `Every round opens with <b>Muster</b>: you spend resources. 🛡 <b>Supply</b> builds your army; 🌾 <b>Crop</b> feeds it each round. Let's recruit — click the <b>Spearman</b> button.`, hi: '[data-act="rec:spear"]', done: c => c.musterModeKind === 'recruit' },
-  { text: `The glowing tiles are your back rows — where new units deploy. <b>Click a glowing tile</b> to place your Spearman.`, board: true, done: c => c.stagedRecruitCount >= 1 },
-  { text: `Staged (gold outline). You can deploy a couple per turn. You could also <b>Build</b> a Crop field for more income, or <b>Unlock</b> Cavalry & Archers. Remember the triangle: <b>Spear ▸ Cavalry ▸ Archer ▸ Spear</b>.`, manual: true },
-  { text: `When you're happy with your Muster, click <b>End Muster ▶</b> to lock it in.`, hi: '[data-act="muster-done"]', done: c => c.phaseKind === 'clash' },
-  // — clash —
-  { text: `Now <b>Clash</b> — the combat phase, fought over <b>two pulses</b>. Your units move and fight. <b>Click one of your units</b> (bottom half) to select it.`, board: true, done: c => c.selectedUid !== null },
-  { text: `Highlights show its options: <span class="g-c g-move">green</span> = move, <span class="g-c g-melee">red</span> = attack, <span class="g-c g-shoot">orange</span> = shoot, <span class="g-c g-charge">purple</span> = charge. <b>Click a green tile</b> to advance toward the enemy line.`, board: true, done: c => c.orderCount >= 1 },
-  { text: `A badge marks the queued order. Early on the enemy is far away, so there are no red attack tiles yet — your job now is to <b>advance and form a line</b>. Order a few more units if you like.`, manual: true },
-  { text: `Reaching past the enemy's stake line (with a friend nearby) <b>carries</b> the column — that's how you push the frontier. When ready, click <b>Resolve pulse ▶</b>.`, hi: '[data-act="clash-done"]', done: c => c.bannerText.includes('pulse 2') || c.phaseKind !== 'clash' },
-  { text: `That was <b>pulse 1</b> — orders resolved simultaneously (no first-mover advantage). Now <b>pulse 2</b>: same again. Move up, then <b>Resolve pulse ▶</b> to finish the round.`, hi: '[data-act="clash-done"]', done: c => c.round >= 2 },
-  // — wrap-up —
-  { text: `<b>Round complete!</b> The <b>Frontier</b> resolved automatically — stakes shift where a side carried a column, and units in enemy back rows breach wagons. Check the <b>log line</b> under the board to see what changed.`, manual: true },
-  { text: `You're back at <b>Muster</b> for round 2 — the loop repeats: <b>Muster → Clash ×2 → Frontier → Pass</b>. That's the whole game. Build economy, win the match-ups, and march on their wagons.`, manual: true },
-  { text: `You've got it! Keep playing this match. Open <b>❓ Guide</b> any time for unit stats, combat math, and strategy tips. <b>Good luck, commander.</b>`, manual: true },
+  // ── orientation ──
+  { text: `<b>Welcome, commander.</b> I'll teach you everything — assume you know nothing. LIMES is a <b>dice-free</b> wargame: no luck, every result follows from the rules. Click <b>Next ▶</b>.`, manual: true },
+  { text: `<b>The board is 8×8.</b> You command the <b>bottom</b> half; the enemy holds the top. The <span class="g-c g-move">gold line</span> across each column is the <b>frontier (stake line)</b> — below it is your land, above it theirs.`, board: true, manual: true },
+  { text: `On each back row sit <b>Supply Wagons</b> (▣) — 3 per side. <b>Win</b> by destroying all 3 enemy wagons (top). If nobody does, the leader at the round-18 limit wins. So: <b>attack their wagons, defend yours.</b>`, board: true, manual: true },
+  { text: `I've set up a <b>practice skirmish</b> — your troops are already near the enemy so you can try every action. <b>Tip: hover any unit</b> to see its stats.`, board: true, manual: true },
+  // ── economy / muster ──
+  { text: `Two resources run your war: 🛡 <b>Supply</b> (builds things) and 🌾 <b>Crop</b> (feeds your army — <b>1 per unit each round</b>; unfed units get <b>exhausted</b> and fight worse). Every round starts with <b>Muster</b>, where you spend them.`, manual: true },
+  { text: `Let's recruit. Click the <b>Spearman</b> button below.`, hi: '[data-act="rec:spear"]', done: c => c.musterModeKind === 'recruit' },
+  { text: `The glowing tiles are your back rows. <b>Click a glowing tile</b> to deploy your Spearman there.`, board: true, done: c => c.stagedRecruitCount >= 1 },
+  { text: `Good. Now economy: more Crop = a bigger army you can feed. Click <b>Crop field</b>.`, hi: '[data-act="fld:crop"]', done: c => c.musterModeKind === 'field' },
+  { text: `<b>Click a glowing tile in your territory</b> to build the field (it yields Crop every Muster).`, board: true, done: c => c.stagedFieldCount >= 1 },
+  { text: `You can also <b>Unlock</b> new unit types (Cavalry, Archers, Siege), build <b>Palisades</b> (block a column), or convert <b>Tribute → Supply</b>. The key rule of who-beats-who: <b>Spear ▸ Cavalry ▸ Archer ▸ Spear</b>. Now click <b>End Muster ▶</b>.`, hi: '[data-act="muster-done"]', done: c => c.phaseKind === 'clash' },
+  // ── clash ──
+  { text: `<b>Clash</b> — combat, fought over <b>two pulses</b>. Both sides' orders resolve <b>at the same time</b> (no first-mover advantage). <b>Click one of your units</b> to select it.`, board: true, done: c => c.selectedUid !== null },
+  { text: `Highlights show what it can do: <span class="g-c g-move">green</span> move · <span class="g-c g-melee">red</span> melee · <span class="g-c g-shoot">orange</span> shoot · <span class="g-c g-charge">purple</span> charge. Your forward units have enemies in range! <b>Select a unit with a coloured enemy and click that enemy to attack.</b>`, board: true, done: c => c.hasAttackOrder },
+  { text: `Attack queued. <b>Damage = your Atk − their Guard.</b> Edges: <b>+1</b> if you counter their type, <b>+1</b> when flanking (2+ attackers), Cavalry <b>Charge</b> adds punch and shoves — but a <b>Braced Spearman</b> stops a charge cold and wrecks the rider. <b>Archers/Siege shoot</b> from range without retaliation.`, manual: true },
+  { text: `You can also just <b>advance</b>: select a unit and click a <span class="g-c g-move">green</span> tile to move toward the enemy line. Order as many units as you like, then click <b>Resolve pulse ▶</b>.`, hi: '[data-act="clash-done"]', done: c => c.bannerText.includes('pulse 2') || c.phaseKind !== 'clash' },
+  { text: `<b>Pulse 1 resolved!</b> Check the units — HP bars dropped, maybe one fell. Wounding enemies earns <b>XP</b> → <b>promotions</b> (★ tougher, ★★ upgraded). Now <b>pulse 2</b>: same again, then <b>Resolve pulse ▶</b> to end the round.`, hi: '[data-act="clash-done"]', done: c => c.round >= 2 },
+  // ── resolution & deeper systems ──
+  { text: `<b>Round over.</b> The <b>Frontier</b> just resolved automatically: in any column where one side has a unit past the line with a friend nearby (a <b>carry</b>) and the enemy doesn't contest it, the <b>stake steps</b> — you take a row. Units in the enemy's back rows <b>breach</b> a wagon. See the <b>log line</b> under the board.`, manual: true },
+  { text: `When you <b>lose</b> a row you gain ◆ <b>Tribute</b> — spend it during Clash on a <b>Surge</b> (shove a unit a tile) or <b>Shieldbearer</b> (save your Hero from a death blow), or bank it and convert to Supply. Losing ground isn't all bad.`, manual: true },
+  { text: `Two more things: your <b>Hero</b> is your standard — if it's ever fully surrounded by enemies you <b>rout</b> (your wagons take damage), so keep a friend beside it. And on <b>rounds 4 & 8</b> a <b>Caravan</b> lets both sides draft one-time <b>Artifacts</b> (the trailing side picks first).`, manual: true },
+  { text: `<b>The clock:</b> from round 14 a single uncontested push can end it (golden goal); at round 18 the leader wins outright — so don't stall if you're behind. That's the <b>whole game</b>!`, manual: true },
+  { text: `You know LIMES now: <b>feed your army, win the match-ups, push toward their wagons.</b> Keep playing this skirmish, and open <b>❓ Guide</b> anytime for stats & tips. Good luck, commander. ⚔`, manual: true },
 ];
 
 export class Tutorial {
@@ -46,7 +62,7 @@ export class Tutorial {
     this.box.id = 'coach';
     document.body.appendChild(this.box);
     this.c.onChange = () => this.refresh();
-    this.c.start(cfg);
+    this.c.startScenario(cfg, buildScenario);
     this.render();
   }
 
@@ -56,13 +72,11 @@ export class Tutorial {
     if (!step.manual && step.done && step.done(this.c)) { this.advance(); return; }
     this.spotlight();
   }
-
   private advance() {
     this.i++;
-    if (this.i >= STEPS.length) { this.finish(); return; }
+    if (this.i >= STEPS.length) return this.finish();
     this.render();
   }
-
   private clearSpot() {
     document.querySelectorAll('.coachmark').forEach(e => e.classList.remove('coachmark'));
     document.querySelector('.board-grid')?.classList.remove('coach-board');
@@ -73,7 +87,6 @@ export class Tutorial {
     if (step.hi) document.querySelector(step.hi)?.classList.add('coachmark');
     if (step.board) document.querySelector('.board-grid')?.classList.add('coach-board');
   }
-
   private render() {
     const step = STEPS[this.i];
     this.box.innerHTML = `
@@ -83,20 +96,13 @@ export class Tutorial {
         <div class="coach-btns">
           ${step.manual ? `<button class="pbtn confirm" id="coach-next">${this.i === STEPS.length - 1 ? 'Finish ✓' : 'Next ▶'}</button>` : `<span class="coach-hint">↳ do the highlighted action to continue</span>`}
           <button class="pbtn" id="coach-guide">❓ Guide</button>
-          <button class="pbtn coach-skip" id="coach-skip">Skip tutorial</button>
+          <button class="pbtn coach-skip" id="coach-skip">Skip</button>
         </div>
       </div>`;
-    this.box.querySelector('#coach-next')?.addEventListener('click', () => {
-      if (this.i === STEPS.length - 1) this.finish(); else this.advance();
-    });
+    this.box.querySelector('#coach-next')?.addEventListener('click', () => this.i === STEPS.length - 1 ? this.finish() : this.advance());
     this.box.querySelector('#coach-guide')?.addEventListener('click', openGuide);
     this.box.querySelector('#coach-skip')?.addEventListener('click', () => this.finish());
     this.spotlight();
   }
-
-  private finish() {
-    this.c.onChange = null;
-    this.clearSpot();
-    this.box.remove();
-  }
+  private finish() { this.c.onChange = null; this.clearSpot(); this.box.remove(); }
 }

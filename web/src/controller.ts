@@ -63,16 +63,64 @@ export class Controller {
   tribe(p: number): string { return p === 0 ? this.cfg.p0tribe : this.cfg.p1tribe; }
   human(p: number): HumanPolicy { return this.policies[p] as HumanPolicy; }
 
-  start(cfg: GameConfig) {
+  start(cfg: GameConfig) { this.init(cfg); this.g.setup(); this.begin(); }
+
+  // Start from a custom board (tutorial scenarios). `build` runs after setup().
+  startScenario(cfg: GameConfig, build: (g: Game) => void) {
+    this.init(cfg); this.g.setup(); build(this.g); this.begin();
+  }
+
+  private init(cfg: GameConfig) {
     this.cfg = cfg;
     this.policies = [0, 1].map(p =>
       this.isHuman(p) ? new HumanPolicy(cfg.mode === 'hotseat' ? `Player ${p + 1}` : 'You')
         : makeBot(cfg.botName));
     this.policies.forEach((b, p) => b.reset(cfg.seed, p));
     this.g = new Game(this.policies, cfg.seed);
-    this.g.setup();
+  }
+
+  private begin() {
     this.log = [`Round 1 — ${cap(this.tribe(0))} vs ${cap(this.tribe(1))}.`];
+    this.mountTooltip();
     this.loop();
+  }
+
+  // — read-only extras for the tutorial coach —
+  get stagedFieldCount() { return this.mBuild?.filter(a => a[0] === 'field').length ?? 0; }
+  get hasAttackOrder() {
+    for (const o of this.cOrders.values()) if (o[0] === 'MELEE' || o[0] === 'CHARGE' || o[0] === 'SHOOT') return true;
+    return false;
+  }
+
+  // — hover tooltip showing unit stats —
+  private tip?: HTMLElement;
+  private mountTooltip() {
+    if (this.tip) return;
+    this.tip = document.createElement('div');
+    this.tip.className = 'utip'; this.tip.style.display = 'none';
+    document.body.appendChild(this.tip);
+    this.root.addEventListener('mousemove', e => {
+      const cell = (e.target as HTMLElement).closest?.('.cell[data-uid]') as HTMLElement | null;
+      if (!cell) { this.tip!.style.display = 'none'; return; }
+      const u = this.g.units.get(Number(cell.dataset.uid));
+      if (!u) { this.tip!.style.display = 'none'; return; }
+      this.tip!.innerHTML = this.unitTooltip(u);
+      this.tip!.style.display = 'block';
+      this.tip!.style.left = Math.min(e.clientX + 14, window.innerWidth - 210) + 'px';
+      this.tip!.style.top = (e.clientY + 14) + 'px';
+    });
+    this.root.addEventListener('mouseleave', () => { if (this.tip) this.tip.style.display = 'none'; });
+  }
+  private unitTooltip(u: Unit): string {
+    const beats = ({ spear: 'Cavalry', cav: 'Archers', archer: 'Spearmen' } as Record<string, string>)[u.arch];
+    const rng = u.rmin === u.rmax ? `${u.rmax}` : `${u.rmin}–${u.rmax}`;
+    const states = [u.exhausted ? '∅ exhausted' : '', u.braced ? '⛨ braced' : '',
+      u.tier2 ? '★★ veteran' : u.tier1 ? '★ promoted' : ''].filter(Boolean).join(' · ');
+    return `<b>${ARCH_LABEL[u.arch]}</b>
+      <span class="utg">Atk ${u.base_atk}${u.base_guard ? ` · Guard ${u.base_guard}` : ''} · HP ${u.hp}/${u.max_hp} · Move ${u.mv} · Range ${rng}</span>
+      ${beats ? `<span class="utb">Beats ${beats}</span>` : ''}
+      ${u.xp ? `<span class="utg">XP ${u.xp}</span>` : ''}
+      ${states ? `<span class="uts">${states}</span>` : ''}`;
   }
 
   // ── main loop ──────────────────────────────────────────────────────────
