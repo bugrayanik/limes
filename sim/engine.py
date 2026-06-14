@@ -413,6 +413,12 @@ class Game:
             if t == 'woods' and vs_shoot:
                 b += 1
         g = u.base_guard + min(C['GUARD_CAP'], b)
+        if u.arch == 'hero':
+            for w in self.wagons[u.owner]:
+                if w['hp'] > 0:
+                    for aid in w['artifacts']:
+                        if aid == 3:
+                            g += 1
         if u.exhausted:
             g -= C['EXHAUST_GUARD_PENALTY']
         return max(0, g)

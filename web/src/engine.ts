@@ -543,6 +543,15 @@ export class Game {
       if (t === 'woods' && vsShoot) b += 1;
     }
     let g = u.base_guard + Math.min(C.GUARD_CAP, b);
+    if (u.arch === 'hero') {
+      for (const w of this.wagons[u.owner]) {
+        if (w.hp > 0) {
+          for (const aid of w.artifacts) {
+            if (aid === 3) g += 1;
+          }
+        }
+      }
+    }
     if (u.exhausted) g -= C.EXHAUST_GUARD_PENALTY;
     return Math.max(0, g);
   }
