@@ -197,7 +197,7 @@ export class Game {
   palisades = new Map<number, number>();
   entrench = new Map<string, number>();
   res: { supply: number; crop: number; tribute: number }[];
-  wagons: { col: number; row: number; hp: number }[][] = [[], []];
+  wagons: { col: number; row: number; hp: number; artifacts: number[] }[][] = [[], []];
   wagon_at = new Map<string, [number, number]>();
   komi = 1;
   round = 1;
@@ -275,7 +275,7 @@ export class Game {
       for (let c = 0; c < 8 && cols.length < C.WAGON_COUNT; c++) if (!cols.includes(c)) cols.push(c);
       cols.length = Math.min(cols.length, C.WAGON_COUNT);
       cols.forEach((c, i) => {
-        this.wagons[p].push({ col: c, row: back, hp: C.WAGON_HP });
+        this.wagons[p].push({ col: c, row: back, hp: C.WAGON_HP, artifacts: [] });
         this.wagon_at.set(key([c, back]), [p, i]);
       });
       const want = ['hero', 'spear', 'sword', 'sword'];
@@ -1199,7 +1199,7 @@ export class Game {
       round: this.round, komi: this.komi, stakes: [...this.stakes],
       res: this.res.map(r => ({ supply: r.supply, crop: r.crop, tribute: r.tribute })),
       units,
-      wagons: this.wagons.map(side => side.map(w => ({ col: w.col, row: w.row, hp: w.hp }))),
+      wagons: this.wagons.map(side => side.map(w => ({ col: w.col, row: w.row, hp: w.hp, artifacts: [...w.artifacts] }))),
       fields: [...this.fields.entries()].map(([k, v]) => [k.split(',').map(Number), v]).sort(cmp),
       palisades: [...this.palisades.entries()].sort((a, b) => a[0] - b[0]),
       entrench: [...this.entrench.entries()].map(([k, v]) => [k.split(',').map(Number), v]).sort(cmp),

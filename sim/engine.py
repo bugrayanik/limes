@@ -667,7 +667,7 @@ class Game:
                     cols.append(c)
             cols = cols[:C['WAGON_COUNT']]
             for i, c in enumerate(cols):
-                self.wagons[p].append({'col': c, 'row': back, 'hp': C['WAGON_HP']})
+                self.wagons[p].append({'col': c, 'row': back, 'hp': C['WAGON_HP'], 'artifacts': []})
                 self.wagon_at[(c, back)] = (p, i)
             # starting force: Hero + signature (Spearman, D-29) + 2 Swordsmen
             want = ['hero', 'spear', 'sword', 'sword']
