@@ -1,24 +1,33 @@
-// LIMES 3D board — Three.js immersive diorama. Renders a Game state as a lit,
-// shadowed low-poly frontier: terrain tiles, your 48 unit arts as framed 3D
-// standees, wagons, fields, palisades, and the stake frontier. The parity-
-// verified engine stays the brain; this is pure presentation.
+// LIMES 3D board — Three.js immersive diorama with animation & juice.
+// Renders a Game state as a lit, shadowed low-poly frontier and ANIMATES the
+// deltas between states: units glide (with a hop) to new tiles, bob at idle,
+// flash + float a damage number when hurt, and fade/sink on death. Orbit +
+// zoom camera. The parity-verified engine stays the brain.
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import type { Game, Unit, Pos } from '../engine';
 import { ROSTER } from '../assets';
 
-const TILE = 1;            // tile size in world units
-const GAP = 0.06;
-const STEP = TILE + GAP;
-const HALF = (8 * STEP) / 2;
+const TILE = 1, GAP = 0.06, STEP = TILE + GAP, HALF = (8 * STEP) / 2;
+const UNIT_Y = 0.13;
 
 const TRIBE_HEX: Record<string, number> = {
   roman: 0xa32638, spartan: 0xc4622d, hun: 0xd9a418, gaul: 0x3e7a3a,
   egyptian: 0x2aa198, viking: 0x2b4f81, persian: 0x5b3a8e, teuton: 0x6e7378,
 };
 
-// world position of board tile (col,row); row 0 (P0) toward camera (+z)
 function tileWorld(c: number, r: number): [number, number] {
   return [c * STEP - HALF + STEP / 2, (7 - r) * STEP - HALF + STEP / 2];
+}
+
+interface UnitView {
+  group: THREE.Group;
+  card: THREE.Mesh;            // for hit flash (emissive)
+  hp: number; max: number;
+  tile: Pos;
+  bob: number;                 // idle phase
+  tween?: { fx: number; fz: number; tx: number; tz: number; t0: number; dur: number };
+  dying?: { t0: number };
 }
 
 export interface Board3DOpts { p0tribe: string; p1tribe: string; }
@@ -27,18 +36,24 @@ export class Board3D {
   scene = new THREE.Scene();
   renderer: THREE.WebGLRenderer;
   camera: THREE.PerspectiveCamera;
+  controls: OrbitControls;
   private texLoader = new THREE.TextureLoader();
   private texCache = new Map<string, THREE.Texture>();
-  private dynamic = new THREE.Group();   // units/wagons/fields cleared & rebuilt each update
-  private hiGroup = new THREE.Group();   // interaction highlights, set independently
-  private sun: THREE.DirectionalLight;
+  private props = new THREE.Group();          // tiles/wagons/fields/palisades, rebuilt each update
+  private hiGroup = new THREE.Group();         // interaction highlights
+  private unitG = new THREE.Group();           // persistent animated units
+  private fxG = new THREE.Group();             // damage numbers etc.
+  private units = new Map<number, UnitView>();
+  private dmg: { spr: THREE.Sprite; t0: number }[] = [];
   private raycaster = new THREE.Raycaster();
   private pickPlane!: THREE.Mesh;
   private clickCb?: (pos: Pos) => void;
+  private clock = new THREE.Clock();
+  private downXY = { x: 0, y: 0 };
 
   constructor(private container: HTMLElement, private opts: Board3DOpts) {
-    const w = container.clientWidth || 640, h = container.clientHeight || 560;
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    const w = container.clientWidth || 640, h = container.clientHeight || 520;
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(w, h);
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
@@ -46,38 +61,46 @@ export class Board3D {
     (this.renderer as any).outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(this.renderer.domElement);
 
-    // atmosphere
     this.scene.background = new THREE.Color(0x1d1813);
-    this.scene.fog = new THREE.Fog(0x1d1813, 14, 26);
+    this.scene.fog = new THREE.Fog(0x1d1813, 16, 30);
 
-    // camera: tilted down from the player's (P0) side
     this.camera = new THREE.PerspectiveCamera(42, w / h, 0.1, 100);
     this.camera.position.set(0, 9.5, 9.2);
-    this.camera.lookAt(0, 0, -0.5);
 
-    // lights
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.target.set(0, 0, -0.3);
+    this.controls.enableDamping = true; this.controls.dampingFactor = 0.08;
+    this.controls.minDistance = 7; this.controls.maxDistance = 20;
+    this.controls.maxPolarAngle = Math.PI * 0.46;   // don't dip under the board
+    this.controls.enablePan = false;
+    this.controls.update();
+
     this.scene.add(new THREE.AmbientLight(0xb9a98a, 0.7));
     this.scene.add(new THREE.HemisphereLight(0xfff1d0, 0x2a2118, 0.5));
     const sun = new THREE.DirectionalLight(0xfff0d8, 1.5);
-    sun.position.set(-6, 12, 6);
-    sun.castShadow = true;
+    sun.position.set(-6, 12, 6); sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
-    const s = 8;
-    Object.assign(sun.shadow.camera, { left: -s, right: s, top: s, bottom: -s, near: 1, far: 40 });
-    this.sun = sun;
+    const s = 8; Object.assign(sun.shadow.camera, { left: -s, right: s, top: s, bottom: -s, near: 1, far: 40 });
     this.scene.add(sun);
 
-    this.buildGround();
-    this.scene.add(this.dynamic);
-    this.scene.add(this.hiGroup);
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80),
+      new THREE.MeshStandardMaterial({ color: 0x2a2118, roughness: 1 }));
+    ground.rotation.x = -Math.PI / 2; ground.position.y = -0.2; ground.receiveShadow = true;
+    this.scene.add(ground);
 
-    // invisible pick plane across the board, for click → tile raycasting
+    this.scene.add(this.props, this.unitG, this.hiGroup, this.fxG);
+
     this.pickPlane = new THREE.Mesh(new THREE.PlaneGeometry(8 * STEP, 8 * STEP),
       new THREE.MeshBasicMaterial({ visible: false }));
     this.pickPlane.rotation.x = -Math.PI / 2; this.pickPlane.position.y = 0.14;
     this.scene.add(this.pickPlane);
-    this.renderer.domElement.addEventListener('click', e => this.handleClick(e));
-    this.renderer.domElement.style.cursor = 'pointer';
+
+    // drag-aware click (so orbiting doesn't select)
+    const el = this.renderer.domElement;
+    el.addEventListener('pointerdown', e => { this.downXY = { x: e.clientX, y: e.clientY }; });
+    el.addEventListener('pointerup', e => {
+      if (Math.hypot(e.clientX - this.downXY.x, e.clientY - this.downXY.y) < 5) this.handleClick(e);
+    });
 
     window.addEventListener('resize', () => this.onResize());
     this.animate();
@@ -85,12 +108,21 @@ export class Board3D {
 
   onClick(cb: (pos: Pos) => void) { this.clickCb = cb; }
 
-  private handleClick(e: MouseEvent) {
+  private onResize() {
+    const w = this.container.clientWidth, h = this.container.clientHeight;
+    if (!w || !h) return;
+    this.renderer.setSize(w, h); this.camera.aspect = w / h; this.camera.updateProjectionMatrix();
+  }
+  private tex(path: string): THREE.Texture {
+    let t = this.texCache.get(path);
+    if (!t) { t = this.texLoader.load(path); (t as any).colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; this.texCache.set(path, t); }
+    return t;
+  }
+  private tribeOf(p: number) { return p === 0 ? this.opts.p0tribe : this.opts.p1tribe; }
+  private handleClick(e: PointerEvent) {
     if (!this.clickCb) return;
     const rect = this.renderer.domElement.getBoundingClientRect();
-    const ndc = new THREE.Vector2(
-      ((e.clientX - rect.left) / rect.width) * 2 - 1,
-      -((e.clientY - rect.top) / rect.height) * 2 + 1);
+    const ndc = new THREE.Vector2(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
     this.raycaster.setFromCamera(ndc, this.camera);
     const hit = this.raycaster.intersectObject(this.pickPlane)[0];
     if (!hit) return;
@@ -99,164 +131,160 @@ export class Board3D {
     if (c >= 0 && c < 8 && r >= 0 && r < 8) this.clickCb([c, r]);
   }
 
-  // interaction highlights — flat coloured toppers / rings per tile
-  setHighlights(hl: { move?: Pos[]; melee?: Pos[]; shoot?: Pos[]; charge?: Pos[]; stage?: Pos[]; valid?: Pos[]; selected?: Pos | null }) {
-    this.hiGroup.clear();
-    const fill = (list: Pos[] | undefined, color: number, op: number) => {
-      for (const p of list ?? []) {
-        const m = new THREE.Mesh(new THREE.PlaneGeometry(TILE * 0.92, TILE * 0.92),
-          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: op, depthWrite: false }));
-        m.rotation.x = -Math.PI / 2; const [x, z] = tileWorld(p[0], p[1]); m.position.set(x, 0.145, z);
-        this.hiGroup.add(m);
-      }
-    };
-    const ring = (list: Pos[] | undefined, color: number) => {
-      for (const p of list ?? []) {
-        const m = new THREE.Mesh(new THREE.RingGeometry(TILE * 0.42, TILE * 0.5, 24),
-          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.95, depthWrite: false, side: THREE.DoubleSide }));
-        m.rotation.x = -Math.PI / 2; const [x, z] = tileWorld(p[0], p[1]); m.position.set(x, 0.16, z);
-        this.hiGroup.add(m);
-      }
-    };
-    fill(hl.valid, 0xc9a227, 0.18);
-    fill(hl.move, 0x6f9f4a, 0.5);
-    fill(hl.stage, 0xc9a227, 0.55);
-    ring(hl.melee, 0xc0504a);
-    ring(hl.shoot, 0xd98f3a);
-    ring(hl.charge, 0x9a6cc0);
-    if (hl.selected) {
-      const m = new THREE.Mesh(new THREE.RingGeometry(TILE * 0.5, TILE * 0.6, 28),
-        new THREE.MeshBasicMaterial({ color: 0xdbc06a, transparent: true, opacity: 1, depthWrite: false, side: THREE.DoubleSide }));
-      m.rotation.x = -Math.PI / 2; const [x, z] = tileWorld(hl.selected[0], hl.selected[1]); m.position.set(x, 0.17, z);
-      this.hiGroup.add(m);
-    }
-  }
-
-  private onResize() {
-    const w = this.container.clientWidth, h = this.container.clientHeight;
-    if (!w || !h) return;
-    this.renderer.setSize(w, h);
-    this.camera.aspect = w / h; this.camera.updateProjectionMatrix();
-  }
-
-  private tex(path: string): THREE.Texture {
-    let t = this.texCache.get(path);
-    if (!t) { t = this.texLoader.load(path); (t as any).colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; this.texCache.set(path, t); }
-    return t;
-  }
-
-  // ground plane + the 8×8 terrain tiles (static)
-  private buildGround() {
-    const ground = new THREE.Mesh(
-      new THREE.PlaneGeometry(60, 60),
-      new THREE.MeshStandardMaterial({ color: 0x2a2118, roughness: 1 }));
-    ground.rotation.x = -Math.PI / 2; ground.position.y = -0.2; ground.receiveShadow = true;
-    this.scene.add(ground);
-  }
-
-  // rebuild tiles each update so the stake frontier (terrain colour split) tracks the game
-  private buildTiles(g: Game) {
-    const tileGeo = new THREE.BoxGeometry(TILE, 0.25, TILE);
-    for (let c = 0; c < 8; c++) for (let r = 0; r < 8; r++) {
-      const terr = r < g.stakes[c] ? 0 : 1;
-      const grass = terr === 0 ? 0x6f7d3a : 0x55633a;      // your land warmer, enemy cooler
-      const m = new THREE.Mesh(tileGeo, new THREE.MeshStandardMaterial({ color: grass, roughness: 0.95 }));
-      const [x, z] = tileWorld(c, r);
-      m.position.set(x, 0, z); m.receiveShadow = true; m.castShadow = false;
-      this.dynamic.add(m);
-      // stake frontier: a gold edge on the P0-frontmost row of the column
-      if (r === g.stakes[c] - 1) {
-        const edge = new THREE.Mesh(new THREE.BoxGeometry(TILE, 0.04, 0.08),
-          new THREE.MeshStandardMaterial({ color: 0xdbc06a, emissive: 0x3a2f10, roughness: 0.5 }));
-        edge.position.set(x, 0.15, z - STEP / 2);
-        this.dynamic.add(edge);
-      }
-    }
-  }
-
-  private tribeOf(p: number) { return p === 0 ? this.opts.p0tribe : this.opts.p1tribe; }
-
-  // a framed board-game standee: the unit art on a card standing on a base
-  private standee(u: Unit): THREE.Group {
-    const tribe = this.tribeOf(u.owner);
-    const path = ROSTER[`${tribe}_${u.arch}`];
+  // ── builders ──
+  private standee(u: Unit): { group: THREE.Group; card: THREE.Mesh } {
+    const tribe = this.tribeOf(u.owner), path = ROSTER[`${tribe}_${u.arch}`];
     const g = new THREE.Group();
     const cardW = 0.74, cardH = 0.92;
-    // card
     const card = new THREE.Mesh(new THREE.BoxGeometry(cardW, cardH, 0.05),
       [0, 1, 2, 3, 4, 5].map(i => new THREE.MeshStandardMaterial({
         color: i === 4 ? 0xffffff : TRIBE_HEX[tribe], roughness: 0.6,
         map: i === 4 && path ? this.tex(path) : null,
       })));
-    card.position.y = cardH / 2 + 0.08;
-    card.castShadow = true;
-    g.add(card);
-    // frame (slightly larger back plate in tribe colour)
+    card.position.y = cardH / 2 + 0.08; card.castShadow = true; g.add(card);
     const frame = new THREE.Mesh(new THREE.BoxGeometry(cardW + 0.08, cardH + 0.08, 0.04),
       new THREE.MeshStandardMaterial({ color: TRIBE_HEX[tribe], roughness: 0.5, metalness: 0.2 }));
-    frame.position.set(0, cardH / 2 + 0.08, -0.03); frame.castShadow = true;
-    g.add(frame);
-    // base
+    frame.position.set(0, cardH / 2 + 0.08, -0.03); frame.castShadow = true; g.add(frame);
     const base = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.4, 0.12, 16),
       new THREE.MeshStandardMaterial({ color: TRIBE_HEX[tribe], roughness: 0.4, metalness: 0.3 }));
-    base.position.y = 0.06; base.castShadow = true; base.receiveShadow = true;
-    g.add(base);
-    return g;
+    base.position.y = 0.06; base.castShadow = true; base.receiveShadow = true; g.add(base);
+    return { group: g, card };
   }
-
-  private wagon(p: number): THREE.Group {
+  private wagon(): THREE.Group {
     const g = new THREE.Group();
-    const crate = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.4, 0.7),
-      new THREE.MeshStandardMaterial({ color: 0x6b4a25, roughness: 0.9 }));
+    const crate = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.4, 0.7), new THREE.MeshStandardMaterial({ color: 0x6b4a25, roughness: 0.9 }));
     crate.position.y = 0.3; crate.castShadow = true; g.add(crate);
     for (const sx of [-0.32, 0.32]) for (const sz of [-0.3, 0.3]) {
-      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.06, 14),
-        new THREE.MeshStandardMaterial({ color: 0x2a1d10, roughness: 0.8 }));
+      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.06, 14), new THREE.MeshStandardMaterial({ color: 0x2a1d10, roughness: 0.8 }));
       wheel.rotation.z = Math.PI / 2; wheel.position.set(sx, 0.16, sz); wheel.castShadow = true; g.add(wheel);
     }
     return g;
   }
 
-  // full rebuild of dynamic content from a Game state
-  update(g: Game) {
-    this.dynamic.clear();
-    this.buildTiles(g);
-    // units
-    for (const u of g.units.values()) {
-      if (!u.pos) continue;
-      const s = this.standee(u);
-      const [x, z] = tileWorld(u.pos[0], u.pos[1]);
-      s.position.set(x, 0.13, z);
-      this.dynamic.add(s);
+  private buildProps(g: Game) {
+    this.props.clear();
+    const tileGeo = new THREE.BoxGeometry(TILE, 0.25, TILE);
+    for (let c = 0; c < 8; c++) for (let r = 0; r < 8; r++) {
+      const terr = r < g.stakes[c] ? 0 : 1;
+      const m = new THREE.Mesh(tileGeo, new THREE.MeshStandardMaterial({ color: terr === 0 ? 0x6f7d3a : 0x55633a, roughness: 0.95 }));
+      const [x, z] = tileWorld(c, r); m.position.set(x, 0, z); m.receiveShadow = true; this.props.add(m);
+      if (r === g.stakes[c] - 1) {
+        const edge = new THREE.Mesh(new THREE.BoxGeometry(TILE, 0.04, 0.08), new THREE.MeshStandardMaterial({ color: 0xdbc06a, emissive: 0x3a2f10, roughness: 0.5 }));
+        edge.position.set(x, 0.15, z - STEP / 2); this.props.add(edge);
+      }
     }
-    // wagons
     for (let p = 0; p < 2; p++) for (const w of g.wagons[p]) {
-      if (w.hp <= 0) continue;
-      const wg = this.wagon(p);
-      const [x, z] = tileWorld(w.col, w.row);
-      wg.position.set(x, 0.13, z);
-      this.dynamic.add(wg);
+      if (w.hp <= 0) continue; const wg = this.wagon(); const [x, z] = tileWorld(w.col, w.row); wg.position.set(x, UNIT_Y, z); this.props.add(wg);
     }
-    // fields
     for (const [k, f] of g.fields.entries()) {
       const [c, r] = k.split(',').map(Number);
-      const fld = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.06, 0.7),
-        new THREE.MeshStandardMaterial({ color: f.type === 'crop' ? 0xc8a23a : 0x7d6b4a, roughness: 1 }));
-      const [x, z] = tileWorld(c, r); fld.position.set(x, 0.15, z); fld.receiveShadow = true;
-      this.dynamic.add(fld);
+      const fld = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.06, 0.7), new THREE.MeshStandardMaterial({ color: f.type === 'crop' ? 0xc8a23a : 0x7d6b4a, roughness: 1 }));
+      const [x, z] = tileWorld(c, r); fld.position.set(x, 0.15, z); fld.receiveShadow = true; this.props.add(fld);
     }
-    // palisades — a wall on the stake line of the column
-    for (const [col, owner] of g.palisades.entries()) {
+    for (const [col] of g.palisades.entries()) {
       const k = g.stakes[col];
-      const wall = new THREE.Mesh(new THREE.BoxGeometry(TILE, 0.5, 0.12),
-        new THREE.MeshStandardMaterial({ color: 0x5a4326, roughness: 0.9 }));
-      const [x, z] = tileWorld(col, k - 1); wall.position.set(x, 0.32, z - STEP / 2); wall.castShadow = true;
-      this.dynamic.add(wall);
+      const wall = new THREE.Mesh(new THREE.BoxGeometry(TILE, 0.5, 0.12), new THREE.MeshStandardMaterial({ color: 0x5a4326, roughness: 0.9 }));
+      const [x, z] = tileWorld(col, k - 1); wall.position.set(x, 0.32, z - STEP / 2); wall.castShadow = true; this.props.add(wall);
     }
+  }
+
+  // ── diff the game state and animate the changes ──
+  update(g: Game) {
+    this.buildProps(g);
+    const seen = new Set<number>();
+    for (const u of g.units.values()) {
+      if (!u.pos) continue;
+      seen.add(u.uid);
+      const [x, z] = tileWorld(u.pos[0], u.pos[1]);
+      let v = this.units.get(u.uid);
+      if (!v) {
+        const { group, card } = this.standee(u);
+        group.position.set(x, UNIT_Y, z);
+        this.unitG.add(group);
+        v = { group, card, hp: u.hp, max: u.max_hp, tile: [u.pos[0], u.pos[1]], bob: Math.random() * 6.28 };
+        this.units.set(u.uid, v);
+      } else {
+        if (v.tile[0] !== u.pos[0] || v.tile[1] !== u.pos[1]) {
+          v.tween = { fx: v.group.position.x, fz: v.group.position.z, tx: x, tz: z, t0: this.clock.elapsedTime, dur: 0.34 };
+          v.tile = [u.pos[0], u.pos[1]];
+        }
+        if (u.hp < v.hp) { this.spawnDamage(x, z, v.hp - u.hp); this.flash(v); }
+        v.hp = u.hp;
+      }
+    }
+    // units gone from the board → death FX
+    for (const [uid, v] of [...this.units]) {
+      if (!seen.has(uid) && !v.dying) { v.dying = { t0: this.clock.elapsedTime }; }
+    }
+  }
+
+  setHighlights(hl: { move?: Pos[]; melee?: Pos[]; shoot?: Pos[]; charge?: Pos[]; stage?: Pos[]; valid?: Pos[]; selected?: Pos | null }) {
+    this.hiGroup.clear();
+    const fill = (list: Pos[] | undefined, color: number, op: number) => {
+      for (const p of list ?? []) {
+        const m = new THREE.Mesh(new THREE.PlaneGeometry(TILE * 0.92, TILE * 0.92), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: op, depthWrite: false }));
+        m.rotation.x = -Math.PI / 2; const [x, z] = tileWorld(p[0], p[1]); m.position.set(x, 0.145, z); this.hiGroup.add(m);
+      }
+    };
+    const ring = (list: Pos[] | undefined, color: number, ri = 0.42, ro = 0.5) => {
+      for (const p of list ?? []) {
+        const m = new THREE.Mesh(new THREE.RingGeometry(TILE * ri, TILE * ro, 28), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.95, depthWrite: false, side: THREE.DoubleSide }));
+        m.rotation.x = -Math.PI / 2; const [x, z] = tileWorld(p[0], p[1]); m.position.set(x, 0.16, z); this.hiGroup.add(m);
+      }
+    };
+    fill(hl.valid, 0xc9a227, 0.18); fill(hl.move, 0x6f9f4a, 0.5); fill(hl.stage, 0xc9a227, 0.55);
+    ring(hl.melee, 0xc0504a); ring(hl.shoot, 0xd98f3a); ring(hl.charge, 0x9a6cc0);
+    if (hl.selected) ring([hl.selected], 0xdbc06a, 0.5, 0.6);
+  }
+
+  // ── FX ──
+  private spawnDamage(x: number, z: number, amt: number) {
+    const cv = document.createElement('canvas'); cv.width = 128; cv.height = 64;
+    const ctx = cv.getContext('2d')!; ctx.font = 'bold 48px Cinzel, serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#1a1408'; ctx.fillText(`-${amt}`, 65, 34); ctx.fillStyle = '#ff5a4a'; ctx.fillText(`-${amt}`, 64, 32);
+    const tex = new THREE.CanvasTexture(cv);
+    const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false }));
+    spr.scale.set(0.8, 0.4, 1); spr.position.set(x, 1.2, z); this.fxG.add(spr);
+    this.dmg.push({ spr, t0: this.clock.elapsedTime });
+  }
+  private flash(v: UnitView) {
+    for (const m of (v.card.material as THREE.MeshStandardMaterial[])) { m.emissive = new THREE.Color(0xff3020); (m as any).__flash = 1; }
   }
 
   private animate = () => {
     requestAnimationFrame(this.animate);
+    const dt = this.clock.getDelta(), t = this.clock.elapsedTime;
+    this.controls.update();
+    // units: tween, idle bob, flash decay, death
+    for (const [uid, v] of [...this.units]) {
+      if (v.dying) {
+        const p = (t - v.dying.t0) / 0.5;
+        v.group.position.y = UNIT_Y - p * 0.6;
+        v.group.scale.setScalar(Math.max(0.01, 1 - p));
+        v.group.traverse(o => { const mm = (o as any).material; if (mm) { mm.transparent = true; mm.opacity = Math.max(0, 1 - p); } });
+        if (p >= 1) { this.unitG.remove(v.group); this.units.delete(uid); }
+        continue;
+      }
+      let y = UNIT_Y;
+      if (v.tween) {
+        const p = Math.min(1, (t - v.tween.t0) / v.tween.dur);
+        const e = p < 0.5 ? 2 * p * p : 1 - (-2 * p + 2) ** 2 / 2;
+        v.group.position.x = v.tween.fx + (v.tween.tx - v.tween.fx) * e;
+        v.group.position.z = v.tween.fz + (v.tween.tz - v.tween.fz) * e;
+        y += Math.sin(p * Math.PI) * 0.28;     // hop
+        if (p >= 1) v.tween = undefined;
+      }
+      v.group.position.y = y + Math.sin(t * 2 + v.bob) * 0.02;   // idle bob
+      for (const m of (v.card.material as any[])) {
+        if (m.__flash > 0) { m.__flash = Math.max(0, m.__flash - dt * 3); m.emissive.setScalar(m.__flash * 0.6); m.emissive.r = m.__flash; m.emissive.g = m.__flash * 0.2; m.emissive.b = m.__flash * 0.12; }
+      }
+    }
+    // damage numbers rise + fade
+    for (const d of [...this.dmg]) {
+      const p = (t - d.t0) / 1.0; d.spr.position.y = 1.2 + p * 0.8;
+      (d.spr.material as THREE.SpriteMaterial).opacity = 1 - p;
+      if (p >= 1) { this.fxG.remove(d.spr); this.dmg.splice(this.dmg.indexOf(d), 1); }
+    }
     this.renderer.render(this.scene, this.camera);
   };
 }
