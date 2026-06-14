@@ -1384,7 +1384,11 @@ class Game:
             if pick not in options:
                 pick = options[0]
             options.remove(pick)
-            self.apply_artifact(p, pick)
+            idx = self.bots[p].artifact_wagon(self, p, pick)
+            if idx >= 0:
+                self.wagons[p][idx]['artifacts'].append(pick)
+            else:
+                self.apply_artifact(p, pick)
         # 4th discarded
 
     def apply_artifact(self, p, aid):

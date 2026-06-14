@@ -1067,7 +1067,9 @@ export class Game {
       let pick = this.bots[p].artifactPick(this, p, options.slice());
       if (!options.includes(pick)) pick = options[0];
       options = options.filter(x => x !== pick);
-      this.applyArtifact(p, pick);
+      const idx = this.bots[p].artifactWagon(this, p, pick);
+      if (idx >= 0) this.wagons[p][idx].artifacts.push(pick);
+      else this.applyArtifact(p, pick);
       this.last_artifacts.push({ p, aid: pick });
     }
     // 4th discarded

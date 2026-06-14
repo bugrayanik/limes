@@ -920,6 +920,21 @@ class Policy:
                 return aid
         return options[0]
 
+    def artifact_wagon(self, g, p, aid):
+        """A2: pick which living wagon to attach an artifact to.
+        Fewest artifacts wins; ties broken by lowest wagon index.
+        Returns -1 if no living wagon exists."""
+        best = -1
+        best_key = None
+        for i, w in enumerate(g.wagons[p]):
+            if w['hp'] <= 0:
+                continue
+            key = (len(w['artifacts']), i)
+            if best_key is None or key < best_key:
+                best_key = key
+                best = i
+        return best
+
     def promo_t2(self, g, me, unit):
         return 'guard' if unit.arch in ('spear', 'hero') else 'atk'
 
