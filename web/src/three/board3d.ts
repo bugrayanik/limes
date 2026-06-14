@@ -41,6 +41,7 @@ export class Board3D {
   private texCache = new Map<string, THREE.Texture>();
   private props = new THREE.Group();          // tiles/wagons/fields/palisades, rebuilt each update
   private hiGroup = new THREE.Group();         // interaction highlights
+  private pulseTiles: THREE.Mesh[] = [];       // valid muster tiles → pulse/glow
   private unitG = new THREE.Group();           // persistent animated units
   private fxG = new THREE.Group();             // damage numbers etc.
   private units = new Map<number, UnitView>();
@@ -282,6 +283,22 @@ export class Board3D {
 
   setHighlights(hl: { move?: Pos[]; melee?: Pos[]; shoot?: Pos[]; charge?: Pos[]; stage?: Pos[]; valid?: Pos[]; selected?: Pos | null }) {
     this.hiGroup.clear();
+    this.pulseTiles = [];
+    // valid muster tiles: a bright, breathing gold glow + border so "click a
+    // glowing tile" actually reads (the flat 0.18 fill was invisible).
+    const glow = (list: Pos[] | undefined, color: number) => {
+      for (const p of list ?? []) {
+        const [x, z] = tileWorld(p[0], p[1]);
+        const fillM = new THREE.Mesh(new THREE.PlaneGeometry(TILE * 0.9, TILE * 0.9),
+          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending }));
+        fillM.rotation.x = -Math.PI / 2; fillM.position.set(x, 0.15, z);
+        this.hiGroup.add(fillM); this.pulseTiles.push(fillM);
+        const border = new THREE.Mesh(new THREE.RingGeometry(TILE * 0.4, TILE * 0.49, 4),
+          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.9, depthWrite: false, side: THREE.DoubleSide }));
+        border.rotation.x = -Math.PI / 2; border.rotation.z = Math.PI / 4; border.position.set(x, 0.155, z);
+        this.hiGroup.add(border); this.pulseTiles.push(border);
+      }
+    };
     const fill = (list: Pos[] | undefined, color: number, op: number) => {
       for (const p of list ?? []) {
         const m = new THREE.Mesh(new THREE.PlaneGeometry(TILE * 0.92, TILE * 0.92), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: op, depthWrite: false }));
@@ -294,7 +311,7 @@ export class Board3D {
         m.rotation.x = -Math.PI / 2; const [x, z] = tileWorld(p[0], p[1]); m.position.set(x, 0.16, z); this.hiGroup.add(m);
       }
     };
-    fill(hl.valid, 0xc9a227, 0.18); fill(hl.move, 0x6f9f4a, 0.5); fill(hl.stage, 0xc9a227, 0.55);
+    glow(hl.valid, 0xf2c649); fill(hl.move, 0x6f9f4a, 0.5); fill(hl.stage, 0xc9a227, 0.55);
     ring(hl.melee, 0xc0504a); ring(hl.shoot, 0xd98f3a); ring(hl.charge, 0x9a6cc0);
     if (hl.selected) ring([hl.selected], 0xdbc06a, 0.5, 0.6);
   }
@@ -339,6 +356,14 @@ export class Board3D {
       v.group.position.y = y + Math.sin(t * 2 + v.bob) * 0.02;   // idle bob
       for (const m of (v.card.material as any[])) {
         if (m.__flash > 0) { m.__flash = Math.max(0, m.__flash - dt * 3); m.emissive.setScalar(m.__flash * 0.6); m.emissive.r = m.__flash; m.emissive.g = m.__flash * 0.2; m.emissive.b = m.__flash * 0.12; }
+      }
+    }
+    // valid muster tiles breathe so they read as "glowing"
+    if (this.pulseTiles.length) {
+      const pulse = 0.5 + 0.5 * Math.sin(t * 3.2);
+      for (const m of this.pulseTiles) {
+        (m.material as THREE.MeshBasicMaterial).opacity = 0.3 + pulse * 0.45;
+        m.scale.setScalar(0.95 + pulse * 0.08);
       }
     }
     // damage numbers rise + fade
