@@ -11,7 +11,7 @@ their supply.</p>
 <ul>
   <li><b>Wagons (knockout):</b> destroy all <b>3 enemy Supply Wagons</b> (the ▣ on their back row). Instant win.</li>
   <li><b>Golden goal (from round 14):</b> in a late round, the only side to take ground / hit a wagon wins immediately.</li>
-  <li><b>Ladder (round 18 time limit):</b> if no knockout, the leader wins — compared by wagons alive → wagon HP → rows of land owned.</li>
+  <li><b>Ladder (round 18 time limit):</b> if no knockout, the <b>leader</b> wins — decided in order: <b>most Supply Wagons alive</b> → <b>most rows of land owned</b> → <b>komi (⚖) holder</b>.</li>
 </ul>
 
 <h3>② The board</h3>

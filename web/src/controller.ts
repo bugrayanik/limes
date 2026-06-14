@@ -20,10 +20,12 @@ export interface GameConfig {
   p0tribe: string; p1tribe: string;
   seed: number;
   view?: '2d' | '3d';       // board renderer (default 3d)
+  demo?: boolean;           // AI-vs-AI auto-play (watch mode)
 }
 
 const bkey = (p: Pos) => `${p[0]},${p[1]}`;
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+class DemoRewind extends Error {}   // control-flow signal to rewind the demo
 const UNLOCK_COST = (n: number, C: any) => ({ 2: C.UNLOCK_3RD, 3: C.UNLOCK_4TH, 4: C.UNLOCK_5TH } as any)[n];
 
 export class Controller {
@@ -44,7 +46,7 @@ export class Controller {
 
   // 3D board view (default) — a persistent canvas the controller drives
   private board3d?: Board3D;
-  private shell?: { banner: HTMLElement; phasebar: HTMLElement; hint: HTMLElement; panel: HTMLElement; log: HTMLElement };
+  private shell?: { banner: HTMLElement; phasebar: HTMLElement; hud: HTMLElement; hint: HTMLElement; panel: HTMLElement; log: HTMLElement };
   private get use3d() { return this.cfg.view !== '2d'; }
 
   constructor(private root: HTMLElement) {}
@@ -65,7 +67,60 @@ export class Controller {
   get orderCount() { return this.cOrders.size; }
 
   isHuman(p: number): boolean {
+    if (this.cfg.demo) return false;          // watch mode: both seats are bots
     return this.cfg.mode === 'hotseat' || p === this.cfg.humanSeat;
+  }
+  private demoSpeed = 1;
+  private demoPaused = false;
+  private demoSeek: number | null = null;     // target round for back/restart
+  private async demoStep(weight = 1) {
+    if (!this.cfg.demo) return;
+    this.render();
+    let waited = 0; const total = (820 * weight) / this.demoSpeed;
+    do {
+      if (this.demoSeek !== null) throw new DemoRewind();   // back/restart requested
+      await this.pause(90); waited += 90;
+    } while (this.demoPaused || waited < total);
+  }
+  // Deterministic rewind: rebuild a fresh game from the seed and fast-forward.
+  private demoGoTo(target: number) {
+    const pol = [0, 1].map(p => makeBot(this.cfg.botName));
+    pol.forEach((b, p) => b.reset(this.cfg.seed, p));
+    const g = new Game(pol, this.cfg.seed, V3_CONFIG);
+    g.setup();
+    try { while (g.round < target) g.playRound(); } catch (e) { if (!(e instanceof GameOver)) throw e; }
+    this.policies = pol; this.g = g; this.log = [`Round ${g.round} — ${cap(this.tribe(0))} vs ${cap(this.tribe(1))}.`];
+  }
+  private async demoLoop() {
+    for (;;) {
+      try {
+        await this.playRoundInteractive();
+      } catch (e) {
+        if (e instanceof GameOver) { this.winScreen(e.winner, e.wtype); return; }
+        if (e instanceof DemoRewind) {
+          const t = this.demoSeek ?? 1; this.demoSeek = null;
+          this.demoGoTo(Math.max(1, t)); this.demoPaused = true; this.render(); continue;
+        }
+        throw e;
+      }
+    }
+  }
+  private onDemo(cmd: string) {
+    if (cmd === 'exit') { location.reload(); return; }
+    if (cmd === 'restart') { this.demoSeek = 1; return; }
+    if (cmd === 'back') { this.demoSeek = Math.max(1, this.g.round - 1); return; }
+    if (cmd === 'pause') { this.demoPaused = !this.demoPaused; this.render(); return; }
+    const n = Number(cmd); if (n) { this.demoSpeed = n; this.render(); }
+  }
+  private demoPanel(): string {
+    const sp = (s: number) => `<button class="pbtn${this.demoSpeed === s ? ' on' : ''}" data-act="demo:${s}">${s}×</button>`;
+    return `<div class="prow"><span class="plabel">🤖 Watch AI</span>
+      <button class="pbtn" data-act="demo:restart" title="Back to round 1">⏮</button>
+      <button class="pbtn" data-act="demo:back" title="Back one round">◀</button>
+      <button class="pbtn confirm" data-act="demo:pause">${this.demoPaused ? '▶ Play' : '⏸ Pause'}</button>
+      ${sp(1)}${sp(2)}${sp(4)}
+      <button class="pbtn" data-act="demo:exit" title="Exit to menu">⨯ Menu</button></div>
+      ${this.log.length ? `<div class="prow staged">${this.log.slice(-1)[0]}</div>` : ''}`;
   }
   tribe(p: number): string { return p === 0 ? this.cfg.p0tribe : this.cfg.p1tribe; }
   human(p: number): HumanPolicy { return this.policies[p] as HumanPolicy; }
@@ -145,6 +200,7 @@ export class Controller {
 
   // ── main loop ──────────────────────────────────────────────────────────
   private async loop() {
+    if (this.cfg.demo) return this.demoLoop();
     try {
       for (;;) await this.playRoundInteractive();
     } catch (e) {
@@ -160,16 +216,20 @@ export class Controller {
     g.rows_lost_round = [0, 0]; g.rows_taken_round = [0, 0]; g.unit_dmg_round = [0, 0];
 
     // Phase 1 — Muster (komi holder first)
+    if (this.cfg.demo) { this.banner = '🤖 Demo — Muster'; await this.demoStep(0.8); }
     for (const p of [g.komi, 1 - g.komi]) {
       if (this.isHuman(p)) await this.humanMuster(p);
       g.musterPlayer(p);
     }
+    if (this.cfg.demo) await this.demoStep(1.1);   // show what both sides mustered
     // Phase 2 — Reveal
     for (const u of g.units.values()) u.face_down = false;
     // Phase 3 — Clash
     g.wards = [];
     try {
+      if (this.cfg.demo) this.banner = '🤖 Demo — Clash, pulse 1';
       await this.doWindow(1); await this.doPulse(1);
+      if (this.cfg.demo) this.banner = '🤖 Demo — Clash, pulse 2';
       await this.doWindow(2); await this.doPulse(2);
       await this.doWindow(3);
     } catch (e) { if (!(e instanceof ClashEnd)) throw e; }
@@ -186,6 +246,7 @@ export class Controller {
     if (g.wagon_dmg_round[me]) parts.push(`💥 you breached an enemy wagon!`);
     if (g.wagon_dmg_round[them]) parts.push(`⚠ the enemy breached your wagon!`);
     this.log.push(`Round ${g.round} frontier: ${parts.length ? parts.join(', ') : 'the lines held — no ground changed.'}`);
+    if (this.cfg.demo) { this.banner = '🤖 Demo — Frontier'; await this.demoStep(1.2); }
     // golden goal
     if (g.round >= C.GOLDEN_GOAL_ROUND) {
       const t0 = g.rows_taken_round[0] > 0 || g.wagon_dmg_round[0] > 0;
@@ -203,8 +264,20 @@ export class Controller {
     // Phase 5 — Pass & Tribute
     for (let p = 0; p < 2; p++) g.res[p].tribute += C.TRIBUTE_PER_ROW * g.rows_lost_round[p];
     if (g.round === C.CARAVAN_ROUND_1 || g.round === C.CARAVAN_ROUND_2) {
-      // human artifact preference (priority order) staged onto inherited pick
+      const snap = [0, 1].map(p => ({ ...g.res[p] }));
       g.caravan(g.round === C.CARAVAN_ROUND_1 ? 1 : 2);
+      if (this.cfg.demo) {
+        const delta = (p: number) => {
+          const r = g.res[p], s = snap[p], a: string[] = [];
+          if (r.supply > s.supply) a.push(`+${r.supply - s.supply}🛡`);
+          if (r.crop > s.crop) a.push(`+${r.crop - s.crop}🌾`);
+          if (r.tribute > s.tribute) a.push(`+${r.tribute - s.tribute}◆`);
+          return a.length ? a.join(' ') : 'a battlefield boost';
+        };
+        this.log.push(`◆ Caravan! ${cap(this.tribe(0))} drafted ${delta(0)} · ${cap(this.tribe(1))} drafted ${delta(1)}.`);
+        this.banner = '🤖 Demo — ◆ Caravan';
+        await this.demoStep(2.2);
+      }
     }
     if (g.round === 1) {
       const [r0, r1] = g.rows_taken_round;
@@ -240,6 +313,7 @@ export class Controller {
     this.g.runPulse(pulse);
     const dead = [...this.g.units.values()].filter(u => u.pos === null && u.wounded_round === this.g.round);
     if (dead.length) this.log.push(`Pulse ${pulse}: ${dead.length} unit(s) fell.`);
+    if (this.cfg.demo) { await this.demoStep(0.8); return; }
     this.render();
     await this.pause(550);
   }
@@ -397,6 +471,7 @@ export class Controller {
     this.root.innerHTML = `
       <div class="topbar"><div class="phase-banner"></div>${guideButtonHTML()}</div>
       <div class="phasebar"></div>
+      <div class="reshud"></div>
       <div class="phase-hint"></div>
       <div id="board3d" class="board3d-wrap"></div>
       <div class="panel"></div>
@@ -404,6 +479,7 @@ export class Controller {
     this.shell = {
       banner: this.root.querySelector('.phase-banner')!,
       phasebar: this.root.querySelector('.phasebar')!,
+      hud: this.root.querySelector('.reshud')!,
       hint: this.root.querySelector('.phase-hint')!,
       panel: this.root.querySelector('.panel')!,
       log: this.root.querySelector('.gamelog')!,
@@ -428,6 +504,7 @@ export class Controller {
     const s = this.shell!;
     s.banner.innerHTML = this.banner;
     s.phasebar.innerHTML = this.phaseStepper();
+    s.hud.innerHTML = this.resourceHUD();
     s.hint.innerHTML = this.phaseHint();
     s.panel.innerHTML = this.panelHTML();
     s.log.innerHTML = this.log.slice(-4).map(l => `<div>${l}</div>`).join('');
@@ -438,6 +515,7 @@ export class Controller {
   }
 
   private onBoardClick(pos: Pos) {
+    if (this.cfg.demo) return;                  // watch mode: board isn't interactive
     const uid = this.g.board.get(bkey(pos));
     if (this.banner.includes('Intervention')) this.ivCell(pos, uid);
     else this.onCell(pos, uid);
@@ -446,6 +524,7 @@ export class Controller {
   // same highlight logic as paintOverlays, but as data for the 3D board
   private computeHighlights() {
     const g = this.g, hl: any = {};
+    if (this.cfg.demo) return hl;                 // watch mode: no interaction highlights
     if (this.banner.includes('Clash') && this.cSel !== null) {
       const u = g.units.get(this.cSel)!;
       hl.selected = u.pos;
@@ -504,6 +583,8 @@ export class Controller {
     else if (b.includes('Clash') || b.includes('Intervention')) {
       cur = 2; const m = b.match(/pulse (\d)/); pulse = m ? +m[1] : 0;
     }
+    else if (b.includes('Frontier')) cur = 3;
+    else if (b.includes('Caravan') || b.includes('Tribute')) cur = 4;
     const phases = [
       { k: 'Muster', i: '🏰', auto: false }, { k: 'Reveal', i: '👁', auto: true },
       { k: 'Clash', i: '⚔', auto: false }, { k: 'Frontier', i: '🚩', auto: true },
@@ -526,7 +607,29 @@ export class Controller {
     return '';
   }
 
+  // Persistent resource HUD for the 3D view (the 2D board draws its own).
+  private resourceHUD(): string {
+    const g = this.g;
+    const meSeat = this.cfg.mode === 'bot' && !this.cfg.demo ? this.cfg.humanSeat : -1;
+    const side = (p: number) => {
+      const r = g.res[p];
+      const army = [...g.units.values()].filter(u => u.owner === p && u.pos).length;
+      const hungry = r.crop < army;
+      const who = p === meSeat ? 'You' : cap(this.tribe(p));
+      return `<div class="hud-side${p === meSeat ? ' me' : ''}" style="--c:${TRIBE_COLOR[this.tribe(p)] || '#c9a227'}">
+        <span class="hud-who">${who}</span>
+        <span class="hud-stat" title="Supply — builds & recruits">🛡 ${r.supply}</span>
+        <span class="hud-stat${hungry ? ' low' : ''}" title="Crop ${r.crop} vs ${army} units to feed${hungry ? ' — SHORT! some units will be exhausted (∅) and fight weaker' : ' — fed'}">🌾 ${r.crop}/${army}</span>
+        <span class="hud-stat" title="Tribute — Surge / Shieldbearer / convert to Supply">◆ ${r.tribute}</span>
+        <span class="hud-stat" title="Rows of land owned">▦ ${g.ownedRows(p)}</span>
+        <span class="hud-stat" title="Supply Wagons still standing">▣ ${g.wagonsAlive(p)}</span>
+      </div>`;
+    };
+    return side(0) + `<span class="hud-vs">vs</span>` + side(1);
+  }
+
   private panelHTML(): string {
+    if (this.cfg.demo) return this.demoPanel();
     if (this.banner.includes('Muster')) return this.musterPanel();
     if (this.banner.includes('Clash')) return this.clashPanel();
     if (this.banner.includes('Intervention')) return this.ivPanel();
@@ -634,6 +737,7 @@ export class Controller {
 
   private onAct(act: string) {
     const g = this.g, C = g.C;
+    if (act.startsWith('demo:')) { this.onDemo(act.slice(5)); return; }
     if (act === 'muster-done') { this.mMode = { kind: null }; this.musterDone?.(); return; }
     if (act === 'clash-done') { this.clashDone?.(); return; }
     if (act === 'clash-clear') { this.cOrders.clear(); this.cSel = null; this.render(); return; }

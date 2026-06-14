@@ -59,6 +59,7 @@ function setupScreen() {
       <button class="pbtn confirm big" id="start">Begin campaign ▶</button>
       <div class="setup-links">
         <button class="pbtn" id="tut">🎓 Tutorial — learn by playing</button>
+        <button class="pbtn" id="demo">🤖 Watch a demo (AI vs AI)</button>
         <button class="pbtn" id="guide">📖 Read the rules</button>
       </div>
       <p class="hint">New here? Start with the <b>Tutorial</b>. Pick an action, then click the board.
@@ -75,6 +76,10 @@ function setupScreen() {
   (root.querySelector('#start') as HTMLElement).onclick = () => {
     if (state.p0tribe === state.p1tribe) state.p1tribe = TRIBES.find(t => t !== state.p0tribe)!;
     new Controller(root).start({ ...state });
+  };
+  (root.querySelector('#demo') as HTMLElement).onclick = () => {
+    const p1 = state.p1tribe === state.p0tribe ? TRIBES.find(t => t !== state.p0tribe)! : state.p1tribe;
+    new Controller(root).start({ ...state, p1tribe: p1, demo: true });
   };
   (root.querySelector('#guide') as HTMLElement).onclick = openGuide;
   (root.querySelector('#tut') as HTMLElement).onclick = () => {
