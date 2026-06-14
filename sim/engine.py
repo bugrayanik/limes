@@ -413,6 +413,12 @@ class Game:
             if t == 'woods' and vs_shoot:
                 b += 1
         g = u.base_guard + min(C['GUARD_CAP'], b)
+        if u.arch == 'hero':
+            for w in self.wagons[u.owner]:
+                if w['hp'] > 0:
+                    for aid in w['artifacts']:
+                        if aid == 3:
+                            g += 1
         if u.exhausted:
             g -= C['EXHAUST_GUARD_PENALTY']
         return max(0, g)
@@ -667,7 +673,7 @@ class Game:
                     cols.append(c)
             cols = cols[:C['WAGON_COUNT']]
             for i, c in enumerate(cols):
-                self.wagons[p].append({'col': c, 'row': back, 'hp': C['WAGON_HP']})
+                self.wagons[p].append({'col': c, 'row': back, 'hp': C['WAGON_HP'], 'artifacts': []})
                 self.wagon_at[(c, back)] = (p, i)
             # starting force: Hero + signature (Spearman, D-29) + 2 Swordsmen
             want = ['hero', 'spear', 'sword', 'sword']
@@ -736,6 +742,33 @@ class Game:
         sup, crop = self.compute_harvest(p)
         res['supply'] += sup
         res['crop'] += crop
+        # (a2) Per-round economy buffs from artifacts on living wagons
+        for w in self.wagons[p]:
+            if w['hp'] <= 0:
+                continue
+            for aid in w['artifacts']:
+                if aid == 1:
+                    res['supply'] += 2
+                elif aid == 2:
+                    res['crop'] += 2
+                elif aid == 6:
+                    res['tribute'] += 1
+                elif aid == 4:
+                    cands = self.on_board(p)
+                    if cands:
+                        cands.sort(key=lambda u: (-u.xp, -self.costs[u.arch], u.pos))
+                        self.gain_xp(cands[0], 1)
+                elif aid == 5:
+                    col = w['col']
+                    if 0 <= col < 8 and col not in self.palisades:
+                        self.palisades[col] = p
+                elif aid == 7:
+                    self.recruit_discount[p] += C['ARTIFACT_DISCOUNT']
+                elif aid == 8:
+                    if res['crop'] < res['supply']:
+                        res['crop'] += 1
+                    else:
+                        res['supply'] += 1
         # (b) Upkeep
         mine = self.on_board(p)
         # validate + dedupe the bot's feed list: each unit is charged upkeep
@@ -1384,7 +1417,11 @@ class Game:
             if pick not in options:
                 pick = options[0]
             options.remove(pick)
-            self.apply_artifact(p, pick)
+            idx = self.bots[p].artifact_wagon(self, p, pick)
+            if idx >= 0:
+                self.wagons[p][idx]['artifacts'].append(pick)
+            else:
+                self.apply_artifact(p, pick)
         # 4th discarded
 
     def apply_artifact(self, p, aid):
@@ -1497,6 +1534,13 @@ class Game:
         self._checkpoint('clash')
         # Phase 4: Frontier
         self.frontier()
+        # A4: a destroyed wagon (hp <= 0) drops its artifacts so stale aids
+        # don't linger in the snapshot. Sweep both players at one fixed point
+        # after all wagon damage for the round is resolved.
+        for p in (0, 1):
+            for w in self.wagons[p]:
+                if w['hp'] <= 0:
+                    w['artifacts'] = []
         # komi update (C-005: at the end of the Frontier step)
         l0, l1 = self.rows_lost_round
         if l0 != l1:

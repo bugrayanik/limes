@@ -197,7 +197,7 @@ export class Game {
   palisades = new Map<number, number>();
   entrench = new Map<string, number>();
   res: { supply: number; crop: number; tribute: number }[];
-  wagons: { col: number; row: number; hp: number }[][] = [[], []];
+  wagons: { col: number; row: number; hp: number; artifacts: number[] }[][] = [[], []];
   wagon_at = new Map<string, [number, number]>();
   komi = 1;
   round = 1;
@@ -275,7 +275,7 @@ export class Game {
       for (let c = 0; c < 8 && cols.length < C.WAGON_COUNT; c++) if (!cols.includes(c)) cols.push(c);
       cols.length = Math.min(cols.length, C.WAGON_COUNT);
       cols.forEach((c, i) => {
-        this.wagons[p].push({ col: c, row: back, hp: C.WAGON_HP });
+        this.wagons[p].push({ col: c, row: back, hp: C.WAGON_HP, artifacts: [] });
         this.wagon_at.set(key([c, back]), [p, i]);
       });
       const want = ['hero', 'spear', 'sword', 'sword'];
@@ -382,6 +382,29 @@ export class Game {
     // (a) Harvest
     const [hs, hc] = this.computeHarvest(p);
     res.supply += hs; res.crop += hc;
+    // (a2) Per-round economy buffs from artifacts on living wagons
+    for (const w of this.wagons[p]) {
+      if (w.hp <= 0) continue;
+      for (const aid of w.artifacts) {
+        if (aid === 1) res.supply += 2;
+        else if (aid === 2) res.crop += 2;
+        else if (aid === 4) {
+          const cands = this.onBoard(p).sort((a, b) =>
+            (b.xp - a.xp) || (this.costs[b.arch] - this.costs[a.arch]) || ntc(a.pos!, b.pos!));
+          if (cands.length) this.gainXp(cands[0], 1);
+        }
+        else if (aid === 5) {
+          const col = w.col;
+          if (col >= 0 && col < 8 && !this.palisades.has(col)) this.palisades.set(col, p);
+        }
+        else if (aid === 7) this.recruit_discount[p] += C.ARTIFACT_DISCOUNT;
+        else if (aid === 6) res.tribute += 1;
+        else if (aid === 8) {
+          if (res.crop < res.supply) res.crop += 1;
+          else res.supply += 1;
+        }
+      }
+    }
     // (b) Upkeep — dedupe the bot's feed list; charge each unit once (C-023)
     const mine = this.onBoard(p);
     const order: number[] = [], fed = new Set<number>();
@@ -520,6 +543,15 @@ export class Game {
       if (t === 'woods' && vsShoot) b += 1;
     }
     let g = u.base_guard + Math.min(C.GUARD_CAP, b);
+    if (u.arch === 'hero') {
+      for (const w of this.wagons[u.owner]) {
+        if (w.hp > 0) {
+          for (const aid of w.artifacts) {
+            if (aid === 3) g += 1;
+          }
+        }
+      }
+    }
     if (u.exhausted) g -= C.EXHAUST_GUARD_PENALTY;
     return Math.max(0, g);
   }
@@ -1067,7 +1099,9 @@ export class Game {
       let pick = this.bots[p].artifactPick(this, p, options.slice());
       if (!options.includes(pick)) pick = options[0];
       options = options.filter(x => x !== pick);
-      this.applyArtifact(p, pick);
+      const idx = this.bots[p].artifactWagon(this, p, pick);
+      if (idx >= 0) this.wagons[p][idx].artifacts.push(pick);
+      else this.applyArtifact(p, pick);
       this.last_artifacts.push({ p, aid: pick });
     }
     // 4th discarded
@@ -1113,6 +1147,10 @@ export class Game {
     for (const u of this.units.values()) u.face_down = false;
     this.clash();
     this.frontier();
+    // A4: a destroyed wagon (hp <= 0) drops its artifacts so stale aids don't
+    // linger in the snapshot. Sweep both players at one fixed point after all
+    // wagon damage for the round is resolved.
+    for (let p = 0; p < 2; p++) for (const w of this.wagons[p]) if (w.hp <= 0) w.artifacts = [];
     const [l0, l1] = this.rows_lost_round;
     if (l0 !== l1) this.komi = l0 > l1 ? 0 : 1;
     // golden goal (C-070)
@@ -1172,6 +1210,8 @@ export class Game {
     out.push(['clash', this.stateHash()]);
     // Phase 4: Frontier + komi update (C-005)
     this.frontier();
+    // A4: destroyed wagons drop their artifacts (mirror of playRound)
+    for (let p = 0; p < 2; p++) for (const w of this.wagons[p]) if (w.hp <= 0) w.artifacts = [];
     const [l0, l1] = this.rows_lost_round;
     if (l0 !== l1) this.komi = l0 > l1 ? 0 : 1;
     out.push(['frontier', this.stateHash()]);
@@ -1199,7 +1239,7 @@ export class Game {
       round: this.round, komi: this.komi, stakes: [...this.stakes],
       res: this.res.map(r => ({ supply: r.supply, crop: r.crop, tribute: r.tribute })),
       units,
-      wagons: this.wagons.map(side => side.map(w => ({ col: w.col, row: w.row, hp: w.hp }))),
+      wagons: this.wagons.map(side => side.map(w => ({ col: w.col, row: w.row, hp: w.hp, artifacts: [...w.artifacts] }))),
       fields: [...this.fields.entries()].map(([k, v]) => [k.split(',').map(Number), v]).sort(cmp),
       palisades: [...this.palisades.entries()].sort((a, b) => a[0] - b[0]),
       entrench: [...this.entrench.entries()].map(([k, v]) => [k.split(',').map(Number), v]).sort(cmp),

@@ -26,6 +26,10 @@ export class HumanPolicy extends Policy {
   pendingSB: number | null = null;
   pendingOrders: Record<number, Record<number, Order>> = {};
   pendingIntervention: Record<number, any> = {};
+  // Caravan: queued wagon indices for the human's drafted artifacts, consumed
+  // in draft order by artifactWagon(). Empty → fall back to the base rule so
+  // the engine never blocks (and parity stays byte-identical for bots).
+  pendingArtifactWagon: number[] = [];
   // strategy preferences for interleaved mid-resolution choices
   tramplePref: 'annex' | 'raid' = 'annex';
 
@@ -40,6 +44,15 @@ export class HumanPolicy extends Policy {
   // — Clash —
   orders(_g: Game, _me: number, pulse: number): Record<number, any> { return this.pendingOrders[pulse] ?? {}; }
   intervention(_g: Game, _me: number, wno: number): any { return this.pendingIntervention[wno] ?? null; }
+  // Caravan wagon placement: take the next queued human choice if any (and it
+  // points at a living wagon), else defer to the base "fewest-artifacts" rule.
+  artifactWagon(g: Game, p: number, aid: number): number {
+    while (this.pendingArtifactWagon.length) {
+      const idx = this.pendingArtifactWagon.shift()!;
+      if (idx >= 0 && idx < g.wagons[p].length && g.wagons[p][idx].hp > 0) return idx;
+    }
+    return super.artifactWagon(g, p, aid);
+  }
 
   // — interleaved: human strategy preference, no pause needed —
   trampleChoice(g: Game, _me: number, _pos: Pos, field: any): string {
@@ -51,6 +64,7 @@ export class HumanPolicy extends Policy {
   clearPhase() {
     this.pendingFeed = null; this.pendingBuild = null; this.pendingReinforce = null;
     this.pendingSB = null; this.pendingOrders = {}; this.pendingIntervention = {};
+    this.pendingArtifactWagon = [];
   }
 }
 

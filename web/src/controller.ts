@@ -101,20 +101,11 @@ export class Controller {
     pol.forEach((b, p) => b.reset(this.cfg.seed, p));
     const g = new Game(pol, this.cfg.seed, V3_CONFIG);
     g.setup();
-    const draft: { p: number; aid: number; round: number }[] = [];
     let over: GameOver | null = null;
     try {
-      while (g.round < target) {
-        const r = g.round;
-        g.playRound();
-        if (r === g.C.CARAVAN_ROUND_1 || r === g.C.CARAVAN_ROUND_2)
-          for (const x of g.last_artifacts) {
-            const n = draft.filter(a => a.p === x.p).length;
-            draft.push({ ...x, round: r, wagon: n % 3 });
-          }
-      }
+      while (g.round < target) g.playRound();
     } catch (e) { if (e instanceof GameOver) over = e; else throw e; }
-    this.policies = pol; this.g = g; this.caravanCard = ''; this.artifactDraft = draft;
+    this.policies = pol; this.g = g; this.caravanCard = '';
     this.log = [`Round ${g.round} — ${cap(this.tribe(0))} vs ${cap(this.tribe(1))}.`];
     return over;
   }
@@ -157,31 +148,29 @@ export class Controller {
   // ── Caravan artifact card (shown when artifacts are drafted) ──
   private caravanCard = '';
   private caravanOv?: HTMLElement;
-  private artifactDraft: { p: number; aid: number; round: number; wagon: number }[] = [];
-  // labels to float over each living wagon, from the drafted artifacts
+  // labels to float over each living wagon, read from the engine's wagon placement
   private wagonArtifactItems() {
-    const g = this.g;
-    const groups = new Map<string, { col: number; row: number; lines: string[] }>();
-    for (const a of this.artifactDraft) {
-      const w = g.wagons[a.p]?.[a.wagon];
-      if (!w || w.hp <= 0) continue;
-      const k = `${a.p},${a.wagon}`;
-      if (!groups.has(k)) groups.set(k, { col: w.col, row: w.row, lines: [] });
-      const art = ARTIFACTS[a.aid];
-      if (art) groups.get(k)!.lines.push(`${art.icon} ${art.name}`);
+    const g = this.g, out: { col: number; row: number; lines: string[] }[] = [];
+    for (let p = 0; p < 2; p++) for (const w of g.wagons[p]) {
+      if (w.hp <= 0 || !w.artifacts.length) continue;
+      const lines = w.artifacts.map((aid: number) => { const a = ARTIFACTS[aid]; return a ? `${a.icon} ${a.name}` : ''; }).filter(Boolean);
+      if (lines.length) out.push({ col: w.col, row: w.row, lines });
     }
-    return [...groups.values()];
+    return out;
   }
   private artifactStrip(): string {
-    if (!this.artifactDraft.length) return '';
+    const g = this.g;
     const side = (p: number) => {
-      const mine = this.artifactDraft.filter(x => x.p === p);
-      if (!mine.length) return '';
-      return `<span class="art-side" style="--c:${TRIBE_COLOR[this.tribe(p)] || '#c9a227'}"><b>${cap(this.tribe(p))}</b>${mine.map(x => {
-        const a = ARTIFACTS[x.aid]; return a ? `<span class="art-chip" title="${a.name} — ${a.desc} (round ${x.round})">${a.icon} ${a.name} <i>${a.desc}</i></span>` : '';
+      const aids: number[] = [];
+      for (const w of g.wagons[p]) if (w.hp > 0) aids.push(...w.artifacts);
+      if (!aids.length) return '';
+      return `<span class="art-side" style="--c:${TRIBE_COLOR[this.tribe(p)] || '#c9a227'}"><b>${cap(this.tribe(p))}</b>${aids.map(aid => {
+        const a = ARTIFACTS[aid]; return a ? `<span class="art-chip" title="${a.name} — ${a.desc}">${a.icon} ${a.name} <i>${a.desc}</i></span>` : '';
       }).join('')}</span>`;
     };
-    return `<div class="artbar"><span class="art-lbl">◆ Artifacts</span>${side(0)}${side(1)}</div>`;
+    const s0 = side(0), s1 = side(1);
+    if (!s0 && !s1) return '';
+    return `<div class="artbar"><span class="art-lbl">◆ Artifacts</span>${s0}${s1}</div>`;
   }
   private renderCaravan(picks: { p: number; aid: number }[], round: number): string {
     const side = (p: number) => {
@@ -359,13 +348,10 @@ export class Controller {
     // Phase 5 — Pass & Tribute
     for (let p = 0; p < 2; p++) g.res[p].tribute += C.TRIBUTE_PER_ROW * g.rows_lost_round[p];
     if (g.round === C.CARAVAN_ROUND_1 || g.round === C.CARAVAN_ROUND_2) {
-      g.caravan(g.round === C.CARAVAN_ROUND_1 ? 1 : 2);
-      // remember them persistently + show prominently (with effects).
-      // place each on a wagon (round-robin across this side's 3 wagons).
-      for (const x of g.last_artifacts) {
-        const n = this.artifactDraft.filter(a => a.p === x.p).length;
-        this.artifactDraft.push({ ...x, round: g.round, wagon: n % 3 });
-      }
+      const which = g.round === C.CARAVAN_ROUND_1 ? 1 : 2;
+      if (this.isHuman(0) || this.isHuman(1)) await this.humanCaravan(which);
+      g.caravan(which);
+      // show the draft prominently (engine has placed them on wagons).
       this.caravanCard = this.renderCaravan(g.last_artifacts, g.round);
       const names = (p: number) => g.last_artifacts.filter(x => x.p === p).map(x => ARTIFACTS[x.aid]?.name).join(', ') || '—';
       this.log.push(`◆ Caravan! ${cap(this.tribe(0))}: ${names(0)} · ${cap(this.tribe(1))}: ${names(1)}.`);
@@ -542,6 +528,57 @@ export class Controller {
   private ivResolve: (() => void) | null = null;
   private ivPlayer = 0; private ivWno = 0; private ivSel: { kind: string; uid?: number } | null = null;
 
+  // ── HUMAN: Caravan wagon placement ───────────────────────────────────────
+  // Replicate the engine's deterministic draft order, then for each artifact a
+  // human side will draft, let them click one of THEIR living wagons. The chosen
+  // wagon index is queued into the human policy; g.caravan() then consumes it.
+  // Read-only: g.caravanPlan equivalent is computed here without mutating state.
+  private cvResolve: (() => void) | null = null;
+  private cvPlayer = 0;            // which side is placing right now
+  private cvAid = 0;               // the artifact being placed
+  private cvWagons: number[] = []; // living-wagon indices for cvPlayer
+  private async humanCaravan(which: number) {
+    const g = this.g;
+    // Reproduce the per-step (player, aid) draft order (mirror of caravan()).
+    const tup = (a: number[], b: number[]) => { for (let i = 0; i < a.length; i++) { if (a[i] !== b[i]) return a[i] < b[i] ? -1 : 1; } return 0; };
+    const C = g.C, n = C.CARAVAN_ARTIFACTS;
+    let options = g.artifact_order.slice(which === 1 ? 0 : n, (which === 1 ? 0 : n) + n);
+    const rank = (p: number) => [g.wagonsAlive(p), g.ownedRows(p), p === g.komi ? 0 : 1];
+    const trailing = tup(rank(0), rank(1)) <= 0 ? 0 : 1;
+    const plan: { p: number; aid: number }[] = [];
+    for (const p of [trailing, 1 - trailing, trailing]) {
+      if (!options.length) break;
+      let pick = this.policies[p].artifactPick(g, p, options.slice());
+      if (!options.includes(pick)) pick = options[0];
+      options = options.filter(x => x !== pick);
+      plan.push({ p, aid: pick });
+    }
+    // For each human pick with at least one living wagon, prompt a placement.
+    for (const { p, aid } of plan) {
+      if (!this.isHuman(p)) continue;
+      const live = g.wagons[p].map((w, i) => ({ w, i })).filter(x => x.w.hp > 0).map(x => x.i);
+      if (!live.length) continue;                 // no living wagon → base rule (applyArtifact)
+      if (live.length === 1) { this.human(p).pendingArtifactWagon.push(live[0]); continue; }
+      this.cvPlayer = p; this.cvAid = aid; this.cvWagons = live;
+      const a = ARTIFACTS[aid];
+      this.banner = `${this.seatName(p)} — Place ${a ? a.icon + ' ' + a.name : 'artifact'} on a wagon`;
+      await new Promise<void>(resolve => { this.cvResolve = resolve; this.render(); });
+    }
+    this.cvResolve = null; this.cvWagons = [];
+  }
+
+  private caravanCell(pos: Pos) {
+    const g = this.g, p = this.cvPlayer;
+    const at = g.wagon_at.get(bkey(pos));         // [owner, wagonIndex]
+    if (!at || at[0] !== p) return;
+    const idx = at[1];
+    if (!this.cvWagons.includes(idx) || g.wagons[p][idx].hp <= 0) return;
+    this.human(p).pendingArtifactWagon.push(idx);
+    const a = ARTIFACTS[this.cvAid];
+    this.log.push(`◆ Placed ${a ? a.name : 'artifact'} on a wagon (col ${g.wagons[p][idx].col + 1}).`);
+    const r = this.cvResolve; this.cvResolve = null; r?.();
+  }
+
   // ── rendering ──────────────────────────────────────────────────────────
   render() {
     this.syncCaravan();
@@ -612,6 +649,7 @@ export class Controller {
 
   private onBoardClick(pos: Pos) {
     if (this.cfg.demo) return;                  // watch mode: board isn't interactive
+    if (this.cvResolve) { this.caravanCell(pos); return; }
     const uid = this.g.board.get(bkey(pos));
     if (this.banner.includes('Intervention')) this.ivCell(pos, uid);
     else this.onCell(pos, uid);
@@ -621,6 +659,10 @@ export class Controller {
   private computeHighlights() {
     const g = this.g, hl: any = {};
     if (this.cfg.demo) return hl;                 // watch mode: no interaction highlights
+    if (this.cvResolve) {                         // caravan: glow the placeable living wagons
+      hl.valid = this.cvWagons.map(i => [g.wagons[this.cvPlayer][i].col, g.wagons[this.cvPlayer][i].row] as Pos);
+      return hl;
+    }
     if (this.banner.includes('Clash') && this.cSel !== null) {
       const u = g.units.get(this.cSel)!;
       hl.selected = u.pos;
@@ -730,6 +772,11 @@ export class Controller {
 
   private panelHTML(): string {
     if (this.cfg.demo) return this.demoPanel();
+    if (this.cvResolve) {
+      const a = ARTIFACTS[this.cvAid];
+      return `<div class="prow"><b>${a ? a.icon + ' ' + a.name : 'Artifact'}</b> — ${a ? a.desc : ''}</div>
+        <div class="prow staged">Click one of your glowing 🟡 <b>wagons</b> to attach it. A wagon's effect ends if it's destroyed, so spread or stack with care.</div>`;
+    }
     if (this.banner.includes('Muster')) return this.musterPanel();
     if (this.banner.includes('Clash')) return this.clashPanel();
     if (this.banner.includes('Intervention')) return this.ivPanel();
@@ -823,6 +870,7 @@ export class Controller {
       cell.addEventListener('click', () => {
         const pos = cell.dataset.pos!.split(',').map(Number) as Pos;
         const uid = cell.dataset.uid !== undefined ? Number(cell.dataset.uid) : undefined;
+        if (this.cvResolve) { this.caravanCell(pos); return; }
         if (this.banner.includes('Intervention')) this.ivCell(pos, uid);
         else this.onCell(pos, uid);
       });
@@ -887,6 +935,9 @@ export class Controller {
       const el = this.root.querySelector<HTMLElement>(`.cell[data-pos="${bkey(pos)}"]`);
       if (el) el.classList.add(cls);
     };
+    if (this.cvResolve) {
+      for (const i of this.cvWagons) { const w = this.g.wagons[this.cvPlayer][i]; mark([w.col, w.row], 'hl-valid'); }
+    }
     if (this.banner.includes('Clash') && this.cSel !== null) {
       const u = this.g.units.get(this.cSel)!;
       const el = this.root.querySelector<HTMLElement>(`.cell[data-pos="${bkey(u.pos!)}"]`);

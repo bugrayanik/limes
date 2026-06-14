@@ -789,6 +789,16 @@ export class Policy {
     return options[0];
   }
 
+  artifactWagon(g: Game, p: number, _aid: number): number {
+    // A2: pick which living wagon to attach an artifact to.
+    // Fewest artifacts wins; ties broken by lowest wagon index. -1 if none living.
+    const live = g.wagons[p]
+      .map((w, i) => ({ w, i }))
+      .filter(x => x.w.hp > 0);
+    if (!live.length) return -1;
+    return argminTuple(live, x => [x.w.artifacts.length, x.i]).i;
+  }
+
   routAllocate(g: Game, _me: number, victim: number, dmg: number): number[] {
     const hp = new Map<number, number>();
     g.wagons[victim].forEach((w, i) => { if (w.hp > 0) hp.set(i, w.hp); });
