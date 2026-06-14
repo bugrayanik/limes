@@ -28,15 +28,16 @@ const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 class DemoRewind extends Error {}   // control-flow signal to rewind the demo
 
 // The 8 Caravan artifacts (matches engine applyArtifact aids + the Guide gallery).
+// Wagon-bound buffs: active every round while the wagon they sit on lives.
 const ARTIFACTS: Record<number, { icon: string; name: string; desc: string }> = {
-  1: { icon: '🛡', name: 'Supply Cache', desc: '+4 Supply now' },
-  2: { icon: '🌾', name: 'Granary', desc: '+4 Crop now' },
-  3: { icon: '⚜', name: "Hero's Aegis", desc: '+1 Guard to your Hero (permanent)' },
-  4: { icon: '⭐', name: "Veteran's Mark", desc: '+2 XP to your strongest unit' },
-  5: { icon: '🪵', name: 'Palisade', desc: 'Free wall on a key column' },
-  6: { icon: '◆', name: 'War Chest', desc: '+2 Tribute' },
-  7: { icon: '🏷', name: 'Levy', desc: 'Next recruits cost less' },
-  8: { icon: '🌱', name: 'Homestead', desc: 'Auto-builds a crop/supply field' },
+  1: { icon: '🛡', name: 'Supply Cache', desc: '+2 Supply each round' },
+  2: { icon: '🌾', name: 'Granary', desc: '+2 Crop each round' },
+  3: { icon: '⚜', name: "Hero's Aegis", desc: '+1 Hero Guard while the wagon lives' },
+  4: { icon: '⭐', name: "Veteran's Mark", desc: '+1 XP each round to your strongest unit' },
+  5: { icon: '🪵', name: 'Bulwark', desc: "walls this wagon's column" },
+  6: { icon: '◆', name: 'War Chest', desc: '+1 Tribute each round' },
+  7: { icon: '🏷', name: 'Levy', desc: 'cheaper recruits each Muster' },
+  8: { icon: '🌱', name: 'Homestead', desc: '+1 Supply/Crop (the lower) each round' },
 };
 const UNLOCK_COST = (n: number, C: any) => ({ 2: C.UNLOCK_3RD, 3: C.UNLOCK_4TH, 4: C.UNLOCK_5TH } as any)[n];
 
