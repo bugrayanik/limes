@@ -9,5 +9,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 BUN="${BUN:-$HOME/.bun/bin/bun}"
-"$BUN" build src/main.ts --outdir dist --target browser --minify
+# IIFE (not ESM) so a plain <script> tag runs even from file:// — i.e. the game
+# works by just double-clicking index.html, no local server required.
+"$BUN" build src/main.ts --outdir dist --target browser --format=iife --minify
 echo "built dist/main.js"

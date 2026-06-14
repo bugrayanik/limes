@@ -15,14 +15,15 @@ Playable browser build of the validated v3 ruleset. See `design/v3-build-roadmap
 - `parity/check_parity.ts` — replays both and asserts identical (run with `bun`).
 - `index.html` — game shell, locked art-direction skin from `art/styleguide/index.html`.
 
-## Build & run
+## Play
+**Just open `web/index.html` in a browser** (double-click it). The bundle is a
+classic IIFE script, so it runs straight from `file://` — no server needed.
+
+Rebuild after changing `src/` (needs bun):
 ```bash
-./build.sh                       # bundle src → dist/main.js (needs bun)
-python3 -m http.server 8000      # from the REPO ROOT (so /art/renders resolves)
-# open http://localhost:8000/web/index.html
+./build.sh                       # bundle src → dist/main.js (IIFE)
 ```
-`dist/main.js` is committed so GitHub Pages serves it with no build step.
-Module scripts need HTTP — `file://` is blocked by browsers.
+`dist/main.js` is committed, so the game also serves as-is from GitHub Pages.
 
 ## Parity workflow (how the port stays correct)
 The game is deterministic and dice-free, so the TS port must reproduce the Python
