@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1limesunitview0"]
+
+[ext_resource type="Script" path="res://scripts/unit_viewer.gd" id="1_viewer"]
+
+[sub_resource type="ProceduralSkyMaterial" id="Sky_1"]
+sky_horizon_color = Color(0.66, 0.67, 0.69, 1)
+ground_horizon_color = Color(0.66, 0.67, 0.69, 1)
+
+[sub_resource type="Sky" id="Sky_2"]
+sky_material = SubResource("Sky_1")
+
+[sub_resource type="Environment" id="Env_1"]
+background_mode = 2
+sky = SubResource("Sky_2")
+ambient_light_source = 3
+ambient_light_energy = 0.6
+tonemap_mode = 2
+
+[node name="UnitViewer" type="Node3D"]
+script = ExtResource("1_viewer")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.34, 0, -0.34, 0.94, 0, 1.1, 3.2)
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.86, -0.25, 0.43, 0, 0.86, 0.5, -0.5, -0.43, 0.74, 0, 4, 0)
+shadow_enabled = true
+
+[node name="Fill" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.5, 2)
+light_energy = 0.4
+omni_range = 8.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_1")
