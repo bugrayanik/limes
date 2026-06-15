@@ -48,6 +48,7 @@ const FORMATION := [
 var _cam_yaw := 0.0
 var _cam_pitch := 0.86
 var _cam_dist := 9.0
+var _auto_cam := true        # cinematic drift until the viewer takes control
 var _cam: Camera3D
 var _units: Array[Dictionary] = []
 
@@ -207,11 +208,15 @@ func _tint(node: Node, col: Color) -> StandardMaterial3D:
 	# material per unit so combat can flash its emission.
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = col
-	mat.roughness = 0.62
-	mat.metallic = 0.05
+	mat.roughness = 0.48
+	mat.metallic = 0.12
+	mat.metallic_specular = 0.6
 	mat.rim_enabled = true
-	mat.rim = 0.35
-	mat.rim_tint = 0.4
+	mat.rim = 0.5
+	mat.rim_tint = 0.35
+	mat.clearcoat_enabled = true              # subtle painted-varnish sheen
+	mat.clearcoat = 0.3
+	mat.clearcoat_roughness = 0.45
 	mat.emission_enabled = true
 	mat.emission = Color(1, 0.2, 0.12)
 	mat.emission_energy_multiplier = 0.0
@@ -309,9 +314,30 @@ func _damage_number(u: Dictionary, dmg: int) -> void:
 	tw.set_parallel(false)
 	tw.tween_callback(lbl.queue_free)
 
+func _spawn_impact(at: Vector3, col: Color) -> void:
+	# a quick burst of small debris that flies out, falls and fades
+	for i in 7:
+		var bit := MeshInstance3D.new()
+		var bm := BoxMesh.new(); bm.size = Vector3(0.05, 0.05, 0.05)
+		bit.mesh = bm
+		var m := _mat(col, 0.7, 0.1); m.emission_enabled = true; m.emission = col; m.emission_energy_multiplier = 0.6
+		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		bit.material_override = m
+		bit.position = at
+		add_child(bit)
+		var dir := Vector3(randf() - 0.5, randf() * 0.9 + 0.3, randf() - 0.5).normalized()
+		var land := at + dir * (0.35 + randf() * 0.3); land.y = at.y - 0.25
+		var tw := create_tween()
+		tw.set_parallel(true)
+		tw.tween_property(bit, "position", at + dir * 0.4 + Vector3(0, 0.3, 0), 0.18).set_ease(Tween.EASE_OUT)
+		tw.chain().tween_property(bit, "position", land, 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		tw.parallel().tween_property(m, "albedo_color:a", 0.0, 0.5)
+		tw.chain().tween_callback(bit.queue_free)
+
 func _hit(u: Dictionary, dmg: int) -> void:
 	if not u.alive: return
 	var mat: StandardMaterial3D = u.mat
+	_spawn_impact(_world_of(u) + Vector3(0, 0.5, 0), Color(1.0, 0.55, 0.2))
 	var ft := create_tween()
 	ft.tween_property(mat, "emission_energy_multiplier", 3.0, 0.05)
 	ft.tween_property(mat, "emission_energy_multiplier", 0.0, 0.25)
@@ -439,6 +465,7 @@ func _battle_loop() -> void:
 # ---------- input: orbit + idle ----------
 func _unhandled_input(e: InputEvent) -> void:
 	if e is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		_auto_cam = false
 		_cam_yaw -= e.relative.x * 0.006
 		_cam_pitch = clamp(_cam_pitch - e.relative.y * 0.005, 0.2, 1.3)
 		_update_camera()
@@ -449,10 +476,18 @@ func _unhandled_input(e: InputEvent) -> void:
 var _t := 0.0
 func _process(delta: float) -> void:
 	_t += delta
-	# gentle idle bob per LIVING, non-busy unit (combat tweens drive busy ones)
+	# gentle idle bob + sway per LIVING, non-busy unit (combat tweens drive busy ones)
 	for u in _units:
 		if not u.alive or u.busy: continue
-		(u.holder as Node3D).position.y = sin(_t * 1.6 + u.phase) * 0.02
+		var holder: Node3D = u.holder
+		holder.position.y = sin(_t * 1.6 + u.phase) * 0.02
+		holder.rotation.z = sin(_t * 0.9 + u.phase) * 0.025          # subtle sway
+	# cinematic camera drift (slow orbit + breathing pitch/zoom) until dragged
+	if _auto_cam:
+		_cam_yaw += delta * 0.07
+		_cam_pitch = 0.84 + sin(_t * 0.23) * 0.07
+		_cam_dist = 9.0 + sin(_t * 0.17) * 0.7
+		_update_camera()
 
 func _capture_reel() -> void:
 	var dir := "/tmp/limes_reel"
